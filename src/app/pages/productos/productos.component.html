@@ -1,0 +1,135 @@
+<div class="row">
+    <div class="col-7">
+        <div class="row animated fadeIn">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body mx-auto">
+
+                        <div class=" row">
+                            <div class="col ml-5 ">
+                                <input #input (keyup)="buscarProducto(input.value)" type="text" class="form-control" placeholder="Buscar producto">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class=" mx-auto mt-5 tableMatias">
+            <div class="row animated fadeIn">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Imagen</th>
+                                        <th>Marca</th>
+                                        <th>Modelo</th>
+                                        <th>Codigo</th>
+                                        <th>Precio</th>
+                                        <th>En stock</th>
+                                        <th>Cantidad</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let producto of productos">
+                                    <tr>
+                                        <td class="w70">
+                                            <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
+                                        </td>
+                                        <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}</td>
+                                        <td class=" pt-4 ">{{producto.modelo}}</td>
+                                        <td class=" pt-4 ">{{producto.codigo}}</td>
+                                        <td class=" pt-4 ">{{producto.precio}}</td>
+                                        <td class=" pt-4 "> {{producto.stock}}</td>
+                                        <td class=" pt-4 "> <input type="number" style="width: 50px" (keyup)="null" #cant value="{{producto.cantidad}}"></td>
+
+                                        <button (click)="selecctionarItem(producto, cant.value)" class=" mt-3 btn btn-info">Seleccionar</button>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
+                            <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="false" class="row">
+            <div *ngFor='let producto of productos ' class="mx-auto">
+                <div class="col-5">
+                    <div class="card" style="width: 18rem; margin: 3rem; ">
+                        <img [src]="producto.img | imagen" class="  card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{producto.marca}}</h5>
+                            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                            <div class="p-3">
+                                <a [routerLink]="['/editor', producto._id]" class="btn btn-primary m-3 ">Editar</a>
+                                <a target="_blank" class=" m-3 btn btn-info">Ver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-5 borde">
+        <div class="col   ">
+            <div class="">
+                <h3 class="pl-3 pt-4 card-title">Carrito</h3>
+                <div class="items card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Codigo</th>
+                                <th>Precio</th>
+                                <th>cantidad</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let producto of items">
+                            <tr>
+                                <td class="w70">
+                                    <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
+                                </td>
+                                <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}</td>
+                                <td class=" pt-4 ">{{producto.modelo}}</td>
+                                <td class=" pt-4 ">{{producto.codigo}}</td>
+                                <td class=" pt-4 ">{{producto.precio}}</td>
+                                <td class=" pt-4 "> {{producto.cantidad}}</td>
+                                <button class=" mt-3 btn btn-danger">Quitar</button>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div class="montos">
+                    <div class="row">
+                        <div class="col-10">
+                            <h3>Total: {{total}}</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class=" ml-0 row">
+                                <h3>Ingreso</h3>
+                                <input class="ml-3" #ingress (keyup)='ingreso(ingress.value)' type="number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10">
+                            <h3>Vuelto: {{vuelto}}</h3>
+                        </div>
+                    </div>
+                    <div class="col-2"><button type="button" (click)="vender()" class="btn btn-success">Vender</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

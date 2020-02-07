@@ -1,0 +1,65 @@
+<div class="fondo-negro  fadeIn" [ngClass]='_facturaModalService.oculto'>
+
+
+    <div class="modal" style="display: block;  " tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Factura de {{_facturaModalService.fecha | fecha: 'fecha'}} - {{_facturaModalService.fecha | fecha: 'hora'}} </h5>
+                    <button type="button" class="close" (click)="_facturaModalService.ocultarModal()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body cuerpo " align="center">
+
+                    <div class=" mx-auto  mt-5 tableMatias">
+                        <div class="row animated fadeIn">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="">
+                                        <table class="table  table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Imagen</th>
+                                                    <th>Marca</th>
+                                                    <th>Modelo</th>
+
+                                                    <th>Precio</th>
+
+                                                    <th>Cantidad</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody *ngFor="let producto of _facturaModalService.productos">
+                                                <tr>
+                                                    <td class="w70">
+                                                        <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
+                                                    </td>
+                                                    <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}</td>
+                                                    <td class=" pt-4 ">{{producto.modelo}}</td>
+                                                    <td class=" pt-4 ">{{producto.precio}}</td>
+                                                    <td class=" pt-4 "> {{producto.cantidad}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
+                                    <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="ml-3">
+                    <h3>Total: {{_facturaModalService.monto}} Gs</h3>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="_facturaModalService.ocultarModal()">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Alguna funcion</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

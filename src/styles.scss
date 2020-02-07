@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "~bootstrap/dist/css/bootstrap.css";
+.img-50 {
+    width: 50px;
+    ;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.oculto {
+    display: none;
+}
+
+.fondo-negro {
+    background-color: rgba($color: #000000, $alpha: 0.4);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+}

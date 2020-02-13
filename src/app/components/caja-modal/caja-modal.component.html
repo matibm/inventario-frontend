@@ -9,6 +9,37 @@
                     <button type="button" class="close" (click)="_cajaModalService.ocultarModal()" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+
+                </div>
+
+                <div *ngIf="_cajaModalService.cerrado">
+
+                    <div class="m-3 form-group">
+                        <label for="">Monto</label>
+                        <input ngModel type="number" required #monto (keyup)='registrarMonto(monto.value)' class="form-control" aria-describedby="helpId" placeholder="Ingresar Monto">
+                        <small id="helpId" class="form-text text-muted">Cantidad de dinero inicial de caja</small>
+                    </div>
+                </div>
+
+                <div *ngIf="!_cajaModalService.cerrado">
+
+                    <div class="m-3 form-group">
+                        <label for="">Monto Inicial: {{_cajaModalService.montoInicio}} Gs</label>
+                        <br>
+                        <label for="">Monto Actual: {{_cajaModalService.montoCierre}} Gs</label>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="_cajaModalService.ocultarModal()">Cancelar</button>
+                    <button type="submit" *ngIf="_cajaModalService.cerrado" (click)="crearCaja()" class="btn btn-primary">Abrir Caja</button>
+                    <button type="submit" *ngIf="!_cajaModalService.cerrado" (click)="cerrarCaja()" class="btn btn-primary">Cerrar Caja</button>
+
                 </div>
             </div>
         </div>

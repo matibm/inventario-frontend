@@ -1,5 +1,5 @@
 import { URL_SERVICIOS } from './../config/global';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { map } from 'rxjs/operators';
 import Swal  from 'sweetalert2'
@@ -7,6 +7,7 @@ import Swal  from 'sweetalert2'
   providedIn: 'root'
 })
 export class ProductoService {
+  public notificacion = new EventEmitter<any>();
 
   constructor(
     private http: HttpClient
@@ -14,6 +15,21 @@ export class ProductoService {
 
   getProducto() {
 
+  }
+
+  eliminarProducto(id){
+    let url = URL_SERVICIOS + '/producto/' +id  ;
+    
+    return this.http.delete(url).pipe(map((resp: any) => {
+            
+      Swal.fire({
+        icon: 'success',
+        title: 'Producto eliminado correctamente',
+        showConfirmButton: true
+      });
+
+      return resp;
+    }));
   }
 
   getProductos(desde) {
@@ -25,8 +41,7 @@ export class ProductoService {
     let url = URL_SERVICIOS + '/producto/' + producto._id;
     
     return this.http.put(url, producto).pipe(map((resp: any) => {
-      
-      
+            
       Swal.fire({
         icon: 'success',
         title: 'Producto actualizado',
@@ -37,7 +52,51 @@ export class ProductoService {
     }));
   }
 
-  
+  crearProducto(producto){
+
+    let url = URL_SERVICIOS + '/producto' ;
+    
+    return this.http.post(url, producto).pipe(map((resp: any) => {
+            
+      Swal.fire({
+        icon: 'success',
+        title: 'Producto creado correctamente',
+        showConfirmButton: true
+      });
+
+      return true;
+    }));
+  }
+  actualizarProducto(producto){
+
+    let url = URL_SERVICIOS + '/producto/' +producto._id  ;
+    
+    return this.http.put(url, producto).pipe(map((resp: any) => {
+            
+      Swal.fire({
+        icon: 'success',
+        title: 'Producto actualizado correctamente',
+        showConfirmButton: true
+      });
+
+      return resp;
+    }));
+  }
+  decrementarProducto(arrObj){
+
+    let url = URL_SERVICIOS + '/producto/decrementar'  ;
+    
+    return this.http.put(url, arrObj).pipe(map((resp: any) => {
+            
+      Swal.fire({
+        icon: 'success',
+        title: 'Venta Realizada',
+        showConfirmButton: true
+      });
+      this.notificacion.emit(resp)
+      return resp;
+    }));
+  }
 
   buscarProductos(termino: string) {
     let url = URL_SERVICIOS + '/busqueda/producto/' + termino;

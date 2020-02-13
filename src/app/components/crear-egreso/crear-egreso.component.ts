@@ -1,3 +1,4 @@
+import { CierreCajaService } from './../../services/cierre-caja.service';
 import { EgresoService } from './../../services/egreso.service';
 import { CrearEgresoService } from './crear-egreso.service';
 import { Component, OnInit } from '@angular/core';
@@ -14,9 +15,9 @@ export class CrearEgresoComponent implements OnInit {
   egreso
   confirmar: boolean = false;
   constructor(public _crearEgresoService: CrearEgresoService,
-    
-      private _egresoService: EgresoService
-    ) { }
+    private _cierreCajaService: CierreCajaService,
+    private _egresoService: EgresoService
+  ) { }
 
   ngOnInit() {
   }
@@ -43,11 +44,25 @@ export class CrearEgresoComponent implements OnInit {
     })
 
     this.egreso = egresoAux
-  
+
   }
 
-  confirmarGuardar(){
-    this._egresoService.setEgreso(this.egreso).subscribe();
+  confirmarGuardar() { 
+    let cierrecaja
+
+    let id = localStorage.getItem('idCaja')
+    if (id) {
+      this._cierreCajaService.getCierreCaja(id).subscribe((resp: any) => {
+        console.log(resp);
+
+        cierrecaja = resp.cierreCaja
+        cierrecaja.montoCierre -= this.montoT
+        cierrecaja.egresos.push(this.egreso)
+        this._cierreCajaService.putCierreCaja(cierrecaja).subscribe()
+        this._egresoService.setEgreso(this.egreso).subscribe();
+      })
+    }
+    
   }
 
 }

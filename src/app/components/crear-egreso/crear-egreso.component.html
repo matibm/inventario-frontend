@@ -16,13 +16,13 @@
 
                         <div class="form-group">
                             <label for="">Monto</label>
-                            <input ngModel type="text" required #monto (keyup)='registrarMonto(monto.value)' class="form-control" aria-describedby="helpId" placeholder="">
+                            <input type="number" required #monto (keyup)='registrarMonto(monto.value)' class="form-control" aria-describedby="helpId" placeholder="">
                             <small id="helpId" class="form-text text-muted">Cantidad de dinero para extraer de la
                                 caja</small>
                         </div>
                         <div class="form-group">
                             <label for="">Motivo</label>
-                            <input ngModel type="text" required #motivo (keyup)='registrarMotivo(motivo.value)' class="form-control" aria-describedby="helpId" placeholder="">
+                            <input type="text" required #motivo (keyup)='registrarMotivo(motivo.value)' class="form-control" aria-describedby="helpId" placeholder="">
                             <small id="helpId" class="form-text text-muted">Registrar el motivo de la extracción</small>
                         </div>
                     </div>

@@ -32,14 +32,14 @@ export class FacturaComponent implements OnInit {
     //  this.cargando = true;
     this._facturaService.getFacturas(this.desde).subscribe((resp: any) => {
 
-      this.facturas = resp.facturas
+      this.facturas = resp.facturas.reverse()
       //  this.cargando = false;
     })
   }
 
   cargarEgresos() {
     this._egresosService.getEgresos().subscribe((resp: any) => {
-      this.egresos = resp.egresos;
+      this.egresos = resp.egresos.reverse();
       console.log(this.egresos);
       
     })

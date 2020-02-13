@@ -1,1 +1,112 @@
-<p>cierre-caja works!</p>
+<div class="row">
+    <div class="m-3 carrito col-7">
+
+        <div class=" mx-auto mt-5 tableMatias">
+            <div class="row animated fadeIn">
+                <div class="col">
+                    <h3>Historial de Caja</h3>
+                    <div class="card">
+                        <div class="itemsFacturas ">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Monto Inicial</th>
+                                        <th>Monto Final</th>
+                                        <th>Cant Facturas</th>
+                                        <th>Cant Egresos</th>
+                                        <th>Fecha Inicial</th>
+                                        <th>Fecha Final</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="pointer" *ngFor="let cierreCaja of cierreCajas">
+                                    <tr (click)="onCierreCaja(cierreCaja)">
+                                        <td class=" pt-4 ">{{cierreCaja.montoInicio}} Gs </td>
+                                        <td class=" pt-4 ">{{cierreCaja.montoCierre}} Gs </td>
+                                        <td class=" pt-4 ">{{cierreCaja.facturas.length}}</td>
+                                        <td class=" pt-4 ">{{cierreCaja.egresos.length}} </td>
+                                        <td class=" pt-4 "> {{cierreCaja.fechaInicio | fecha :'fecha'}} <br> {{cierreCaja.fechaInicio | fecha :'hora'}}</td>
+                                        <td class=" pt-4 "> {{cierreCaja.fechaCierre | fecha :'hora'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
+                        <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class=" carrito col-5 m-3  ">
+        <div class=" mx-auto mt-5 tableMatias">
+            <div class="row animated fadeIn">
+                <div class="col">
+
+                    <ul class="nav nav-tabs">
+                        <li style="cursor: pointer;" class=" nav-item">
+                            <a (click)="switchTab('facturas')" id="facturas_tab" href="javascript:undefined" class="nav-link active">Facturas</a>
+                        </li>
+                        <li style="cursor: pointer;" (click)="switchTab('egresos')" class="nav-item">
+                            <a id="egresos_tab" href="javascript:undefined" class="nav-link">Egresos</a>
+                        </li>
+                    </ul>
+
+                    <div *ngIf="facturaTab" class="carrito card">
+
+                        <div class="itemsFacturas">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Monto total</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="pointer" *ngFor="let factura of facturas">
+                                    <tr (click)="verFacturaModal(factura)">
+
+                                        <td class=" pt-4 ">{{factura.monto}} Gs </td>
+                                        <td class=" pt-4 ">{{factura.fecha | fecha: 'fecha'}}</td>
+                                        <td class=" pt-4 "> {{factura.fecha | fecha :'hora'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
+                        <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
+                        </div>
+                    </div>
+
+                    <div *ngIf="!facturaTab" class="carrito card">
+
+                        <div class="">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Motivo</th>
+                                        <th>Monto</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="pointer" *ngFor="let egreso of egresos">
+                                    <tr>
+                                        <td class=" pt-4 ">{{egreso.motivo}}</td>
+                                        <td class=" pt-4 ">{{egreso.monto}} Gs </td>
+                                        <td class=" pt-4 ">{{egreso.fecha | fecha: 'fecha'}}</td>
+                                        <td class=" pt-4 ">{{egreso.fecha | fecha :'hora'}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
+                        <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

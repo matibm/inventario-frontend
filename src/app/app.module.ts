@@ -1,6 +1,7 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +15,8 @@ import { FacturaModalComponent } from './components/factura-modal/factura-modal.
 import { CrearEgresoComponent } from './components/crear-egreso/crear-egreso.component';
 import { CajaModalComponent } from './components/caja-modal/caja-modal.component';
 import { CierreCajaComponent } from './pages/cierre-caja/cierre-caja.component';
+import { CrearProductoModalComponent } from './components/crear-producto-modal/crear-producto-modal.component';
+import { EditarProductoModalComponent } from './components/editar-producto-modal/editar-producto-modal.component';
 
 @NgModule({
   declarations: [
@@ -28,11 +31,14 @@ import { CierreCajaComponent } from './pages/cierre-caja/cierre-caja.component';
     CrearEgresoComponent,
     CajaModalComponent,
     CierreCajaComponent,
+    CrearProductoModalComponent,
+    EditarProductoModalComponent,
     
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     AppRoutingModule
   ],
   exports: [ImagenPipe],

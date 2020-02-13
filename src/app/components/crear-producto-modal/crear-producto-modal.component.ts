@@ -61,8 +61,8 @@ export class CrearProductoModalComponent implements OnInit {
         })
     } else {
       var form = document.getElementById("myFormNewProduct");
-      function handleForm(event) { event.preventDefault(); }
-      form.addEventListener('submit', handleForm);
+      //function handleForm(event) { event.preventDefault(); }
+      form.addEventListener('submit', this.handleForm);
 
       let producto = {
         marca: f.value.marca,
@@ -82,7 +82,7 @@ export class CrearProductoModalComponent implements OnInit {
     }
 
   }
-
+  handleForm(event) { event.preventDefault(); }
 
   seleccionImagen(archivo: File) {
     if (!archivo) {

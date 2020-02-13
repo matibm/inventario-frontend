@@ -53,7 +53,7 @@
                                     </tr>
                                 </thead>
                                 <tbody class="pointer" *ngFor="let egreso of egresos">
-                                    <tr (click)="verFacturaModal(factura)">
+                                    <tr>
                                         <td class=" pt-4 ">{{egreso.motivo}}</td>
                                         <td class=" pt-4 ">{{egreso.monto}} Gs </td>
                                         <td class=" pt-4 ">{{egreso.fecha | fecha: 'fecha'}}</td>

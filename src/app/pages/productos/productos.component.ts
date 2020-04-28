@@ -26,16 +26,22 @@ export class ProductosComponent implements OnInit {
   @HostListener('window:afterprint')
   onafterprint() {
     this._productoService.oculto = ''
-    Swal.fire({
-      icon: 'success',
-      title: 'Venta Realizada',
-      showConfirmButton: true
-    }); 
-    this.nameField.nativeElement.focus();
+    setTimeout(() => {
+      this.nameField.nativeElement.focus();
+      
+    }, 500);
+
+    // Swal.fire({
+    //   icon: 'success',
+    //   title: 'Venta Realizada',
+    //   showConfirmButton: true
+    // }); 
+    this.readEscape = true;
+
 
     
   }
-
+  readEscape = false;
   inputbuscador
   productos
   diableVender = true
@@ -370,8 +376,9 @@ export class ProductosComponent implements OnInit {
 
   onKeyUp(event){
     var keyCode = ('which' in event) ? event.which : event.keyCode;
-    
-    alert ("The Unicode key code of the released key: " + keyCode);
+    if (this.readEscape) {
+
+    }
   }
 
 }

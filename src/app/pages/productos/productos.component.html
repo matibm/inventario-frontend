@@ -1,13 +1,13 @@
-<div class="row">
+<div [ngClass]="_productoService.oculto" (keyup)="onKeyUp($event)" class="mainP row">
     <div class="col-7 productos">
         <div class="row animated fadeIn">
-            <div class="col-12">
+            <div class="buscador ml-3 pr-3 col-12">
                 <div class="card">
                     <div class="card-body mx-auto">
 
                         <div class=" row">
-                            <div class="col ml-5 ">
-                                <input #input (keyup)="buscarProducto(input.value)" type="text" class="form-control" placeholder="Buscar producto">
+                            <div class="col  ">
+                                <input matInput #input [ngModel]="inputbuscador" (keyup)="buscarProducto(input.value)" id="inputBuscador" type="text" class="form-control" placeholder="Buscar producto">
                             </div>
                         </div>
                     </div>
@@ -17,7 +17,7 @@
 
         <div class=" mx-auto mt-1 tableMatias">
             <div class="row animated fadeIn">
-                <div class="col-12 productos">
+                <div class="col-12 ml-3 pr-3 productos">
                     <div class="card">
                         <div class="card-body itemsProductos ">
                             <table class="table table-hover">
@@ -25,8 +25,9 @@
                                     <tr>
                                         <th>Imagen</th>
                                         <th>Marca</th>
-                                        <th>Modelo</th>
-                                        <th>Codigo</th>
+                                        <th>Formula</th>
+                                        <th>Cod</th>
+                                        <th>Descuento</th>
                                         <th>Precio</th>
                                         <th>En stock</th>
                                         <th>Cantidad</th>
@@ -38,14 +39,15 @@
                                         <td class="w70">
                                             <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer">
                                         </td>
-                                        <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}</td>
+                                        <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}
+                                        </td>
                                         <td class=" pt-4 ">{{producto.modelo}}</td>
-                                        <td class=" pt-4 ">{{producto.codigo}}</td>
+                                        <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
+                                        <td class=" pt-4 ">{{producto.descuento}}</td>
                                         <td class=" pt-4 ">{{producto.precio}}</td>
                                         <td class=" pt-4 "> {{producto.stock}}</td>
-                                        <td class=" pt-4 "> <input type="number" style="width: 50px" (keyup)="null" #cant value="{{producto.cantidad}}"></td>
-
-                                        <button (click)="selecctionarItem(producto, cant.value)" [disabled]="cant.value<1" class=" mt-3 btn btn-info">Seleccionar</button>
+                                        <td class=" pt-4 "> <input type="number" style="width: 50px" (keyup)="null" #cant value="{{cantidad}}"></td>
+                                        <button (click)="selecctionarItem(producto, cant.value)" [disabled]="cant.value<1" class=" mt-3 btn btn-outline-primary">Seleccionar</button>
                                     </tr>
                                 </tbody>
                             </table>
@@ -54,6 +56,14 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="m-3 form-group">
+                    <label for="">Inversion en Stock: {{inversion}} Gs</label>
+
+
+
+                </div>
+
             </div>
         </div>
 
@@ -78,56 +88,99 @@
     <div class="col-5 ">
         <div class="col carrito  ">
             <div class="card">
-                <h3 class="pl-3 pt-4 card-title">Carrito</h3>
+                <div class="row">
+                    <div class="col">
+                        <h3 class="pl-3 pt-4 card-title">Carrito</h3>
+                    </div>
+                    <div class="col">
+                        <div *ngIf="!descuentoForAll" align="right">
+                            <button type="button" (click)="onToggle(true)" class="mt-4 card-title btn btn-outline-secondary">Activar descuento para todos</button>
+                        </div>
+                        <div *ngIf="descuentoForAll" align="right">
+                            <button type="button" (click)="onToggle(false)" class="mt-4 card-title btn btn-outline-danger">Desactivar descuento para todos</button>
+                        </div>
+
+                    </div>
+                </div>
+
+
                 <div class="items card-body">
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Imagen</th>
                                 <th>Marca</th>
-                                <th>Modelo</th>
-                                <th>Codigo</th>
+                                <th>Formula</th>
+                                <th>Descuento</th>
                                 <th>Precio</th>
                                 <th>cantidad</th>
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody *ngFor="let producto of items">
+                        <tbody *ngFor="let producto of items ; index as i">
                             <tr>
                                 <td class="w70">
                                     <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
                                 </td>
                                 <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}</td>
                                 <td class=" pt-4 ">{{producto.modelo}}</td>
-                                <td class=" pt-4 ">{{producto.codigo}}</td>
-                                <td class=" pt-4 ">{{producto.precio}}</td>
-                                <td class=" pt-4 "> {{producto.cantidad}}</td>
-                                <button (click)="quitar(producto)" class="  mt-3 btn btn-danger">Quitar</button>
+                                <button align="center" [id]="'desc_'+producto._id" (click)="switchDescuento(true, i )" type="button" class="ml-3 mt-3 btn btn-secondary"> {{producto.descuento}}</button>
+                                <td><button align="center" (click)="switchDescuento(false, i )" [id]="'normal_'+producto._id" type="button" class="  mt-1 btn btn-success">
+                                        {{producto.precio}}</button></td>
+                                <td class="pt-4 "> {{producto.cantidad}}</td>
+                                <button (click)="quitar(producto)" class="  mt-3 btn btn-outline-danger">Quitar</button>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <hr>
-                <div class="montos">
-                    <div class="row">
-                        <div class="col-10">
-                            <h3>Total: {{total}}</h3>
-                        </div>
-                    </div>
-                    <div class="row">
+                <div class=" fondoMontos montos">
+                    <div class="  row">
                         <div class="col">
-                            <div class=" ml-0 row">
-                                <h3>Ingreso</h3>
-                                <input class="ml-3" [(ngModel)]="ingresoInput" #ingress (keyup)='ingreso(ingress.value)' type="number">
+                            <form ngNativeValidate id="amyFormEditProduct" class="formProducto" (ngSubmit)="vender()" class="modal-body cuerpo ">
+
+                                <div class="row">
+                                    <div class="col-10">
+                                        <h3>Total: {{total}}</h3>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class=" ml-0 row">
+                                            <h3>Ingreso</h3>
+                                            <input name="ing" ngModel class="inputvender ml-3" [(ngModel)]="ingresoInput" #ingress (keyup)='ingreso(ingress.value)' type="number">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" mb-3 row">
+                                    <div class="    col ">
+                                        <h3>Vuelto: {{vuelto}}</h3>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col"><button [disabled]="diableVender" type="button" (click)="vender()" class="btn btn-success">Vender</button></div>
+                                    <div class="col"><button type="button" (click)="onCliente()" class="btn btn-outline-primary">Registrar Cliente</button></div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="col">
+                            <h3 align="center">Cliente</h3>
+                            <h4>Nombre : <a href="#">{{_clienteModalService.cliente.nombre}}</a></h4>
+                            <h4>RUC : <a href="#">{{_clienteModalService.cliente.ruc}}</a> </h4>
+                            <h4>C.I : <a href="#">{{_clienteModalService.cliente.ci}}</a> </h4>
+                            <div class="mt-4" align="center">
+                                <button type="button" *ngIf="_clienteModalService.imprimir" class="btn btn-success">IMPRIMIR ESTA ACTIVADO</button>
+                                <button type="button" *ngIf="!_clienteModalService.imprimir" class="btn btn-outline-secondary">IMPRIMIR DESACTIVADO</button>
+
                             </div>
                         </div>
+
+
                     </div>
-                    <div class="row">
-                        <div class="col-10">
-                            <h3>Vuelto: {{vuelto}}</h3>
-                        </div>
-                    </div>
-                    <div class="col-2"><button [disabled]="diableVender" type="button" (click)="vender()" class="btn btn-success">Vender</button></div>
+
+
                 </div>
             </div>
         </div>

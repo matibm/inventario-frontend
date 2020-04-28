@@ -9,7 +9,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form ngNativeValidate id="myFormEditProduct" class="formProducto" (ngSubmit)="_editarProductoModalService.guardar()" class="modal-body cuerpo ">
+                <form ngNativeValidate id="amyFormEditProduct" class="formProducto" (ngSubmit)="_editarProductoModalService.guardar()" class="modal-body cuerpo ">
                     <div *ngIf="true">
                         <div class="form-group">
                             <label for="">Marca</label>
@@ -17,7 +17,7 @@
                             <input [(ngModel)]="_editarProductoModalService.marca" name="marca" ngModel type="text" required #marca class="form-control" required aria-describedby="helpId" placeholder="">
                         </div>
                         <div class="form-group">
-                            <label for="">Modelo</label>
+                            <label for="">Formula</label>
                             <input ngModel type="text" [(ngModel)]="_editarProductoModalService.modelo" name="modelo" required #modelo class="form-control" required aria-describedby="helpId" placeholder="">
 
                         </div>
@@ -34,6 +34,11 @@
                         <div class="form-group">
                             <label for="">Precio Bruto</label>
                             <input ngModel type="number" [(ngModel)]="_editarProductoModalService.precioBruto" name="precioBruto" required #precioBruto class="form-control" required aria-describedby="helpId" placeholder="">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="">Precio con Descuento</label>
+                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.descuento" name="descuento" required #precioBruto class="form-control" required aria-describedby="helpId" placeholder="">
 
                         </div>
                         <div class="form-group">

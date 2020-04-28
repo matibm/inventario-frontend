@@ -1,3 +1,4 @@
+import { ClienteModalService } from './../components/cliente-modal/cliente-modal.service';
 import { URL_SERVICIOS } from './../config/global';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
@@ -7,10 +8,13 @@ import Swal  from 'sweetalert2'
   providedIn: 'root'
 })
 export class ProductoService {
+
+  public oculto = ''
   public notificacion = new EventEmitter<any>();
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private _clienteModalService: ClienteModalService
   ) { }
 
   getProducto() {
@@ -68,10 +72,12 @@ export class ProductoService {
     }));
   }
   actualizarProducto(producto){
-
+    console.log(producto);
+    
     let url = URL_SERVICIOS + '/producto/' +producto._id  ;
     
     return this.http.put(url, producto).pipe(map((resp: any) => {
+            console.log(resp);
             
       Swal.fire({
         icon: 'success',
@@ -88,11 +94,14 @@ export class ProductoService {
     
     return this.http.put(url, arrObj).pipe(map((resp: any) => {
             
-      Swal.fire({
-        icon: 'success',
-        title: 'Venta Realizada',
-        showConfirmButton: true
-      });
+      if (!this._clienteModalService.imprimir) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Venta Realizada',
+          showConfirmButton: true
+        });  
+      }
+      
       this.notificacion.emit(resp)
       return resp;
     }));

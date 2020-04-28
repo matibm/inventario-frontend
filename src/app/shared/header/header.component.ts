@@ -3,6 +3,7 @@ import { CrearProductoModalService } from './../../components/crear-producto-mod
 import { CajaModalService } from './../../components/caja-modal/caja-modal.service';
 import { Component, OnInit } from '@angular/core';
 import { CrearEgresoService } from 'src/app/components/crear-egreso/crear-egreso.service';
+import { ImprimirFacturaService } from 'src/app/components/imprimir-factura/imprimir-factura.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,8 @@ export class HeaderComponent implements OnInit {
   constructor(
     public _egresoModalService: CrearEgresoService,
     public _cajaModalService: CajaModalService,
-    public _crearProductoModalService: CrearProductoModalService
+    public _crearProductoModalService: CrearProductoModalService,
+    public _imprimirFacturaService: ImprimirFacturaService
     ) { }
 
   ngOnInit() {

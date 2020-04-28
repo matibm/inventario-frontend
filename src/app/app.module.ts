@@ -17,6 +17,9 @@ import { CajaModalComponent } from './components/caja-modal/caja-modal.component
 import { CierreCajaComponent } from './pages/cierre-caja/cierre-caja.component';
 import { CrearProductoModalComponent } from './components/crear-producto-modal/crear-producto-modal.component';
 import { EditarProductoModalComponent } from './components/editar-producto-modal/editar-producto-modal.component';
+import { SessionModalComponent } from './components/session-modal/session-modal.component';
+import { ImprimirFacturaComponent } from './components/imprimir-factura/imprimir-factura.component';
+import { ClienteModalComponent } from './components/cliente-modal/cliente-modal.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { EditarProductoModalComponent } from './components/editar-producto-modal
     CierreCajaComponent,
     CrearProductoModalComponent,
     EditarProductoModalComponent,
+    SessionModalComponent,
+    ImprimirFacturaComponent,
+    ClienteModalComponent,
     
   ],
   imports: [

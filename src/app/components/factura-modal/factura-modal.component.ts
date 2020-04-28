@@ -15,7 +15,6 @@ export class FacturaModalComponent implements OnInit {
   ngOnInit() {
     
     this.factura = this._facturaModalService.factura;
-console.log(this.factura);
 
  //   this.productos = this.factura.productos
   }

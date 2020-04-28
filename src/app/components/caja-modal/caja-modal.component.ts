@@ -36,7 +36,6 @@ export class CajaModalComponent implements OnInit {
     }    
 
     this._cierreCajaService.setCierreCaja(caja).subscribe((resp: any) => {
-      console.log(resp);
       localStorage.setItem('idCaja', resp._id )
       this._cajaModalService.mostrarModal()
     });

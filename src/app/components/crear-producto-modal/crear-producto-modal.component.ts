@@ -32,7 +32,6 @@ export class CrearProductoModalComponent implements OnInit {
 
           // Swal.fire('Imagen subida correctamente','', 'success')
           //   this._crearProductoModalService.notificacion.emit(resp);
-          console.log(resp);
           this.nombreImagen = resp.nombreArchivo
           var form = document.getElementById("myFormNewProduct");
           function handleForm(event) { event.preventDefault(); }
@@ -44,12 +43,12 @@ export class CrearProductoModalComponent implements OnInit {
             codigo: f.value.codigo,
             precio: f.value.precio,
             precioBruto: f.value.precioBruto,
+            descuento: f.value.descuento,
             stock: f.value.cantidad,
             img: this.nombreImagen
           }
 
           this._productoService.crearProducto(producto).subscribe(resp => {
-            console.log(resp);
             this._crearProductoModalService.notificacion.emit(resp)
             this._crearProductoModalService.ocultarModal()
           })
@@ -70,12 +69,12 @@ export class CrearProductoModalComponent implements OnInit {
         codigo: f.value.codigo,
         precio: f.value.precio,
         precioBruto: f.value.precioBruto,
+        descuento: f.value.descuento,
         stock: f.value.cantidad
 
       }
 
       this._productoService.crearProducto(producto).subscribe(resp => {
-        console.log(resp);
         this._crearProductoModalService.notificacion.emit(resp)
         this._crearProductoModalService.ocultarModal()
       })
@@ -109,7 +108,6 @@ export class CrearProductoModalComponent implements OnInit {
 
         // Swal.fire('Imagen subida correctamente','', 'success')
         this._crearProductoModalService.notificacion.emit(resp);
-        console.log(resp);
         this.nombreImagen = resp.nombreArchivo
         //   this._crearProductoModalService.ocultarModal();
 

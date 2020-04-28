@@ -13,6 +13,7 @@ export class EditarProductoModalService {
   precio
   precioBruto
   img
+  descuento
   id
   cantidad
   imagenSubir
@@ -35,7 +36,9 @@ export class EditarProductoModalService {
   }
 
   guardar() {
-    var form = document.getElementById("myFormEditProduct");
+    console.log(this.codigo);
+    
+    var form = document.getElementById("amyFormEditProduct");
     function handleForm(event) { event.preventDefault(); }
     form.addEventListener('submit', handleForm);
 
@@ -55,11 +58,14 @@ export class EditarProductoModalService {
             precio: this.precio,
             precioBruto: this.precioBruto,
             stock: this.cantidad,
+            descuento: this.descuento,
             img: this.img
           }
 
           //  console.log(marca, modelo, precio, codigo, precioBruto, cantidad);
           this._productoService.actualizarProducto(producto).subscribe(resp => {
+            console.log(resp);
+            
             this.ocultarModal()
             this.notificacion.emit(resp)
 
@@ -81,10 +87,10 @@ export class EditarProductoModalService {
         precio: this.precio,
         precioBruto: this.precioBruto,
         stock: this.cantidad,
+        descuento: this.descuento,
         img: this.imagenTemp
       }
 
-      //  console.log(marca, modelo, precio, codigo, precioBruto, cantidad);
       this._productoService.actualizarProducto(producto).subscribe(resp => {
         this.ocultarModal()
         this.notificacion.emit(resp)
@@ -97,7 +103,6 @@ export class EditarProductoModalService {
 
   eliminarProducto() {
     this._productoService.eliminarProducto(this.id).subscribe(resp => {
-      console.log(resp);
 
       this.notificacion.emit(resp);
       this.ocultarModal()
@@ -130,7 +135,6 @@ export class EditarProductoModalService {
 
         // Swal.fire('Imagen subida correctamente','', 'success')
         this.notificacion.emit(resp);
-        console.log(resp);
         this.img = resp.nombreArchivo
 
         //   this._crearProductoModalService.ocultarModal();
@@ -150,6 +154,7 @@ export class EditarProductoModalService {
     this.codigo = producto.codigo
     this.precio = producto.precio
     this.precioBruto = producto.precioBruto
+    this.descuento = producto.descuento
     this.img = producto.img || ''
     this.oculto = ''
     this.imagenTemp = producto.img || ''

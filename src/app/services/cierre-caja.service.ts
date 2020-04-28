@@ -13,7 +13,6 @@ export class CierreCajaService {
   setCierreCaja(cierrecaja) {
     let url = URL_SERVICIOS + '/cierrecaja';
     return this.http.post(url, cierrecaja).pipe(map((resp: any) => {
-      console.log(resp);
       
       return resp.cierreCaja
     }))
@@ -23,7 +22,6 @@ export class CierreCajaService {
     let url = URL_SERVICIOS + '/cierrecaja/' + cierrecaja._id;
     return this.http.put(url, cierrecaja).pipe(map((resp: any) => {
   
-      console.log(resp);
       
       return resp.cierrecaja
     }))

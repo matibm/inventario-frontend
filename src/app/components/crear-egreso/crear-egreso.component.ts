@@ -53,7 +53,6 @@ export class CrearEgresoComponent implements OnInit {
     let id = localStorage.getItem('idCaja')
     if (id) {
       this._cierreCajaService.getCierreCaja(id).subscribe((resp: any) => {
-        console.log(resp);
 
         cierrecaja = resp.cierreCaja
         cierrecaja.montoCierre -= this.montoT

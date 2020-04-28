@@ -23,6 +23,12 @@ export class FacturaModalService {
     this.productos = factura.productos
     this.monto = factura.monto
     this.oculto = '';
+    // setTimeout(() => {
+    //   window.print()  
+    // }, 500);
+    
+
+
   }
 
 }

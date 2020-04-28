@@ -14,6 +14,7 @@ export class CajaModalService {
   fechaInicio
   montoInicio
   montoCierre
+  posibleGanancia
   cerrado = true
   caja
 
@@ -21,12 +22,10 @@ export class CajaModalService {
     private _cierreCajaService: CierreCajaService
   ) {
     let id = localStorage.getItem('idCaja')
-    console.log(id);
     this.caja = null
 
     if (id) {
       _cierreCajaService.getCierreCaja(id).subscribe((resp: any) => {
-        console.log(resp);
         this.caja = resp.cierreCaja
         this.cerrado = resp.cierreCaja.cerrado
       })
@@ -41,14 +40,31 @@ export class CajaModalService {
 
     this.oculto = 'oculto';
   }
+  calcularPosibleGanancia(caja){
+    let monto = 0;
+    for (let i = 0; i < caja.facturas.length; i++) {
+      const factura = caja.facturas[i];
+      for (let j = 0; j < factura.productos.length; j++) {
+        const producto = factura.productos[j];
+        if (producto.desc) {
+        monto += producto.descuento - producto.precioBruto;
+          
+        }else{
+          monto += producto.precio - producto.precioBruto;
+
+        }
+      }
+    }
+    this.posibleGanancia = monto
+
+  }
   mostrarModal() {
-    console.log(this.caja);
     let id = localStorage.getItem('idCaja')
     if (id) {
       this._cierreCajaService.getCierreCaja(id).subscribe((resp: any) => {
-        console.log(resp);
-
+        
         this.caja = resp.cierreCaja
+        this.calcularPosibleGanancia(this.caja);
         this.fechaInicio = resp.cierreCaja.fechaInicio
         this.montoInicio = resp.cierreCaja.montoInicio
         this.montoCierre = resp.cierreCaja.montoCierre
@@ -68,11 +84,9 @@ export class CajaModalService {
     this.caja.cerrado = true
     this.caja.fechaCierre = new Date().getTime()
     this._cierreCajaService.putCierreCaja(this.caja).subscribe(resp => {
-      console.log(resp);
       this.ocultarModal()
     }, err => {
       if (err) {
-        console.log(err);
 
       }
     })

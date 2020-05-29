@@ -10,10 +10,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CrearEgresoComponent implements OnInit {
 
-  montoT = 0
-  motivoT = ''
-  egreso
-  confirmar: boolean = false;
+  // montoT = 0
+  // motivoT = ''
+  // egreso
+  // confirmar: boolean = false;
   constructor(public _crearEgresoService: CrearEgresoService,
     private _cierreCajaService: CierreCajaService,
     private _egresoService: EgresoService
@@ -22,46 +22,46 @@ export class CrearEgresoComponent implements OnInit {
   ngOnInit() {
   }
 
-  registrarMonto(monto) {
-    this.montoT = monto;
-  }
-  registrarMotivo(motivo) {
-    this.motivoT = motivo;
-  }
+  // registrarMonto(monto) {
+  //   this.montoT = monto;
+  // }
+  // registrarMotivo(motivo) {
+  //   this.motivoT = motivo;
+  // }
 
-  onSubmit() {
-    this.confirmar = true;
-    var form = document.getElementById("myForm");
-    function handleForm(event) { event.preventDefault(); }
-    form.addEventListener('submit', handleForm);
-    let date = new Date()
+  // onSubmit() {
+  //   this.confirmar = true;
+  //   var form = document.getElementById("myForm");
+  //   function handleForm(event) { event.preventDefault(); }
+  //   form.addEventListener('submit', handleForm);
+  //   let date = new Date()
 
-    let egresoAux = new Object({
-      fecha: date.getTime(),
-      monto: this.montoT,
-      motivo: this.motivoT
+  //   let egresoAux = new Object({
+  //     fecha: date.getTime(),
+  //     monto: this.montoT,
+  //     motivo: this.motivoT
 
-    })
+  //   })
 
-    this.egreso = egresoAux
+  //   this.egreso = egresoAux
 
-  }
+  // }
 
-  confirmarGuardar() { 
-    let cierrecaja
+  // confirmarGuardar() { 
+  //   let cierrecaja
 
-    let id = localStorage.getItem('idCaja')
-    if (id) {
-      this._cierreCajaService.getCierreCaja(id).subscribe((resp: any) => {
+  //   let id = localStorage.getItem('idCaja')
+  //   if (id) {
+  //     this._cierreCajaService.getCierreCaja(id).subscribe((resp: any) => {
 
-        cierrecaja = resp.cierreCaja
-        cierrecaja.montoCierre -= this.montoT
-        cierrecaja.egresos.push(this.egreso)
-        this._cierreCajaService.putCierreCaja(cierrecaja).subscribe()
-        this._egresoService.setEgreso(this.egreso).subscribe();
-      })
-    }
+  //       cierrecaja = resp.cierreCaja
+  //       cierrecaja.montoCierre -= this.montoT
+  //       cierrecaja.egresos.push(this.egreso)
+  //       this._cierreCajaService.putCierreCaja(cierrecaja).subscribe()
+  //       this._egresoService.setEgreso(this.egreso).subscribe();
+  //     })
+  //   }
     
-  }
+  // }
 
 }

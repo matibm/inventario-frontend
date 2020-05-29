@@ -10,31 +10,31 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form ngNativeValidate id="myForm" (ngSubmit)="onSubmit()" class="modal-body cuerpo " align="center">
+                <form ngNativeValidate id="myForm" (ngSubmit)="_crearEgresoService.onSubmit()" class="modal-body cuerpo " align="center">
 
-                    <div *ngIf="!confirmar">
+                    <div *ngIf="!_crearEgresoService.confirmar">
 
                         <div class="form-group">
                             <label for="">Monto</label>
-                            <input type="number" required #monto (keyup)='registrarMonto(monto.value)' class="form-control" aria-describedby="helpId" placeholder="">
+                            <input type="number" required #monto (keyup)='_crearEgresoService.registrarMonto(monto.value)' class="form-control" aria-describedby="helpId" placeholder="">
                             <small id="helpId" class="form-text text-muted">Cantidad de dinero para extraer de la
                                 caja</small>
                         </div>
                         <div class="form-group">
                             <label for="">Motivo</label>
-                            <input type="text" required #motivo (keyup)='registrarMotivo(motivo.value)' class="form-control" aria-describedby="helpId" placeholder="">
+                            <input type="text" required #motivo (keyup)='_crearEgresoService.registrarMotivo(motivo.value)' class="form-control" aria-describedby="helpId" placeholder="">
                             <small id="helpId" class="form-text text-muted">Registrar el motivo de la extracción</small>
                         </div>
                     </div>
 
-                    <div *ngIf="confirmar">
-                        <h3 class="m-5">Extraer {{montoT}} Gs de la Caja?</h3>
-                        <label class="m-3" for=""><b>Motivo:</b> {{motivoT}} </label>
+                    <div *ngIf="_crearEgresoService.confirmar">
+                        <h3 class="m-5">Extraer {{_crearEgresoService.montoT}} Gs de la Caja?</h3>
+                        <label class="m-3" for=""><b>Motivo:</b> {{_crearEgresoService.motivoT}} </label>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" (click)="_crearEgresoService.ocultarModal()">Cancelar</button>
-                        <button type="submit" (click)="onSubmit()" class="btn btn-primary">Registrar</button>
-                        <button *ngIf="confirmar" (click)="confirmarGuardar()" class="btn btn-succes">Confirmar</button>
+                        <button type="button" class="btn btn-secondary" (click)="_crearEgresoService.cancelarEgreso()">Cancelar</button>
+                        <button type="submit" *ngIf="!_crearEgresoService.confirmar" (click)="_crearEgresoService.onSubmit()" class="btn btn-primary">Registrar</button>
+                        <button *ngIf="_crearEgresoService.confirmar" (click)="_crearEgresoService.confirmarGuardar()" class="btn btn-success">Confirmar</button>
                     </div>
                 </form>
             </div>

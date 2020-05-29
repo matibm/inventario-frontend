@@ -45,7 +45,7 @@ hr {
 }
 
 .items {
-    // overflow: auto;
+    overflow: auto;
     height: 505px;
 }
 
@@ -58,6 +58,11 @@ hr {
 .itemsProductos {
     overflow: auto;
     max-height: 48em;
+}
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
 }
 
 // .mainP {

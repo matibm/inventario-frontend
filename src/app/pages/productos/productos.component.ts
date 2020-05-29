@@ -23,6 +23,13 @@ export class ProductosComponent implements OnInit {
     this.nameField.nativeElement.focus();
   }
 
+  @HostListener('document:keypress', ['$event'])
+  teclaEvento(event:KeyboardEvent){
+    console.log(event);
+    
+
+  }
+
   @HostListener('window:afterprint')
   onafterprint() {
     this._productoService.oculto = ''
@@ -44,7 +51,7 @@ export class ProductosComponent implements OnInit {
   readEscape = false;
   inputbuscador
   productos
-  diableVender = true
+  diableVender = false
   decremento: any[] = new Array
   items: any[] = new Array
   constructor(public _productoService: ProductoService,
@@ -69,7 +76,7 @@ export class ProductosComponent implements OnInit {
   ngOnInit() {
     this.nameField.nativeElement.focus();
     
-    this.cargarProductos()
+    // this.cargarProductos()
     this._editarProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._crearProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._productoService.notificacion.subscribe(resp => {
@@ -79,7 +86,7 @@ export class ProductosComponent implements OnInit {
       this.total = 0
       this.vuelto = 0
       this.decremento = new Array
-      this.cargarProductos();
+      // this.cargarProductos();
 
     })
 
@@ -111,10 +118,10 @@ export class ProductosComponent implements OnInit {
     vueltoAux = ing - this.total
     if (vueltoAux >= 0 && ing) {
       this.vuelto = vueltoAux;
-      this.diableVender = false
+      // this.diableVender = false
     } else {
       this.vuelto = 0;
-      this.diableVender = true
+      // this.diableVender = true
     }
   }
 
@@ -134,8 +141,9 @@ export class ProductosComponent implements OnInit {
   }
 
   buscarProducto(termino: string) {
+    this.productos = [];
     if (termino.length <= 0) {
-      this.cargarProductos();
+      // this.cargarProductos();
       return;
     }
     this._productoService.buscarProductos(termino).subscribe((productos) => {
@@ -147,7 +155,7 @@ export class ProductosComponent implements OnInit {
         let producto = productos[0]
 
 
-        if (termino == producto.codigo) {
+        if (termino === producto.codigo) {
           console.log("encontro", producto);
 
           this.selecctionarItem(producto, "1")
@@ -259,6 +267,7 @@ export class ProductosComponent implements OnInit {
 
     this.total += cant * producto.precio
     console.log(this.items[0]);
+    this.nameField.nativeElement.focus();
 
 
   }
@@ -312,6 +321,8 @@ export class ProductosComponent implements OnInit {
           this._cierreCajaService.putCierreCaja(cierrecaja).subscribe()
 
           this._facturaService.setFactura(this.factura).subscribe(() => {
+            this.nameField.nativeElement.focus();
+
             this._productoService.decrementarProducto(this.decremento).subscribe()
               if (this._clienteModalService.imprimir) {
                 this._productoService.oculto = 'oculto';
@@ -320,7 +331,6 @@ export class ProductosComponent implements OnInit {
                 window.print() 
                }, 500);
                 
-
               }
           })
 
@@ -375,10 +385,8 @@ export class ProductosComponent implements OnInit {
   }
 
   onKeyUp(event){
-    var keyCode = ('which' in event) ? event.which : event.keyCode;
-    if (this.readEscape) {
-
-    }
+    console.log(event);
+    
   }
 
 }

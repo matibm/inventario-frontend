@@ -1,4 +1,4 @@
-<div [ngClass]="_productoService.oculto" (keyup)="onKeyUp($event)" class="mainP row">
+<div [ngClass]="_productoService.oculto" class="mainP row">
     <div class="col-7 productos">
         <div class="row animated fadeIn">
             <div class="buscador ml-3 pr-3 col-12">
@@ -25,9 +25,9 @@
                                     <tr>
                                         <th>Imagen</th>
                                         <th>Marca</th>
-                                        <th>Formula</th>
-                                        <th>Cod</th>
-                                        <th>Descuento</th>
+                                        <th style="width: 25%">Formula</th>
+                                        <!-- <th>Cod</th>
+                                        <th>Descuento</th> -->
                                         <th>Precio</th>
                                         <th>En stock</th>
                                         <th>Cantidad</th>
@@ -41,9 +41,9 @@
                                         </td>
                                         <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}
                                         </td>
-                                        <td class=" pt-4 ">{{producto.modelo}}</td>
-                                        <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
-                                        <td class=" pt-4 ">{{producto.descuento}}</td>
+                                        <td style="width: 25%" class=" pt-4 col-md-2 ">{{producto.modelo}}</td>
+                                        <!-- <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
+                                        <td class=" pt-4 ">{{producto.descuento}}</td> -->
                                         <td class=" pt-4 ">{{producto.precio}}</td>
                                         <td class=" pt-4 "> {{producto.stock}}</td>
                                         <td class=" pt-4 "> <input type="number" style="width: 50px" (keyup)="null" #cant value="{{cantidad}}"></td>
@@ -160,12 +160,12 @@
 
                                 <div class="row">
                                     <div class="col"><button [disabled]="diableVender" type="button" (click)="vender()" class="btn btn-success">Vender</button></div>
-                                    <div class="col"><button type="button" (click)="onCliente()" class="btn btn-outline-primary">Registrar Cliente</button></div>
+                                    <!-- <div class="col"><button type="button" (click)="onCliente()" class="btn btn-outline-primary">Registrar Cliente</button></div> -->
                                 </div>
                             </form>
 
                         </div>
-                        <div class="col">
+                        <!-- <div class="col">
                             <h3 align="center">Cliente</h3>
                             <h4>Nombre : <a href="#">{{_clienteModalService.cliente.nombre}}</a></h4>
                             <h4>RUC : <a href="#">{{_clienteModalService.cliente.ruc}}</a> </h4>
@@ -175,7 +175,7 @@
                                 <button type="button" *ngIf="!_clienteModalService.imprimir" class="btn btn-outline-secondary">IMPRIMIR DESACTIVADO</button>
 
                             </div>
-                        </div>
+                        </div> -->
 
 
                     </div>

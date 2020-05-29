@@ -1,7 +1,7 @@
 <div class="fondo-negro  fadeIn" [ngClass]='_crearProductoModalService.oculto'>
 
     <div class="modal" style="display: block;" tabindex="-1" role="dialog">
-        <div class="modal-dialog  modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-lg  modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Nuevo Producto </h5>
@@ -9,59 +9,119 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form ngNativeValidate #f="ngForm" id="myFormNewProduct" class="formProducto" (ngSubmit)="registrar(f)" class="modal-body cuerpo ">
+                <form ngNativeValidate #f="ngForm" id="myFormNewProduct" class="formProducto" (ngSubmit)="_crearProductoModalService.registrar(f)" class="modal-body cuerpo ">
+                    <div *ngIf="true">
+                        <div class="form-group">
+                            <label for="">Marca</label>
+                            <input [(ngModel)]='_crearProductoModalService.marca' ngModel type="text" name="marca" required #marca class="form-control" required aria-describedby="helpId" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Formula</label>
+                            <input [(ngModel)]='_crearProductoModalService.modelo' name="modelo" type="text" ngModel required #modelo class="form-control" required aria-describedby="helpId" placeholder="">
 
-                    <div class="form-group">
-                        <label for="">Marca</label>
-                        <input ngModel type="text" name="marca" required #marca class="form-control" required aria-describedby="helpId" placeholder="">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Formula</label>
-                        <input ngModel type="text" name="modelo" required #modelo class="form-control" required aria-describedby="helpId" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Codigo</label>
+                            <input [(ngModel)]='_crearProductoModalService.codigo' ngModel type="text" name="codigo" required #codigo class="form-control" required aria-describedby="helpId" placeholder="">
 
-                    </div>
-                    <div class="form-group">
-                        <label for="">Codigo</label>
-                        <input ngModel type="text" name="codigo" required #codigo class="form-control" required aria-describedby="helpId" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Precio</label>
+                            <input [(ngModel)]='_crearProductoModalService.precio' (change)="_crearProductoModalService.changePrecioNormal($event.target.value)" ngModel type="number" name="precio" required #precio class="form-control" required aria-describedby="helpId" placeholder="">
 
-                    </div>
-                    <div class="form-group">
-                        <label for="">Precio</label>
-                        <input ngModel type="number" name="precio" required #precio class="form-control" required aria-describedby="helpId" placeholder="">
+                        </div>
+                        <div class="form-group">
 
-                    </div>
-                    <div class="form-group">
-                        <label for="">Precio Bruto</label>
-                        <input ngModel type="number" name="precioBruto" required #precioBruto class="form-control" required aria-describedby="helpId" placeholder="">
+                            <hr>
+                            <div class="row">
 
-                    </div>
-                    <div class="form-group">
-                        <label for="">Precio con descuento</label>
-                        <input ngModel type="number" name="descuento" required #precioBruto class="form-control" required aria-describedby="helpId" placeholder="">
+                                <div class="col">
+                                    <h4> Precio farmacia</h4>
+                                </div>
+                                <div class="col">
+                                    <button *ngIf="!_crearProductoModalService.brutoIsPercent" (click)="_crearProductoModalService.brutoSwitch()" type="button" class="btn btn-primary btn-sm btn-block">Porcentaje</button>
+                                    <button *ngIf="_crearProductoModalService.brutoIsPercent" (click)="_crearProductoModalService.brutoSwitch()" type="button" class="btn btn-primary btn-sm btn-block">Monto en Gs</button>
+                                </div>
 
-                    </div>
-                    <div class="form-group">
-                        <label for="">Cantidad</label>
-                        <input ngModel type="number" name="cantidad" required #cantidad class="form-control" required aria-describedby="helpId" placeholder="">
+                            </div>
+                            <div *ngIf="_crearProductoModalService.brutoIsPercent">
+                                <div class="mt-2 row">
+                                    <div class="col">
+                                        <label for="">Precio Farmacia en porcentaje</label>
+                                        <input [(ngModel)]='_crearProductoModalService.precioBruto' (change)="_crearProductoModalService.changeBrutoPercent($event.target.value)" #precioBruto min="0" max="100" type="number" name="precioBruto" class="form-control" required aria-describedby="helpId"
+                                            placeholder="">
+                                    </div>
+                                    <div class="col">
+                                        <label for=""></label>
+                                        <h3 for="">{{_crearProductoModalService.precioBrutoPorcentaje}} Gs</h3>
 
-                    </div>
+                                    </div>
+                                </div>
 
-                    <div align="center">
-                        <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150" alt="">
-                        <p *ngIf="!imagenTemp" class="mt-5">
-                            Selecciona un archivo para subir
-                        </p>
-                        <form action="/file-upload" class=" p-5 m-4 dropzone dz-clickable" id="my-dropzone">
 
-                            <input (change)="seleccionImagen($event.target.files[0])" type="file">
-                        </form>
+                            </div>
+                            <div *ngIf="!_crearProductoModalService.brutoIsPercent" class="col mt-2">
+                                <label for="">Precio Farmacia en monto</label>
+                                <input [(ngModel)]='_crearProductoModalService.precioBruto' ngModel type="number" name="precioBruto" required #precioBruto class="form-control" required aria-describedby="helpId" placeholder="">
+                            </div>
 
-                    </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                        <!-- <button class="btn btn-succes">Confirmar</button> -->
+                        </div>
+                        <div class="form-group">
+
+                            <hr>
+                            <div class="row">
+
+                                <div class="col">
+                                    <h4> Precio con descuento</h4>
+                                </div>
+                                <div class="col">
+                                    <button *ngIf="!_crearProductoModalService.descuentoIsPercent" (click)="_crearProductoModalService.descuentoSwitch()" type="button" class="btn btn-primary btn-sm btn-block">Porcentaje</button>
+                                    <button *ngIf="_crearProductoModalService.descuentoIsPercent" (click)="_crearProductoModalService.descuentoSwitch()" type="button" class="btn btn-primary btn-sm btn-block">Monto en Gs</button>
+                                </div>
+
+                            </div>
+                            <div *ngIf="_crearProductoModalService.descuentoIsPercent">
+                                <div class="mt-2 row">
+                                    <div class="col">
+                                        <label for="">porcentaje</label>
+                                        <input [(ngModel)]='_crearProductoModalService.descuento' ngModel type="number" (change)="_crearProductoModalService.changeDescuentoPercent($event.target.value)" name="descuento" #descuento class="form-control" required aria-describedby="helpId" placeholder="">
+                                    </div>
+                                    <div class="col">
+                                        <label for=""></label>
+                                        <h3 for="">{{_crearProductoModalService.descuentoPorcentaje}} Gs</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="!_crearProductoModalService.descuentoIsPercent">
+                                <label for="">Precio con descuento</label>
+                                <input [(ngModel)]='_crearProductoModalService.descuento' ngModel type="number" name="descuento" required #descuento class="form-control" required aria-describedby="helpId" placeholder="">
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="">Cantidad</label>
+                            <input [(ngModel)]='_crearProductoModalService.cantidad' ngModel type="number" name="cantidad" required #cantidad class="form-control" required aria-describedby="helpId" placeholder="">
+
+                        </div>
+
+                        <div align="center">
+                            <img *ngIf="_crearProductoModalService.imagenTemp" [src]="_crearProductoModalService.imagenTemp" class="w150" alt="">
+                            <p *ngIf="!_crearProductoModalService.imagenTemp" class="mt-5">
+                                Selecciona un archivo para subir
+                            </p>
+                            <form action="/file-upload" class=" p-5 m-4 dropzone dz-clickable" id="my-dropzone">
+
+                                <input (change)="_crearProductoModalService.seleccionImagen($event.target.files[0])" type="file">
+                            </form>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <!-- <button class="btn btn-succes">Confirmar</button> -->
+                        </div>
                     </div>
                 </form>
             </div>

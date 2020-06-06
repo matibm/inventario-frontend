@@ -25,7 +25,7 @@ export class ProductosComponent implements OnInit {
 
   @HostListener('document:keypress', ['$event'])
   teclaEvento(event:KeyboardEvent){
-    console.log(event);
+    // console.log(event);
     
 
   }
@@ -49,7 +49,8 @@ export class ProductosComponent implements OnInit {
     
   }
   readEscape = false;
-  inputbuscador
+  inputbuscador = '';
+  debiendo = false;
   productos
   diableVender = false
   decremento: any[] = new Array
@@ -64,7 +65,7 @@ export class ProductosComponent implements OnInit {
     public  _imprimirFacturaService: ImprimirFacturaService
 
   ) { }
-  desde
+  desde = 0;
   cantidad = 1;
   //cantidad
   total = 0
@@ -76,7 +77,7 @@ export class ProductosComponent implements OnInit {
   ngOnInit() {
     this.nameField.nativeElement.focus();
     
-    // this.cargarProductos()
+    this.cargarProductos()
     this._editarProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._crearProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._productoService.notificacion.subscribe(resp => {
@@ -86,7 +87,7 @@ export class ProductosComponent implements OnInit {
       this.total = 0
       this.vuelto = 0
       this.decremento = new Array
-      // this.cargarProductos();
+      this.cargarProductos();
 
     })
 
@@ -111,6 +112,11 @@ export class ProductosComponent implements OnInit {
       }
 
     }
+  }
+
+  cambiarDesde(num){
+    this.desde += num;
+    this.cargarProductos()
   }
 
   ingreso(ing) {
@@ -140,29 +146,52 @@ export class ProductosComponent implements OnInit {
     })
   }
 
+  buscarProductoConEnter(termino: string){
+    
+    // this.productos = [];
+    // console.log(document.getElementById('inputBuscador').nodeValue);
+
+    this.nameField.nativeElement.value = null;
+    
+    if (termino.length <= 0) {
+
+      this.cargarProductos();
+      return;
+    }
+    this._productoService.buscarProductos(termino).subscribe((productos) => {
+      this.productos = productos
+      // console.log(this.inputbuscador);
+      console.log(document.getElementById('inputBuscador').nodeValue);
+      
+      if (productos.length == 1) {
+        let producto = productos[0]
+        if (termino === producto.codigo) {
+          console.log("encontro", producto);
+          this.selecctionarItem(producto, "1")
+          // this.playSound()        
+          this.productos = [];
+        }
+      }
+    })
+  }
+
+
   buscarProducto(termino: string) {
     this.productos = [];
     if (termino.length <= 0) {
-      // this.cargarProductos();
+      this.cargarProductos();
       return;
     }
     this._productoService.buscarProductos(termino).subscribe((productos) => {
       this.productos = productos
 
       if (productos.length == 1) {
-
-
         let producto = productos[0]
-
-
         if (termino === producto.codigo) {
           console.log("encontro", producto);
-
           this.selecctionarItem(producto, "1")
-          this.playSound()
-          
+          this.playSound()        
           this.inputbuscador = ''
-
         }
       }
     })
@@ -172,8 +201,6 @@ export class ProductosComponent implements OnInit {
     let noagregarmas = false;
     let numeroC
     let id_producto = producto._id;
-    console.log("recien se imprime en la segunda vez que se selecciona un mismo item en la primera solo hace array.push()");
-
 
     if (this.items[0]) { // recien se imprime en la segunda vez que se selecciona un mismo item en la primera solo hace array.push()
       for (let i = 0; i < this.items.length; i++) {
@@ -266,9 +293,9 @@ export class ProductosComponent implements OnInit {
 
 
     this.total += cant * producto.precio
-    console.log(this.items[0]);
+    console.log(document.getElementById('inputBuscador'));
     this.nameField.nativeElement.focus();
-
+    
 
   }
 
@@ -303,10 +330,13 @@ export class ProductosComponent implements OnInit {
 
     if (!this._cierreCajaModalService.cerrado) {
       let date = new Date()
+      
       this.factura = {
         productos: this.items,
         fecha: date.getTime(),
-        monto: this.total
+        monto: this.total,
+        debiendo: this.debiendo,
+        cliente: this._clienteModalService.cliente._id
       }
       let cierrecaja
 
@@ -319,7 +349,8 @@ export class ProductosComponent implements OnInit {
           cierrecaja.montoCierre += this.total
           cierrecaja.facturas.push(this.factura)
           this._cierreCajaService.putCierreCaja(cierrecaja).subscribe()
-
+          console.log(this.factura);
+          
           this._facturaService.setFactura(this.factura).subscribe(() => {
             this.nameField.nativeElement.focus();
 

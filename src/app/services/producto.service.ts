@@ -37,7 +37,7 @@ export class ProductoService {
   }
 
   getProductos(desde) {
-    let url = URL_SERVICIOS + '/producto';
+    let url = URL_SERVICIOS + '/producto?desde='+desde;
     return this.http.get(url);
   }
 

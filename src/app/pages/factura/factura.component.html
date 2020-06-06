@@ -1,13 +1,32 @@
 <div class="row">
     <div class="m-3 col">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h4>De:</h4>
+                        <input [(ngModel)]="diaDesde" style="width: 3rem;" class="m-1" type="number">
+                        <input [(ngModel)]="mesDesde" style="width: 3rem;" class="m-1" type="number">
+                        <input [(ngModel)]="yearDesde" style="width: 5rem;" class="m-1" type="number">
+                        <h4 class="ml-4">A: </h4>
+                        <input [(ngModel)]="diaHasta" style="width: 3rem;" class="m-1" type="number">
+                        <input [(ngModel)]="mesHasta" style="width: 3rem;" class="m-1" type="number">
+                        <input [(ngModel)]="yearHasta" style="width: 5rem;" class="m-1" type="number">
+                        <button type="button" (click)="filtrar()" class="btn btn-primary">Filtrar</button>
+                    </div>
 
-        <div class=" mx-auto mt-5 tableMatias">
-            <div class="row animated fadeIn">
+
+                </div>
+            </div>
+        </div>
+        <div class=" mx-auto mt-1 tableMatias">
+            <div class=" tablaFacturas row animated fadeIn">
                 <div class="col">
                     <h3>Facturas</h3>
                     <div class="card">
-                        <div class="">
-                            <table class="table table-hover">
+
+                        <div class=" scroll">
+                            <table class=" table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Monto total</th>
@@ -15,7 +34,7 @@
                                         <th>Hora</th>
                                     </tr>
                                 </thead>
-                                <tbody class="pointer" *ngFor="let factura of facturas">
+                                <tbody class=" pointer" *ngFor="let factura of facturas">
                                     <tr (click)="verFacturaModal(factura)">
 
                                         <td class=" pt-4 ">{{factura.monto}} Gs </td>
@@ -24,10 +43,16 @@
                                     </tr>
                                 </tbody>
                             </table>
-                            <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
-                        <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
+                            <!-- <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button> -->
                         </div>
                     </div>
+                    <div class="mt-1 row">
+                        <label class="ml-4" for="text"><b>total:</b> {{totalF}} Gs </label>
+                        <label class="ml-4" for="text"><b>Precio Farmacia:</b> {{totalBrutoF}} Gs</label>
+                        <label class="ml-4" for="text"><b>Productos: </b> {{cantidadF}} unidades</label>
+
+                    </div>
+
                 </div>
             </div>
         </div>

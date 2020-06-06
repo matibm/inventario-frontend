@@ -18,6 +18,12 @@ export class FacturaService {
       return resp.productos
     }))
   }
+
+  getFacturasPorCliente(idCliente){
+    let url = URL_SERVICIOS + '/factura/cliente/' + idCliente
+    return this.http.get(url)
+  }
+
   getFacturas(desde) {
     let url = URL_SERVICIOS + '/factura';
     return this.http.get(url);
@@ -29,6 +35,19 @@ export class FacturaService {
     return this.http.post(url, factura).pipe(map((resp: any) => {
       return resp.factura
     }))
+  }
+  putFactura(factura){
+
+    let url = URL_SERVICIOS + '/factura/' + factura._id;
+    return this.http.put(url, factura).pipe(map((resp: any) => {
+      console.log(resp);
+      
+      return resp.factura
+    })) 
+  }
+
+  eliminarFactura(){
+    
   }
 
 }

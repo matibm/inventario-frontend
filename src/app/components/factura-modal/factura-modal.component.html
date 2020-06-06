@@ -1,4 +1,4 @@
-< <div class="fondo-negro  fadeIn" [ngClass]='_facturaModalService.oculto'>
+<div class="fondo-negro  fadeIn" [ngClass]='_facturaModalService.oculto'>
 
 
     <div class="modal" style="display: block;  " tabindex="-1" role="dialog">
@@ -35,11 +35,13 @@
                                                     <td class="w70">
                                                         <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
                                                     </td>
-                                                    <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}</td>
+                                                    <td class="col-auto justify-content-center  p-auto pt-4 ">
+                                                        {{producto.marca}}</td>
                                                     <td class=" pt-4 ">{{producto.modelo}}</td>
                                                     <td class=" pt-4 ">{{producto.precio}}</td>
                                                     <td class=" pt-4 ">
-                                                        <div style="color: red" *ngIf="producto.desc">{{producto.descuento}}</div>
+                                                        <div style="color: red" *ngIf="producto.desc">
+                                                            {{producto.descuento}}</div>
                                                         <div *ngIf="!producto.desc">Sin Desc</div>
                                                     </td>
 
@@ -67,9 +69,6 @@
                 </div>
             </div>
 
-
-
-
         </div>
     </div>
-    </div>
+</div>

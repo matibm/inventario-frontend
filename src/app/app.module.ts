@@ -20,6 +20,7 @@ import { EditarProductoModalComponent } from './components/editar-producto-modal
 import { SessionModalComponent } from './components/session-modal/session-modal.component';
 import { ImprimirFacturaComponent } from './components/imprimir-factura/imprimir-factura.component';
 import { ClienteModalComponent } from './components/cliente-modal/cliente-modal.component';
+import { ClientesComponent } from './pages/clientes/clientes.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ClienteModalComponent } from './components/cliente-modal/cliente-modal.
     SessionModalComponent,
     ImprimirFacturaComponent,
     ClienteModalComponent,
+    ClientesComponent,
     
   ],
   imports: [

@@ -10,13 +10,27 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./factura.component.scss']
 })
 export class FacturaComponent implements OnInit {
-  facturas
+  facturas = new Array
   desde
   items
   total
   cantidad
   factura
   egresos
+  hoy: Date
+  diaDesde: number
+  mesDesde
+  yearDesde
+  semanaDesde: Date
+  diaHasta
+  mesHasta
+  yearHasta
+  dateDesde: Date
+  dateHasta: Date = new Date();
+  totalF = 0;
+  totalBrutoF = 0;
+  cantidadF = 0;
+
   constructor(
     private _facturaService: FacturaService,
     public _facturaModalService: FacturaModalService,
@@ -24,24 +38,97 @@ export class FacturaComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.cargarFacturas()
+    this.setFechas()
+    this.cargarFacturas(this.dateDesde.valueOf(), this.dateHasta.valueOf())
     this.cargarEgresos()
   }
 
-  cargarFacturas() {
+  setFechas() {
+    this.dateDesde = new Date()
+    this.hoy = new Date()
+    // this.diaDesde = this.hoy
+    this.semanaDesde = new Date(this.dateDesde.setUTCFullYear(this.dateDesde.getFullYear(), this.dateDesde.getMonth(), this.dateDesde.getDay() - 7))
+    this.dateDesde = this.semanaDesde
+    this.dateDesde.setHours(0, 0, 0);
+    this.dateHasta.setHours(23, 59, 0);
+    console.log(this.dateHasta);
+
+    this.diaDesde = this.dateDesde.getDate();
+    this.mesDesde = this.dateDesde.getUTCMonth() + 1;
+    this.yearDesde = this.dateDesde.getFullYear();
+
+    this.diaHasta = this.hoy.getDate();
+    this.mesHasta = this.hoy.getMonth() + 1;
+    this.yearHasta = this.hoy.getFullYear();
+  }
+
+
+
+  cargarFacturas(desde, hasta) {
     //  this.cargando = true;
     this._facturaService.getFacturas(this.desde).subscribe((resp: any) => {
 
-      this.facturas = resp.facturas.reverse()
+      // this.facturas = resp.facturas.reverse()
+      this.facturas = new Array()
+      console.log(resp.facturas);
+      for (let i = 0; i < resp.facturas.reverse().length; i++) {
+        const factura = resp.facturas.reverse()[i];
+        if (factura.fecha >= desde && factura.fecha <= hasta) {
+          this.facturas.push(factura)
+        }
+        this.facturas = this.facturas.reverse()
+      }
       //  this.cargando = false;
+      this.cargarMontos()
+
     })
+  }
+
+
+
+  filtrar() {
+    let date = new Date();
+    let desde = new Date(date.setUTCFullYear(this.yearDesde, this.mesDesde - 1, this.diaDesde));
+    desde.setHours(0, 0, 0)
+
+    date = new Date();
+    let hasta = new Date(date.setUTCFullYear(this.yearHasta, this.mesHasta - 1, this.diaHasta));
+    hasta.setHours(23, 59, 0)
+    console.log(desde);
+    console.log(hasta);
+    this.cargarFacturas(desde, hasta);
+
+  }
+
+
+  cargarMontos() {
+    let total = 0;
+    let totalBruto = 0;
+    let cantidad = 0;
+    for (let i = 0; i < this.facturas.length; i++) {
+      const factura = this.facturas[i];
+      for (let j = 0; j < factura.productos.length; j++) {
+        const producto = factura.productos[j];
+        if (!producto.desc) {
+          total += producto.precio * producto.cantidad;
+        } else {
+          total += producto.descuento * producto.cantidad;
+        }
+        totalBruto += producto.precioBruto * producto.cantidad;
+        cantidad += producto.cantidad;
+      }
+
+    }
+    this.totalF = total;
+    this.totalBrutoF = totalBruto;
+    this.cantidadF = cantidad;
   }
 
   cargarEgresos() {
     this._egresosService.getEgresos().subscribe((resp: any) => {
       this.egresos = resp.egresos.reverse();
       console.log(this.egresos);
-      
+
     })
   }
 
@@ -52,7 +139,7 @@ export class FacturaComponent implements OnInit {
 
   buscarProducto(termino: string) {
     if (termino.length <= 0) {
-      this.cargarFacturas();
+      this.cargarFacturas(this.dateDesde.valueOf(), this.dateHasta.valueOf());
       return;
     }
     this._facturaService.buscarFacturas(termino).subscribe((facturas) => {
@@ -60,7 +147,7 @@ export class FacturaComponent implements OnInit {
     })
   }
   seleccionarCantidad(cantidad) {
-    
+
     this.cantidad = cantidad
   }
 

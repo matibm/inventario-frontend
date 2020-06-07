@@ -1683,7 +1683,7 @@ var SessionModalService = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "URL_SERVICIOS", function() { return URL_SERVICIOS; });
-var URL_SERVICIOS = 'http://167.71.101.134:3001';
+var URL_SERVICIOS = 'http://167.71.101.134:80';
 // export const URL_SERVICIOS = 'http://localhost:3001';
 
 

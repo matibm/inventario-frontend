@@ -1646,7 +1646,7 @@ SessionModalService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "URL_SERVICIOS", function() { return URL_SERVICIOS; });
-const URL_SERVICIOS = 'http://167.71.101.134:3001';
+const URL_SERVICIOS = 'http://167.71.101.134:80';
 // export const URL_SERVICIOS = 'http://localhost:3001';
 
 

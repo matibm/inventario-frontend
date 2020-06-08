@@ -1,3 +1,5 @@
+import { ResumenComponent } from './pages/resumen/resumen.component';
+import { AppComponent } from './app.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
 import { CierreCajaComponent } from './pages/cierre-caja/cierre-caja.component';
 import { NgModule } from '@angular/core';
@@ -9,12 +11,15 @@ const routes: Routes = [
   {path: 'facturas', component: FacturaComponent},
   {path: 'caja', component: CierreCajaComponent},
   {path: 'clientes', component: ClientesComponent},
+  {path: 'resumen', component: ResumenComponent},
   
-  {path: '', component: ProductosComponent}
+  {path: 'productos', component: ProductosComponent},
+  {path: '', component: AppComponent},
+  {path: '**', component: AppComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes , {useHash: false})],
+  imports: [RouterModule.forRoot(routes )],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

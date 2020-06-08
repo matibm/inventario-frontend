@@ -21,6 +21,7 @@ import { SessionModalComponent } from './components/session-modal/session-modal.
 import { ImprimirFacturaComponent } from './components/imprimir-factura/imprimir-factura.component';
 import { ClienteModalComponent } from './components/cliente-modal/cliente-modal.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
+import { ResumenComponent } from './pages/resumen/resumen.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ClientesComponent } from './pages/clientes/clientes.component';
     ImprimirFacturaComponent,
     ClienteModalComponent,
     ClientesComponent,
+    ResumenComponent,
     
   ],
   imports: [

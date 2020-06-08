@@ -1,0 +1,47 @@
+<div class="mt-2 row">
+    <div class="col-2">
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action active">Faltantes</a>
+            <a href="#" class="list-group-item list-group-item-action">Mas vendidos</a>
+            <a href="#" class="list-group-item list-group-item-action">Disabled item</a>
+        </div>
+
+    </div>
+    <div *ngIf="seccion == 'faltantes'" class="col">
+        <div class="col-12 ml-3 pr-3 productos">
+            <div class="card">
+                <div class="card-body itemsProductos ">
+                    <table class="table tableMatias table-hover">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Marca</th>
+                                <th style="width: 25%">Formula</th>
+                                <th>Cod</th>
+                                <th>Descuento</th>
+                                <th>Precio</th>
+                                <th>En stock</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let producto of faltantes">
+                            <tr>
+                                <td class="w70">
+                                    <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer">
+                                </td>
+                                <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}
+                                </td>
+                                <td style="width: 25%" class=" pt-4 col-md-2 ">{{producto.modelo}}</td>
+                                <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
+                                <td class=" pt-4 ">{{producto.descuento}}</td>
+                                <td class=" pt-4 ">{{producto.precio}}</td>
+                                <td class=" pt-4 "> {{producto.stock}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

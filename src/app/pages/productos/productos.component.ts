@@ -24,9 +24,9 @@ export class ProductosComponent implements OnInit {
   }
 
   @HostListener('document:keypress', ['$event'])
-  teclaEvento(event:KeyboardEvent){
+  teclaEvento(event: KeyboardEvent) {
     // console.log(event);
-    
+
 
   }
 
@@ -35,7 +35,7 @@ export class ProductosComponent implements OnInit {
     this._productoService.oculto = ''
     setTimeout(() => {
       this.nameField.nativeElement.focus();
-      
+
     }, 500);
 
     // Swal.fire({
@@ -46,7 +46,7 @@ export class ProductosComponent implements OnInit {
     this.readEscape = true;
 
 
-    
+
   }
   readEscape = false;
   inputbuscador = '';
@@ -62,7 +62,7 @@ export class ProductosComponent implements OnInit {
     public _crearProductoModalService: CrearProductoModalService,
     private _facturaService: FacturaService,
     public _clienteModalService: ClienteModalService,
-    public  _imprimirFacturaService: ImprimirFacturaService
+    public _imprimirFacturaService: ImprimirFacturaService
 
   ) { }
   desde = 0;
@@ -76,7 +76,7 @@ export class ProductosComponent implements OnInit {
   ingresoInput
   ngOnInit() {
     this.nameField.nativeElement.focus();
-    
+
     this.cargarProductos()
     this._editarProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._crearProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
@@ -114,7 +114,7 @@ export class ProductosComponent implements OnInit {
     }
   }
 
-  cambiarDesde(num){
+  cambiarDesde(num) {
     this.desde += num;
     this.cargarProductos()
   }
@@ -146,13 +146,13 @@ export class ProductosComponent implements OnInit {
     })
   }
 
-  buscarProductoConEnter(termino: string){
-    
+  buscarProductoConEnter(termino: string) {
+
     // this.productos = [];
     // console.log(document.getElementById('inputBuscador').nodeValue);
 
     this.nameField.nativeElement.value = null;
-    
+
     if (termino.length <= 0) {
 
       this.cargarProductos();
@@ -162,7 +162,7 @@ export class ProductosComponent implements OnInit {
       this.productos = productos
       // console.log(this.inputbuscador);
       console.log(document.getElementById('inputBuscador').nodeValue);
-      
+
       if (productos.length == 1) {
         let producto = productos[0]
         if (termino === producto.codigo) {
@@ -190,7 +190,7 @@ export class ProductosComponent implements OnInit {
         if (termino === producto.codigo) {
           console.log("encontro", producto);
           this.selecctionarItem(producto, "1")
-          this.playSound()        
+          this.playSound()
           this.inputbuscador = ''
         }
       }
@@ -295,7 +295,7 @@ export class ProductosComponent implements OnInit {
     this.total += cant * producto.precio
     console.log(document.getElementById('inputBuscador'));
     this.nameField.nativeElement.focus();
-    
+
 
   }
 
@@ -312,7 +312,7 @@ export class ProductosComponent implements OnInit {
 
   onCliente() {
     this._clienteModalService.oculto = ''
-    
+
   }
 
   vender() {
@@ -330,14 +330,26 @@ export class ProductosComponent implements OnInit {
 
     if (!this._cierreCajaModalService.cerrado) {
       let date = new Date()
-      
-      this.factura = {
-        productos: this.items,
-        fecha: date.getTime(),
-        monto: this.total,
-        debiendo: this.debiendo,
-        cliente: this._clienteModalService.cliente._id
+      if (this._clienteModalService.cliente._id) {
+        this.factura = {
+          productos: this.items,
+          fecha: date.getTime(),
+          monto: this.total,
+          debiendo: this.debiendo,
+          cliente: this._clienteModalService.cliente._id
+        }
+      } else {
+
+        this.factura = {
+          productos: this.items,
+          fecha: date.getTime(),
+          monto: this.total,
+          debiendo: this.debiendo
+
+        }
       }
+
+
       let cierrecaja
 
       let id = localStorage.getItem('idCaja')
@@ -350,19 +362,19 @@ export class ProductosComponent implements OnInit {
           cierrecaja.facturas.push(this.factura)
           this._cierreCajaService.putCierreCaja(cierrecaja).subscribe()
           console.log(this.factura);
-          
+
           this._facturaService.setFactura(this.factura).subscribe(() => {
             this.nameField.nativeElement.focus();
 
             this._productoService.decrementarProducto(this.decremento).subscribe()
-              if (this._clienteModalService.imprimir) {
-                this._productoService.oculto = 'oculto';
-                this._imprimirFacturaService.mostrarFactura(this._clienteModalService.cliente, this.factura)
-               setTimeout(() => {
-                window.print() 
-               }, 500);
-                
-              }
+            if (this._clienteModalService.imprimir) {
+              this._productoService.oculto = 'oculto';
+              this._imprimirFacturaService.mostrarFactura(this._clienteModalService.cliente, this.factura)
+              setTimeout(() => {
+                window.print()
+              }, 500);
+
+            }
           })
 
         })
@@ -415,9 +427,9 @@ export class ProductosComponent implements OnInit {
 
   }
 
-  onKeyUp(event){
+  onKeyUp(event) {
     console.log(event);
-    
+
   }
 
 }

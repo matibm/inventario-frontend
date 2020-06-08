@@ -44,6 +44,7 @@ export class ClienteModalService {
   mostrarTabla() {
     this.cliente.nombre = ''
     this.cliente.ci = ''
+    this.cliente._id = ''
     this.tablaBoolean = true;
     localStorage.setItem('mostarTabla', 'false');
     console.log("Mostar tabla");
@@ -74,6 +75,8 @@ export class ClienteModalService {
 
     this.cliente.nombre = ''
     this.cliente.ci = ''
+    this.cliente._id = ''
+
     this.tablaBoolean = false;
     localStorage.setItem('mostarTabla', 'true');
   }

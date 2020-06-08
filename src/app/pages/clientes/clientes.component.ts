@@ -42,6 +42,16 @@ export class ClientesComponent implements OnInit {
     this.factura = item
   }
 
+  buscarCliente(termino){
+    console.log(termino);
+    
+    this._clienteService.buscarClientes(termino).subscribe((resp: any) =>{
+      this.clientes = resp
+      console.log(resp);
+      
+    })
+  }
+
   pagar(){
     this.factura.debiendo = false;
     this._facturaService.putFactura(this.factura).subscribe()

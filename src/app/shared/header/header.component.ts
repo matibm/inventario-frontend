@@ -41,4 +41,9 @@ export class HeaderComponent implements OnInit {
     
   }
 
+  router(path){
+    document.getElementById('homeRoute').remove
+  }
+
+
 }

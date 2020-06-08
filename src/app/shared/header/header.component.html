@@ -2,7 +2,7 @@
     <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item ">
-                <a class="nav-link" [routerLink]="['/']" routerLinkActive="active">Productos</a>
+                <a class="nav-link" routerLink="/productos" routerLinkActive="active">Productos</a>
             </li>
 
             <li class="nav-item">
@@ -10,10 +10,13 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/caja']" routerLinkActive="active" href="#">Historial de caja</a>
+                <a class="nav-link" [routerLink]="['/caja']" routerLinkActive="active">Historial de caja</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" [routerLink]="['/clientes']" routerLinkActive="active" href="#">Clientes</a>
+                <a class="nav-link" [routerLink]="['/clientes']" routerLinkActive="active">Clientes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/resumen']" routerLinkActive="active">Resumen</a>
             </li>
         </ul>
 

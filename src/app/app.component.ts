@@ -1,5 +1,7 @@
 import { SessionModalService } from './components/session-modal/session-modal.service';
 import { Component } from '@angular/core';
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +10,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'control-stock';
-  constructor(private _sessionModalService: SessionModalService){
-    
+  constructor(private route: Router,
+    private _sessionModalService: SessionModalService){
+    route.navigateByUrl('/productos')
     // if (localStorage.getItem('logged') != 'true') {
     //   _sessionModalService.mostrarModal()
     // }

@@ -1,5 +1,25 @@
 <div class="row">
     <div class="col-3">
+
+        <div class="col">
+            <div class="carsd">
+                <div class="card-body mx-auto">
+
+                    <form (ngSubmit)="buscarCliente(input.value)" class=" row">
+                        <div class="col  ">
+                            <input name="buscador" #input type="text" class="form-control" placeholder="Buscar cliente">
+                        </div>
+                        <div class="col  ">
+                            <button type="submit" class="btn btn-primary">Buscar</button>
+                        </div>
+                    </form>
+
+
+
+                </div>
+            </div>
+        </div>
+
         <table class="table">
             <thead>
                 <tr>

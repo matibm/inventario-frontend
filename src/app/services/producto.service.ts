@@ -113,6 +113,8 @@ export class ProductoService {
     return this.http.get(url);
   }
 
+  
+
   buscarProductos(termino: string) {
     let url = URL_SERVICIOS + '/busqueda/producto/' + termino;
     return this.http.get(url).pipe(map((resp: any) => {

@@ -28,6 +28,10 @@ export class FacturaService {
     let url = URL_SERVICIOS + '/factura';
     return this.http.get(url);
   }
+  getProductosMasVendidos(desde, hasta) {
+    let url = URL_SERVICIOS + '/factura/masvendidos';
+    return this.http.get(url);
+  }
 
   setFactura(factura){
 

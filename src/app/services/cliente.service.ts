@@ -20,7 +20,12 @@ export class ClienteService {
       return resp.clientes
     }))
   }
-
+  getCliente(id){
+    let url = URL_SERVICIOS + '/cliente/' + id;
+    return this.http.get(url).pipe(map((resp: any) => {
+      return resp.cliente
+    }))
+  }
   
   crearCliente(cliente){
 
@@ -28,7 +33,7 @@ export class ClienteService {
     
     return this.http.post(url, cliente).pipe(map((resp: any) => {
         
-      return true;
+      return resp.cliente;
     }));
   }
 

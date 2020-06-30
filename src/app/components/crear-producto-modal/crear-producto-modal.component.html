@@ -16,7 +16,7 @@
                             <input [(ngModel)]='_crearProductoModalService.marca' ngModel type="text" name="marca" required #marca class="form-control" required aria-describedby="helpId" placeholder="">
                         </div>
                         <div class="form-group">
-                            <label for="">Formula</label>
+                            <label for="">Tipo</label>
                             <input [(ngModel)]='_crearProductoModalService.modelo' name="modelo" type="text" ngModel required #modelo class="form-control" required aria-describedby="helpId" placeholder="">
 
                         </div>
@@ -28,7 +28,6 @@
                         <div class="form-group">
                             <label for="">Precio</label>
                             <input [(ngModel)]='_crearProductoModalService.precio' (change)="_crearProductoModalService.changePrecioNormal($event.target.value)" ngModel type="number" name="precio" required #precio class="form-control" required aria-describedby="helpId" placeholder="">
-
                         </div>
                         <div class="form-group">
 
@@ -36,7 +35,7 @@
                             <div class="row">
 
                                 <div class="col">
-                                    <h4> Precio farmacia</h4>
+                                    <h4> Precio Bruto</h4>
                                 </div>
                                 <div class="col">
                                     <button *ngIf="!_crearProductoModalService.brutoIsPercent" (click)="_crearProductoModalService.brutoSwitch()" type="button" class="btn btn-primary btn-sm btn-block">Porcentaje</button>
@@ -47,9 +46,8 @@
                             <div *ngIf="_crearProductoModalService.brutoIsPercent">
                                 <div class="mt-2 row">
                                     <div class="col">
-                                        <label for="">Precio Farmacia en porcentaje</label>
-                                        <input [(ngModel)]='_crearProductoModalService.precioBruto' (change)="_crearProductoModalService.changeBrutoPercent($event.target.value)" #precioBruto min="0" max="100" type="number" name="precioBruto" class="form-control" required aria-describedby="helpId"
-                                            placeholder="">
+                                        <label for="">Precio Bruto en porcentaje</label>
+                                        <input [(ngModel)]='_crearProductoModalService.precioBruto' (change)="_crearProductoModalService.changeBrutoPercent($event.target.value)" #precioBruto type="number" name="precioBruto" class="form-control" required aria-describedby="helpId" placeholder="">
                                     </div>
                                     <div class="col">
                                         <label for=""></label>
@@ -61,7 +59,7 @@
 
                             </div>
                             <div *ngIf="!_crearProductoModalService.brutoIsPercent" class="col mt-2">
-                                <label for="">Precio Farmacia en monto</label>
+                                <label for="">Precio Bruto en monto</label>
                                 <input [(ngModel)]='_crearProductoModalService.precioBruto' ngModel type="number" name="precioBruto" required #precioBruto class="form-control" required aria-describedby="helpId" placeholder="">
                             </div>
 
@@ -97,7 +95,7 @@
                                 <label for="">Precio con descuento</label>
                                 <input [(ngModel)]='_crearProductoModalService.descuento' ngModel type="number" name="descuento" required #descuento class="form-control" required aria-describedby="helpId" placeholder="">
                             </div>
-
+                            <hr>
                         </div>
                         <div class="form-group">
                             <label for="">Cantidad</label>

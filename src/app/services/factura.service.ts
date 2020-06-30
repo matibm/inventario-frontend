@@ -33,6 +33,11 @@ export class FacturaService {
     return this.http.get(url);
   }
 
+  getProductosVendidosEnFecha(desde, hasta){    
+    let url = URL_SERVICIOS + '/factura/productosVendidos/' +desde +'?hasta=' + hasta;
+    return this.http.get(url);
+  }
+
   setFactura(factura){
 
     let url = URL_SERVICIOS + '/factura';
@@ -50,8 +55,16 @@ export class FacturaService {
     })) 
   }
 
-  eliminarFactura(){
-    
+  getFacturasSinPagar(){
+    let url = URL_SERVICIOS + '/factura/debiendo';
+    return this.http.get(url);
+  }
+  eliminarFactura(factura){
+    let url = URL_SERVICIOS + '/factura/' + factura._id;
+    return this.http.delete(url).pipe(map((resp: any) => {      
+      
+      return resp.factura
+    })) 
   }
 
 }

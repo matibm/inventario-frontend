@@ -112,11 +112,13 @@ export class ProductosComponent implements OnInit {
       }
 
     }
+    this.editName();
   }
 
   cambiarDesde(num) {
     this.desde += num;
     this.cargarProductos()
+    this.editName();
   }
 
   ingreso(ing) {
@@ -135,7 +137,7 @@ export class ProductosComponent implements OnInit {
     //  this.cargando = true;
     this._productoService.getProductos(this.desde).subscribe((resp: any) => {
       //// console.log(resp);
-
+      this.editName();
       this.inversion = 0;
       this.productos = resp.productos.reverse();
       for (let index = 0; index < this.productos.length; index++) {
@@ -169,10 +171,13 @@ export class ProductosComponent implements OnInit {
           console.log("encontro", producto);
           this.selecctionarItem(producto, "1")
           // this.playSound()        
-          this.productos = [];
+          // this.productos = [];
         }
       }
+      this.editName();
     })
+    // this.cargarProductos()
+
   }
 
 
@@ -194,6 +199,7 @@ export class ProductosComponent implements OnInit {
           this.inputbuscador = ''
         }
       }
+      this.editName();
     })
   }
 
@@ -210,6 +216,7 @@ export class ProductosComponent implements OnInit {
 
         }
       }
+
     }
 
     producto.cantidad = parseInt(cant) // con este codigo aca funciona como tiene que ser
@@ -294,8 +301,7 @@ export class ProductosComponent implements OnInit {
 
     this.total += cant * producto.precio
     console.log(document.getElementById('inputBuscador'));
-    this.nameField.nativeElement.focus();
-
+    this.editName();
 
   }
 
@@ -312,7 +318,7 @@ export class ProductosComponent implements OnInit {
 
   onCliente() {
     this._clienteModalService.oculto = ''
-
+    this.editName();
   }
 
   vender() {
@@ -389,7 +395,7 @@ export class ProductosComponent implements OnInit {
       });
 
     }
-
+    this.editName();
   }
 
   switchDescuento(descuento, index) {
@@ -408,13 +414,14 @@ export class ProductosComponent implements OnInit {
 
       document.getElementById('normal_' + item._id).className = 'mt-1 btn btn-success'
     }
-
+    this.editName();
   }
 
   activarDescuentos(suich) {
     for (let i = 0; i < this.items.length; i++) {
       this.switchDescuento(suich, i)
     }
+    this.editName();
   }
 
   onToggle(resp) {
@@ -424,7 +431,7 @@ export class ProductosComponent implements OnInit {
     } if (!resp) {
       this.activarDescuentos(false)
     }
-
+    this.editName();
   }
 
   onKeyUp(event) {

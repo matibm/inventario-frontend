@@ -47,8 +47,12 @@ export class FacturaComponent implements OnInit {
     this.dateDesde = new Date()
     this.hoy = new Date()
     // this.diaDesde = this.hoy
-    this.semanaDesde = new Date(this.dateDesde.setUTCFullYear(this.dateDesde.getFullYear(), this.dateDesde.getMonth(), this.dateDesde.getDay() - 7))
+    console.log(this.dateDesde);
+    
+    this.semanaDesde = new Date(this.dateDesde.setFullYear(this.dateDesde.getFullYear(), this.dateDesde.getMonth(), this.dateDesde.getDate().valueOf() - 7))
     this.dateDesde = this.semanaDesde
+    console.log(this.semanaDesde);
+    
     this.dateDesde.setHours(0, 0, 0);
     this.dateHasta.setHours(23, 59, 0);
     console.log(this.dateHasta);

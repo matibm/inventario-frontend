@@ -9,10 +9,14 @@
                     <button type="button" class="close" (click)="_facturaModalService.ocultarModal()" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+
+
                 </div>
                 <div class="modal-body cuerpo " align="center">
+                    <h3 *ngIf="_facturaModalService.cliente">Cliente: {{_facturaModalService.cliente.nombre}}</h3>
 
-                    <div class=" mx-auto  mt-5 tableMatias">
+
+                    <div class=" mx-auto  mt-1 tableMatias">
                         <div class="row animated fadeIn">
                             <div class="col-12">
                                 <div class="card">
@@ -22,7 +26,7 @@
                                                 <tr>
                                                     <th>Imagen</th>
                                                     <th>Marca</th>
-                                                    <th>Formula</th>
+                                                    <th>Tipo</th>
 
                                                     <th>Precio</th>
                                                     <th>Descuento</th>
@@ -62,13 +66,15 @@
                 <div class="ml-3">
                     <h3>Total: {{_facturaModalService.monto}} Gs</h3>
                 </div>
-
+                <div *ngIf="_facturaModalService.debiendo" class="ml-3">
+                    <h3 style="color: red;">SIN PAGAR</h3>
+                </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="_facturaModalService.eliminarFactura(factura)">Eliminar Factura</button>
                     <button type="button" class="btn btn-secondary" (click)="_facturaModalService.ocultarModal()">Cerrar</button>
                     <!-- <button type="button" class="btn btn-primary">Alguna funcion</button> -->
                 </div>
             </div>
-
         </div>
     </div>
 </div>

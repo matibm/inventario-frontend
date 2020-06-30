@@ -1,13 +1,17 @@
 <div class="mt-2 row">
     <div class="col-2">
         <div class="list-group">
-            <a class="list-group-item list-group-item-action active" (click)="seccion = 'faltantes'">Faltantes</a>
-            <a class="list-group-item list-group-item-action" (click)="seccion = 'masVendidos'">Mas vendidos</a>
+            <a class="list-group-item list-group-item-action" href="javascript:void" (click)="seccion = 'faltantes'">Faltantes</a>
+            <a class="list-group-item list-group-item-action" href="javascript:void" (click)="seccion = 'masVendidos'">Mas vendidos</a>
+            <a class="list-group-item list-group-item-action" href="javascript:void" (click)="seccion = 'sinPagar'">Facturas sin pagar</a>
+            <a class="list-group-item list-group-item-action" href="javascript:void" (click)="seccion = 'productosVendidos'">Productos Vendidos</a>
         </div>
 
     </div>
     <div *ngIf="seccion == 'faltantes'" class="col">
         <div class="col-12 ml-3 pr-3 productos">
+            <h3>Faltantes</h3>
+
             <div class="card">
                 <div class="card-body itemsProductos ">
                     <table class="table tableMatias table-hover">
@@ -15,7 +19,7 @@
                             <tr>
                                 <th>Imagen</th>
                                 <th>Marca</th>
-                                <th style="width: 25%">Formula</th>
+                                <th style="width: 25%">Tipo</th>
                                 <th>Cod</th>
                                 <th>Descuento</th>
                                 <th>Precio</th>
@@ -44,6 +48,7 @@
     </div>
     <div *ngIf="seccion == 'masVendidos'" class="col">
         <div class="col-12 ml-3 pr-3 productos">
+            <h3>Mas vendidos</h3>
             <div class="card">
                 <div class="card-body itemsProductos ">
                     <table class="table tableMatias table-hover">
@@ -51,7 +56,7 @@
                             <tr>
                                 <th>Imagen</th>
                                 <th>Marca</th>
-                                <th style="width: 25%">Formula</th>
+                                <th style="width: 25%">Tipo</th>
                                 <th>Cod</th>
                                 <th>Descuento</th>
                                 <th>Precio</th>
@@ -75,6 +80,88 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div *ngIf="seccion == 'productosVendidos'" class="col">
+        <div class="card-body">
+            <div class="row">
+                <h4>De:</h4>
+                <input [(ngModel)]="diaDesde" style="width: 3rem;" class="m-1" type="number">
+                <input [(ngModel)]="mesDesde" style="width: 3rem;" class="m-1" type="number">
+                <input [(ngModel)]="yearDesde" style="width: 5rem;" class="m-1" type="number">
+                <h4 class="ml-4">A: </h4>
+                <input [(ngModel)]="diaHasta" style="width: 3rem;" class="m-1" type="number">
+                <input [(ngModel)]="mesHasta" style="width: 3rem;" class="m-1" type="number">
+                <input [(ngModel)]="yearHasta" style="width: 5rem;" class="m-1" type="number">
+                <button type="button" (click)="filtrar()" class="btn btn-primary">Filtrar</button>
+            </div>
+        </div>
+        <div class="col-12 ml-3 pr-3 productos">
+            <h3>Productos Vendidos</h3>
+            <div class="card">
+                <div class="card-body itemsProductos ">
+                    <table class="table tableMatias table-hover">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Marca</th>
+                                <th style="width: 25%">Tipo</th>
+                                <th>Cod</th>
+                                <th>Descuento</th>
+                                <th>Precio</th>
+                                <th>En stock</th>
+                                <th>Vendidos</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let producto of productosVendidos">
+                            <tr>
+                                <td class="w70">
+                                    <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer">
+                                </td>
+                                <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}
+                                </td>
+                                <td style="width: 25%" class=" pt-4 col-md-2 ">{{producto.modelo}}</td>
+                                <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
+                                <td class=" pt-4 ">{{producto.descuento}}</td>
+                                <td class=" pt-4 ">{{producto.precio}}</td>
+                                <td class=" pt-4 "> {{producto.stock}}</td>
+                                <td class=" pt-4 "> {{producto.cantidad}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="seccion == 'sinPagar'" class="col">
+        <div class="col-12 ml-3 pr-3 tablaFacturas">
+            <h3>Sin pagar</h3>
+            <div class="card">
+
+                <div class=" scroll">
+                    <table class=" table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Monto total</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody class=" pointer" *ngFor="let factura of fSinPagar">
+                            <tr (click)="verFacturaModal(factura)">
+
+                                <td class=" pt-4 ">{{factura.monto}} Gs </td>
+                                <td class=" pt-4 ">{{factura.fecha | fecha: 'fecha'}}</td>
+                                <td class=" pt-4 "> {{factura.fecha | fecha :'hora'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button> -->
                 </div>
             </div>
         </div>

@@ -68,7 +68,10 @@ export class ClienteModalService {
       ci: this.cliente.ci
       // ruc: this.cliente.ruc
     }
-    this._clienteService.crearCliente(cliente).subscribe()
+    this._clienteService.crearCliente(cliente).subscribe((cliente:any )=>{
+      this.cliente = cliente
+    })
+    this.ocultarModal()
   }
 
   ocultarTabla() {

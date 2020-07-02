@@ -16,6 +16,7 @@
                                         <th>Cant Egresos</th>
                                         <th>Fecha Inicial</th>
                                         <th>Fecha Final</th>
+                                        <th style="width: 8%"></th>
                                     </tr>
                                 </thead>
                                 <tbody class="pointer" *ngFor="let cierreCaja of cierreCajas">
@@ -24,8 +25,12 @@
                                         <td class=" pt-4 ">{{cierreCaja.montoCierre}} Gs </td>
                                         <td class=" pt-4 ">{{cierreCaja.facturas.length}}</td>
                                         <td class=" pt-4 ">{{cierreCaja.egresos.length}} </td>
-                                        <td class=" pt-4 "> {{cierreCaja.fechaInicio | fecha :'fecha'}} <br> {{cierreCaja.fechaInicio | fecha :'hora'}}</td>
-                                        <td class=" pt-4 "> {{cierreCaja.fechaCierre | fecha :'hora'}}</td>
+                                        <td class=" pt-4 ">{{cierreCaja.fechaInicio | fecha :'fecha'}} <br> {{cierreCaja.fechaInicio | fecha :'hora'}}</td>
+                                        <td *ngIf="cierreCaja.fechaCierre" class=" pt-4 ">{{cierreCaja.fechaCierre | fecha :'fecha'}} <br> {{cierreCaja.fechaCierre | fecha :'hora'}}</td>
+                                        <td *ngIf="!cierreCaja.fechaCierre" class=" pt-4 "> <b>sin cerrar</b> </td>
+                                        <td class=" pt-4 ">
+                                            <i (click)="eliminarCaja(cierreCaja)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -36,15 +41,11 @@
                 </div>
             </div>
         </div>
-
     </div>
-
-
     <div class=" carrito col-5 m-3  ">
         <div class=" mx-auto mt-5 tableMatias">
             <div class="row animated fadeIn">
                 <div class="col">
-
                     <ul class="nav nav-tabs">
                         <li style="cursor: pointer;" class=" nav-item">
                             <a (click)="switchTab('facturas')" id="facturas_tab" href="javascript:undefined" class="nav-link active">Facturas</a>
@@ -55,7 +56,6 @@
                     </ul>
 
                     <div *ngIf="facturaTab" class="carrito card">
-
                         <div class="itemsFacturas">
                             <table class="table table-hover">
                                 <thead>
@@ -63,14 +63,18 @@
                                         <th>Monto total</th>
                                         <th>Fecha</th>
                                         <th>Hora</th>
+                                        <!-- <th style="width: 15%"></th> -->
+
                                     </tr>
                                 </thead>
                                 <tbody class="pointer" *ngFor="let factura of facturas">
                                     <tr (click)="verFacturaModal(factura)">
-
                                         <td class=" pt-4 ">{{factura.monto}} Gs </td>
                                         <td class=" pt-4 ">{{factura.fecha | fecha: 'fecha'}}</td>
                                         <td class=" pt-4 "> {{factura.fecha | fecha :'hora'}}</td>
+                                        <!-- <td>
+                                            <i (click)="eliminarFactura(factura)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
+                                        </td> -->
                                     </tr>
                                 </tbody>
                             </table>
@@ -80,7 +84,6 @@
                     </div>
 
                     <div *ngIf="!facturaTab" class="carrito card">
-
                         <div class="">
                             <table class="table table-hover">
                                 <thead>
@@ -89,6 +92,8 @@
                                         <th>Monto</th>
                                         <th>Fecha</th>
                                         <th>Hora</th>
+                                        <!-- <th style="width: 15%"></th> -->
+
                                     </tr>
                                 </thead>
                                 <tbody class="pointer" *ngFor="let egreso of egresos">
@@ -97,6 +102,9 @@
                                         <td class=" pt-4 ">{{egreso.monto}} Gs </td>
                                         <td class=" pt-4 ">{{egreso.fecha | fecha: 'fecha'}}</td>
                                         <td class=" pt-4 ">{{egreso.fecha | fecha :'hora'}}</td>
+                                        <!-- <td>
+                                            <i (click)="eliminarEgreso(egreso)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
+                                        </td> -->
                                     </tr>
                                 </tbody>
                             </table>

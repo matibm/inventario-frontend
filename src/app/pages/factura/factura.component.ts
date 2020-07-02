@@ -29,6 +29,7 @@ export class FacturaComponent implements OnInit {
   dateHasta: Date = new Date();
   totalF = 0;
   totalBrutoF = 0;
+  posibleGanancias = 0;
   cantidadF = 0;
 
   constructor(
@@ -41,6 +42,13 @@ export class FacturaComponent implements OnInit {
     this.setFechas()
     this.cargarFacturas(this.dateDesde.valueOf(), this.dateHasta.valueOf())
     this.cargarEgresos()
+    this._facturaModalService.notificacion.subscribe( () =>{
+      this.cargarFacturas(this.dateDesde.valueOf(), this.dateHasta.valueOf())
+    })
+    this._egresosService.notificacion.subscribe((r) => {
+
+      this.cargarEgresos()
+    })
   }
 
   setFechas() {
@@ -48,11 +56,11 @@ export class FacturaComponent implements OnInit {
     this.hoy = new Date()
     // this.diaDesde = this.hoy
     console.log(this.dateDesde);
-    
+
     this.semanaDesde = new Date(this.dateDesde.setFullYear(this.dateDesde.getFullYear(), this.dateDesde.getMonth(), this.dateDesde.getDate().valueOf() - 7))
     this.dateDesde = this.semanaDesde
     console.log(this.semanaDesde);
-    
+
     this.dateDesde.setHours(0, 0, 0);
     this.dateHasta.setHours(23, 59, 0);
     console.log(this.dateHasta);
@@ -67,6 +75,9 @@ export class FacturaComponent implements OnInit {
   }
 
 
+  eliminarEgreso(egreso) {
+    this._egresosService.eliminarEgreso(egreso._id).subscribe()
+  }
 
   cargarFacturas(desde, hasta) {
     //  this.cargando = true;
@@ -126,6 +137,7 @@ export class FacturaComponent implements OnInit {
     this.totalF = total;
     this.totalBrutoF = totalBruto;
     this.cantidadF = cantidad;
+    this.posibleGanancias = Math.floor(this.totalF - this.totalBrutoF)
   }
 
   cargarEgresos() {

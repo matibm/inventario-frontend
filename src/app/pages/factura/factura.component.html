@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="m-3 col">
+    <div class=" col">
         <div class="col">
             <div class="card">
                 <div class="card-body">
@@ -47,6 +47,8 @@
                     <div class="mt-1 row">
                         <label class="ml-4" for="text"><b>total:</b> {{totalF}} Gs </label>
                         <label class="ml-4" for="text"><b>Precio Bruto:</b> {{totalBrutoF}} Gs</label>
+                        <label class="ml-4" for="text"><b>Ganancia posible</b> {{[posibleGanancias]}}  Gs</label>
+
                         <label class="ml-4" for="text"><b>Productos: </b> {{cantidadF}} unidades</label>
                     </div>
                 </div>
@@ -56,7 +58,7 @@
     </div>
 
 
-    <div class="col m-3">
+    <div class="col ">
         <div class=" mx-auto mt-5 tableMatias">
             <div class="row animated fadeIn">
                 <div class="col">
@@ -71,6 +73,7 @@
                                         <th>Monto</th>
                                         <th>Fecha</th>
                                         <th>Hora</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody class="pointer" *ngFor="let egreso of egresos">
@@ -79,6 +82,9 @@
                                         <td class=" pt-4 ">{{egreso.monto}} Gs </td>
                                         <td class=" pt-4 ">{{egreso.fecha | fecha: 'fecha'}}</td>
                                         <td class=" pt-4 ">{{egreso.fecha | fecha :'hora'}}</td>
+                                        <td class=" pt-4 ">
+                                            <i (click)="eliminarEgreso(egreso)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

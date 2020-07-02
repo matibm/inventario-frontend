@@ -130,7 +130,11 @@
                                 <td><button align="center" (click)="switchDescuento(false, i )" [id]="'normal_'+producto._id" type="button" class="  mt-1 btn btn-success">
                                         {{producto.precio}}</button></td>
                                 <td class="pt-4 "> {{producto.cantidad}}</td>
-                                <button (click)="quitar(producto)" class="  mt-3 btn btn-outline-danger">Quitar</button>
+                                <td>
+                                    <i (click)="quitar(producto)" style="color: red;" class="pointer pt-3 fa fa-trash" aria-hidden="true"></i>
+
+                                </td>
+                                <!-- <button (click)="quitar(producto)" class="  mt-3 btn btn-outline-danger">Quitar</button> -->
                             </tr>
                         </tbody>
                     </table>

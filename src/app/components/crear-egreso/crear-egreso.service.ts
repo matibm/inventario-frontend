@@ -69,7 +69,7 @@ export class CrearEgresoService {
     let id = localStorage.getItem('idCaja')
     if (id) {
       this._cierreCajaService.getCierreCaja(id).subscribe((resp: any) => {
-
+        this.ocultarModal();
         cierrecaja = resp.cierreCaja
         cierrecaja.montoCierre -= this.montoT
         cierrecaja.egresos.push(this.egreso)

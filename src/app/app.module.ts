@@ -50,6 +50,7 @@ import { ResumenComponent } from './pages/resumen/resumen.component';
     HttpClientModule,
     FormsModule,
     AppRoutingModule
+    
   ],
   exports: [ImagenPipe],
   providers: [],

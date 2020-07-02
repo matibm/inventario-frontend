@@ -1,12 +1,13 @@
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { URL_SERVICIOS } from './../config/global';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FacturaService {
+  public noficacion = new EventEmitter<any>();
 
   constructor(
     private http: HttpClient
@@ -62,7 +63,7 @@ export class FacturaService {
   eliminarFactura(factura){
     let url = URL_SERVICIOS + '/factura/' + factura._id;
     return this.http.delete(url).pipe(map((resp: any) => {      
-      
+      this.noficacion.emit();
       return resp.factura
     })) 
   }

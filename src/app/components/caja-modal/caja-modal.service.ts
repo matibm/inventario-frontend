@@ -47,10 +47,10 @@ export class CajaModalService {
       for (let j = 0; j < factura.productos.length; j++) {
         const producto = factura.productos[j];
         if (producto.desc) {
-        monto += producto.descuento - producto.precioBruto;
+          monto += (producto.descuento * producto.cantidad) - (producto.precioBruto*producto.cantidad);
           
         }else{
-          monto += producto.precio - producto.precioBruto;
+          monto += (producto.precio * producto.cantidad) - (producto.precioBruto*producto.cantidad);
 
         }
       }

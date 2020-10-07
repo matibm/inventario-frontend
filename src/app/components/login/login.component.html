@@ -1,0 +1,47 @@
+<div class="fondo-negro  fadeIn" [ngClass]='_loginService.oculto'>
+
+    <div class="modal" style="display: block;" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div *ngIf="_loginService.registrado" class="modal-header">
+                    <h5 class="modal-title">Iniciar Session </h5>
+                    <button type="button" (click)="_loginService.ocultarModal()" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div *ngIf="!_loginService.registrado" class="modal-header">
+                    <h5 class="modal-title">Registrar Contraseña</h5>
+                    <button type="button" (click)="_loginService.ocultarModal()" class="close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form *ngIf="_loginService.registrado" ngNativeValidate #f="ngForm" (ngSubmit)="_loginService.ingresar(f)" id="myFormLogin" class="modal-body cuerpo " align="center">
+
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input [(ngModel)]="_loginService.pass" name="pass" class="form-control" type="password" required placeholder="Contraseña">
+                        </div>
+                    </div>
+                    <div class="form-group text-center m-t-20">
+                        <div class="col-xs-12">
+                            <button class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" type="submit">Ingresar</button>
+                        </div>
+                    </div>
+                </form>
+                <form *ngIf="!_loginService.registrado" ngNativeValidate #f="ngForm" (ngSubmit)="_loginService.registrar(f)" id="myForm" class="modal-body cuerpo " align="center">
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <label for="text">Ingrese una contraseña</label>
+                            <input ngModel name="password" class="form-control" type="password" required placeholder="Contraseña">
+                        </div>
+                    </div>
+                    <div class="form-group text-center m-t-20">
+                        <div class="col-xs-12">
+                            <button class="btn btn-primary btn-lg btn-block text-uppercase btn-rounded" type="submit">Guardar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

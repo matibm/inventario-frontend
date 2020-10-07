@@ -25,29 +25,32 @@ export class ProductosComponent implements OnInit {
 
   @HostListener('document:keypress', ['$event'])
   teclaEvento(event: KeyboardEvent) {
-    // console.log(event);
+    // // console.log(event);
 
 
   }
 
   @HostListener('window:afterprint')
   onafterprint() {
-    this._productoService.oculto = ''
-    setTimeout(() => {
-      this.nameField.nativeElement.focus();
+    // this._productoService.oculto = ''
+    // // console.log("se imprimio");
 
-    }, 500);
+    // setTimeout(() => {
+    //   this.nameField.nativeElement.focus();
 
-    // Swal.fire({
-    //   icon: 'success',
-    //   title: 'Venta Realizada',
-    //   showConfirmButton: true
-    // }); 
-    this.readEscape = true;
+    // }, 500);
+
+    // // Swal.fire({
+    // //   icon: 'success',
+    // //   title: 'Venta Realizada',
+    // //   showConfirmButton: true
+    // // }); 
+    // this.readEscape = true;
 
 
 
   }
+  pagina = 0;
   readEscape = false;
   inputbuscador = '';
   debiendo = false;
@@ -117,6 +120,10 @@ export class ProductosComponent implements OnInit {
 
   cambiarDesde(num) {
     this.desde += num;
+    this.pagina = Math.abs(this.desde / num)
+
+    if (this.pagina < 0) {
+    }
     this.cargarProductos()
     this.editName();
   }
@@ -133,10 +140,18 @@ export class ProductosComponent implements OnInit {
     }
   }
 
+  irA(pagina) {
+    if (this.desde < 1) {
+      this.desde = 1;
+    }
+    this.desde = this.desde * pagina + 5;
+
+    this.cambiarDesde(0)
+  }
   cargarProductos() {
     //  this.cargando = true;
     this._productoService.getProductos(this.desde).subscribe((resp: any) => {
-      //// console.log(resp);
+      //// // console.log(resp);
       this.editName();
       this.inversion = 0;
       this.productos = resp.productos.reverse();
@@ -151,7 +166,7 @@ export class ProductosComponent implements OnInit {
   buscarProductoConEnter(termino: string) {
 
     // this.productos = [];
-    // console.log(document.getElementById('inputBuscador').nodeValue);
+    // // console.log(document.getElementById('inputBuscador').nodeValue);
 
     this.nameField.nativeElement.value = null;
 
@@ -162,13 +177,13 @@ export class ProductosComponent implements OnInit {
     }
     this._productoService.buscarProductos(termino).subscribe((productos) => {
       this.productos = productos
-      // console.log(this.inputbuscador);
-      console.log(document.getElementById('inputBuscador').nodeValue);
+      // // console.log(this.inputbuscador);
+      // console.log(document.getElementById('inputBuscador').nodeValue);
 
       if (productos.length == 1) {
         let producto = productos[0]
         if (termino === producto.codigo) {
-          console.log("encontro", producto);
+          // console.log("encontro", producto);
           this.selecctionarItem(producto, "1")
           // this.playSound()        
           // this.productos = [];
@@ -193,7 +208,7 @@ export class ProductosComponent implements OnInit {
       if (productos.length == 1) {
         let producto = productos[0]
         if (termino === producto.codigo) {
-          console.log("encontro", producto);
+          // console.log("encontro", producto);
           this.selecctionarItem(producto, "1")
           this.playSound()
           this.inputbuscador = ''
@@ -212,7 +227,7 @@ export class ProductosComponent implements OnInit {
       for (let i = 0; i < this.items.length; i++) {
         if (this.items[i]._id == id_producto) {
           numeroC = this.items[i].cantidad;
-          console.log("numeroC antes de la suma", numeroC);
+          // console.log("numeroC antes de la suma", numeroC);
 
         }
       }
@@ -220,29 +235,6 @@ export class ProductosComponent implements OnInit {
     }
 
     producto.cantidad = parseInt(cant) // con este codigo aca funciona como tiene que ser
-
-    for (let i = 0; i < this.items.length; i++) {
-
-      if (this.items[i]._id == producto._id) {
-        let numeroA = this.items[i].cantidad;
-        let numeroB = producto.cantidad;
-
-        console.log("numeroA antes de la suma", numeroA);
-        console.log("numeroB antes de la suma", numeroB);
-
-        numeroC += numeroB;
-
-        console.log("numeroA despues de la suma", numeroA);
-        console.log("numeroB despues de la suma", numeroB);
-
-        this.items[i].cantidad = numeroC;
-        console.log("cantidad en el arreglo", this.items[i].cantidad);
-
-        noagregarmas = true;
-      }
-    }
-
-
     if (producto.stock < cant) {
       Swal.fire({
         icon: 'error',
@@ -262,6 +254,22 @@ export class ProductosComponent implements OnInit {
 
       return
     }
+
+    for (let i = 0; i < this.items.length; i++) {
+
+      if (this.items[i]._id == producto._id) {
+        let numeroA = this.items[i].cantidad;
+        let numeroB = producto.cantidad;
+
+        numeroC += numeroB;
+
+        this.items[i].cantidad = numeroC;
+
+        noagregarmas = true;
+      }
+    }
+
+
 
 
 
@@ -300,7 +308,7 @@ export class ProductosComponent implements OnInit {
 
 
     this.total += cant * producto.precio
-    console.log(document.getElementById('inputBuscador'));
+    // console.log(document.getElementById('inputBuscador'));
     this.editName();
 
   }
@@ -361,16 +369,25 @@ export class ProductosComponent implements OnInit {
       let id = localStorage.getItem('idCaja')
       if (id) {
         this._cierreCajaService.getCierreCaja(id).subscribe((resp: any) => {
-          //// console.log(resp);
-
+ 
           cierrecaja = resp.cierreCaja
           cierrecaja.montoCierre += this.total
           cierrecaja.facturas.push(this.factura)
-          this._cierreCajaService.putCierreCaja(cierrecaja).subscribe()
-          console.log(this.factura);
+          // this._cierreCajaService.putCierreCaja(cierrecaja).subscribe()
 
           this._facturaService.setFactura(this.factura).subscribe(() => {
             this.nameField.nativeElement.focus();
+            this.decremento = new Array();
+            for (let i = 0; i < this.factura.productos.length; i++) {
+              const producto = this.factura.productos[i];
+              let dec = {
+                id: producto._id,
+                cantidad: producto.cantidad
+              }
+              this.decremento.push(dec);
+            }
+
+
 
             this._productoService.decrementarProducto(this.decremento).subscribe()
             if (this._clienteModalService.imprimir) {
@@ -433,10 +450,14 @@ export class ProductosComponent implements OnInit {
     }
     this.editName();
   }
-
+  @HostListener('document:keyup', ['$event'])
   onKeyUp(event) {
-    console.log(event);
-
+    let tecla = event.keyCode;
+    if (tecla == 39) {
+      this.cambiarDesde(5)
+    }
+    if (tecla == 37) {
+      this.cambiarDesde(-5)
+    }
   }
-
 }

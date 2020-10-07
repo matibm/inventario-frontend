@@ -1,3 +1,4 @@
+import { LoginService } from './../../components/login/login.service';
 import { EgresoService } from './../../services/egreso.service';
 import { FacturaModalService } from './../../components/factura-modal/factura-modal.service';
 import { FacturaService } from './../../services/factura.service';
@@ -35,7 +36,8 @@ export class FacturaComponent implements OnInit {
   constructor(
     private _facturaService: FacturaService,
     public _facturaModalService: FacturaModalService,
-    public _egresosService: EgresoService
+    public _egresosService: EgresoService,
+    public _loginService: LoginService
   ) { }
 
   ngOnInit() {
@@ -55,15 +57,15 @@ export class FacturaComponent implements OnInit {
     this.dateDesde = new Date()
     this.hoy = new Date()
     // this.diaDesde = this.hoy
-    console.log(this.dateDesde);
+    // console.log(this.dateDesde);
 
     this.semanaDesde = new Date(this.dateDesde.setFullYear(this.dateDesde.getFullYear(), this.dateDesde.getMonth(), this.dateDesde.getDate().valueOf() - 7))
     this.dateDesde = this.semanaDesde
-    console.log(this.semanaDesde);
+    // console.log(this.semanaDesde);
 
     this.dateDesde.setHours(0, 0, 0);
     this.dateHasta.setHours(23, 59, 0);
-    console.log(this.dateHasta);
+    // console.log(this.dateHasta);
 
     this.diaDesde = this.dateDesde.getDate();
     this.mesDesde = this.dateDesde.getUTCMonth() + 1;
@@ -85,7 +87,7 @@ export class FacturaComponent implements OnInit {
 
       // this.facturas = resp.facturas.reverse()
       this.facturas = new Array()
-      console.log(resp.facturas);
+      // console.log(resp.facturas);
       for (let i = 0; i < resp.facturas.reverse().length; i++) {
         const factura = resp.facturas.reverse()[i];
         if (factura.fecha >= desde && factura.fecha <= hasta) {
@@ -109,8 +111,8 @@ export class FacturaComponent implements OnInit {
     date = new Date();
     let hasta = new Date(date.setUTCFullYear(this.yearHasta, this.mesHasta - 1, this.diaHasta));
     hasta.setHours(23, 59, 0)
-    console.log(desde);
-    console.log(hasta);
+    // console.log(desde);
+    // console.log(hasta);
     this.cargarFacturas(desde, hasta);
 
   }
@@ -143,7 +145,7 @@ export class FacturaComponent implements OnInit {
   cargarEgresos() {
     this._egresosService.getEgresos().subscribe((resp: any) => {
       this.egresos = resp.egresos.reverse();
-      console.log(this.egresos);
+      // console.log(this.egresos);
 
     })
   }

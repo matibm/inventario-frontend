@@ -1,3 +1,4 @@
+import { LoginService } from './../../components/login/login.service';
 import  Swal  from 'sweetalert2';
 import { CrearProductoModalService } from './../../components/crear-producto-modal/crear-producto-modal.service';
 import { CajaModalService } from './../../components/caja-modal/caja-modal.service';
@@ -16,7 +17,8 @@ export class HeaderComponent implements OnInit {
     public _egresoModalService: CrearEgresoService,
     public _cajaModalService: CajaModalService,
     public _crearProductoModalService: CrearProductoModalService,
-    public _imprimirFacturaService: ImprimirFacturaService
+    public _imprimirFacturaService: ImprimirFacturaService,
+    public _loginService: LoginService
     ) { }
 
   ngOnInit() {

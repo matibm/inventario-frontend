@@ -29,7 +29,7 @@ export class CierreCajaComponent implements OnInit {
 
   cargarCierreCajas() {
     this._cierreCajaService.getCierreCajas().subscribe((resp: any) => {
-      console.log(resp);
+      // console.log(resp);
 
       this.cierreCaja = resp.cierreCajas[0];
       this.cierreCajas = resp.cierreCajas.reverse()
@@ -80,7 +80,7 @@ export class CierreCajaComponent implements OnInit {
     this._cierreCajaService.putCierreCaja(this.cierreCaja).subscribe();
   }
   eliminarFactura(factura) {
-    console.log(this.cierreCaja);
+    // console.log(this.cierreCaja);
     for (let i = 0; i < this.facturas.length; i++) {
       const element = this.facturas[i];
       if (element == factura) {
@@ -89,10 +89,10 @@ export class CierreCajaComponent implements OnInit {
     }
 
     this.cierreCaja.facturas = this.facturas;
-    console.log(this.cierreCaja);
+    // console.log(this.cierreCaja);
 
     this._cierreCajaService.putCierreCaja(this.cierreCaja).subscribe((resp: any) => {
-      console.log(resp);
+      // console.log(resp);
       
       this.cierreCaja = resp
     });

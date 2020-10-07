@@ -47,10 +47,10 @@ export class ClienteModalService {
     this.cliente._id = ''
     this.tablaBoolean = true;
     localStorage.setItem('mostarTabla', 'false');
-    console.log("Mostar tabla");
+    // console.log("Mostar tabla");
     
     this._clienteService.getClientes().subscribe((resp :any)=>{
-      console.log(resp);
+      // console.log(resp);
       
       this.clientes = resp.clientes;
     })
@@ -86,7 +86,7 @@ export class ClienteModalService {
 
   guardar() {
 
-    console.log(this.cliente)
+    // console.log(this.cliente)
     if (this.cliente.ci || this.cliente.nombre) {
       this.imprimir = true;
     }

@@ -56,7 +56,7 @@ export class CrearProductoModalService {
     this.oculto = ''
   }
   changePrecioNormal(value){
-    console.log(value);
+    // console.log(value);
     
     this.precioNormal = value;
   }
@@ -119,7 +119,7 @@ export class CrearProductoModalService {
     if (this.descuentoIsPercent) {
       f.value.descuento = this.descuentoPorcentaje;
     }
-    console.log(f.value);
+    // console.log(f.value);
     this.clearInputs();
     if (this.imagenSubir) {
 

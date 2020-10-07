@@ -65,7 +65,7 @@ export class ClientesComponent implements OnInit {
 
     this._clienteService.buscarClientes(termino).subscribe((resp: any) => {
       this.clientes = resp
-      console.log(resp);
+      // console.log(resp);
 
     })
   }

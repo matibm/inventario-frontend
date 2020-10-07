@@ -51,7 +51,7 @@ export class CrearProductoModalComponent implements OnInit {
     
   }
   // changePrecioNormal(value){
-  //   console.log(value);
+  //   // console.log(value);
     
   //   this.precioNormal = value;
   // }

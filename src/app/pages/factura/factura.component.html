@@ -44,7 +44,7 @@
                             <!-- <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button> -->
                         </div>
                     </div>
-                    <div class="mt-1 row">
+                    <div *ngIf="_loginService.logued" class="mt-1 row">
                         <label class="ml-4" for="text"><b>total:</b> {{totalF}} Gs </label>
                         <label class="ml-4" for="text"><b>Precio Bruto:</b> {{totalBrutoF}} Gs</label>
                         <label class="ml-4" for="text"><b>Ganancia posible</b> {{[posibleGanancias]}}  Gs</label>

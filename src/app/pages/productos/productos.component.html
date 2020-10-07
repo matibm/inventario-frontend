@@ -58,13 +58,24 @@
                         </div>
                     </div>
                 </div>
+                <div>
+                    <div class="row m-3 form-group">
 
-                <div class="m-3 form-group">
-                    <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
-                    <button (click)="cambiarDesde(5)" type="button" class="ml-2 btn btn-secondary">Siguientes</button>
+                        <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
+                        <button (click)="cambiarDesde(5)" type="button" class="ml-2 btn btn-secondary">Siguientes</button>
+                    </div>
 
+                    <!-- <div class="row m-3 form-group">
+                        <div class="col">
+                            <label class="mr-3" for="text">Pagina</label>
+                            <input style="width: 40px;" type="number" [(ngModel)]="pagina" name="desde" id="">
+                            <button (click)="irA(pagina)" type="button" class="ml-2 btn btn-info">Ir</button>
 
+                        </div>
+                    </div> -->
                 </div>
+
+
 
             </div>
         </div>
@@ -94,7 +105,7 @@
                     <div class="col">
                         <h3 class="pl-3 pt-4 card-title">Carrito</h3>
                     </div>
-                    <div class="col">
+                    <!-- <div class="col">
                         <div *ngIf="!descuentoForAll" align="right">
                             <button type="button" (click)="onToggle(true)" class="mt-4 card-title btn btn-outline-secondary">Activar descuento para todos</button>
                         </div>
@@ -102,7 +113,7 @@
                             <button type="button" (click)="onToggle(false)" class="mt-4 card-title btn btn-outline-danger">Desactivar descuento para todos</button>
                         </div>
 
-                    </div>
+                    </div> -->
                 </div>
 
 

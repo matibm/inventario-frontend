@@ -41,10 +41,17 @@
                             <input ngModel type="number" [(ngModel)]="_editarProductoModalService.descuento" name="descuento" required #precioBruto class="form-control" required aria-describedby="helpId" placeholder="">
 
                         </div>
-                        <div class="form-group">
+                        <div *ngIf="_editarProductoModalService._loginService.logued" class="form-group">
                             <label for="">Cantidad</label>
                             <input ngModel type="number" [(ngModel)]="_editarProductoModalService.cantidad" name="maererrca" required #cantidad class="form-control" required aria-describedby="helpId" placeholder="">
+                        </div>
 
+                        <div *ngIf="!_editarProductoModalService._loginService.logued" class=" form-group">
+                            <label class=" form-group" for="">En stock : {{_editarProductoModalService.cantidad}}</label>
+                            <br>
+                            <!-- <label class="form-control" required aria-describedby="helpId" placeholder=""></label> -->
+                            <label for="text">Sumar al stock:</label>
+                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.agregarCantidad" name="maesrerrca" required #cantidad class="form-control" required aria-describedby="helpId" placeholder="">
                         </div>
 
                         <div align="center">
@@ -59,7 +66,10 @@
                             </form>
 
                         </div>
-
+                        <div class="form-group">
+                            <label for="">Comentario</label>
+                            <input ngModel type="text" [(ngModel)]="_editarProductoModalService.comentario" name="comentario" #precioBruto class="form-control" aria-describedby="helpId" placeholder="Comentario opcional para esta modificacion del producto">
+                        </div>
                         <div class="modal-footer">
                             <button type="button" (click)="_editarProductoModalService.eliminarProducto()" class="btn btn-danger">Eliminar</button>
                             <button type="button" (click)="_editarProductoModalService.ocultarModal()" class="btn btn-secondary">Cancelar</button>

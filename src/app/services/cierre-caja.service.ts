@@ -22,7 +22,7 @@ export class CierreCajaService {
     let url = URL_SERVICIOS + '/cierrecaja/' + cierrecaja._id;
     return this.http.put(url, cierrecaja).pipe(map((resp: any) => {
       this.notificacion.emit(resp);
-      console.log(resp.cierreCaja);
+      // console.log(resp.cierreCaja);
       
       return resp.cierreCaja
     }))

@@ -40,7 +40,7 @@ export class FacturaModalService {
 
   mostrarModal(factura) {
 
-    console.log(factura);
+    // console.log(factura);
     if (factura.cliente) {
       this._clienteService.getCliente(factura.cliente).subscribe(cliente => {
         this.cliente = cliente;

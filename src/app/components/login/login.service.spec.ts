@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SubirArchivoService } from './subir-archivo.service';
+import { LoginService } from './login.service';
 
-describe('SubirArchivoService', () => {
+describe('LoginService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: SubirArchivoService = TestBed.get(SubirArchivoService);
+    const service: LoginService = TestBed.get(LoginService);
     expect(service).toBeTruthy();
   });
 });

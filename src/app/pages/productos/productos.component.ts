@@ -25,7 +25,6 @@ export class ProductosComponent implements OnInit {
 
   @HostListener('document:keypress', ['$event'])
   teclaEvento(event: KeyboardEvent) {
-    // // console.log(event);
 
 
   }

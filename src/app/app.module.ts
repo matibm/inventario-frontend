@@ -24,6 +24,7 @@ import { ClientesComponent } from './pages/clientes/clientes.component';
 import { ResumenComponent } from './pages/resumen/resumen.component';
 import { LoginComponent } from './components/login/login.component';
 import { RecargaModalComponent } from './components/recarga-modal/recarga-modal.component';
+import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { RecargaModalComponent } from './components/recarga-modal/recarga-modal.
     ResumenComponent,
     LoginComponent,
     RecargaModalComponent,
+    ProveedoresComponent,
     
   ],
   imports: [

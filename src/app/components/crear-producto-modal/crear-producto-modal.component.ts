@@ -1,3 +1,4 @@
+import { ProveedorService } from './../../services/proveedor.service';
 import { ProductoService } from './../../services/producto.service';
 import Swal from 'sweetalert2';
 import { SubirArchivoService } from './../../services/subir-archivo.service';
@@ -26,11 +27,13 @@ export class CrearProductoModalComponent implements OnInit {
   // precioBruto
   // descuento
 
+  proveedores
 
   constructor(
     public _crearProductoModalService: CrearProductoModalService,
     private _subirArchivoService: SubirArchivoService,
-    private _productoService: ProductoService
+    public _productoService: ProductoService,
+    public _proveedorService: ProveedorService
   ) { }
 
   ngOnInit() {
@@ -48,11 +51,34 @@ export class CrearProductoModalComponent implements OnInit {
     // }else{
     //   this.descuentoIsPercent = false;
     // }
+
+  }
+  buscarProveedor(termino) {
+    if (termino) {
+      this._proveedorService.buscarProveedor(termino).subscribe(proveedores => {
+        
+        
+        this.proveedores = proveedores;
+        console.log(proveedores);
+        // this._crearProductoModalService.proveedor = proveedores[0]._id
+      })  
+    }else{
+     }
     
   }
+
+
+
+
+
+
+
+
+
+
   // changePrecioNormal(value){
   //   // console.log(value);
-    
+
   //   this.precioNormal = value;
   // }
   // brutoSwitch(){
@@ -81,8 +107,8 @@ export class CrearProductoModalComponent implements OnInit {
   //     this.precioBrutoPorcentaje = this.precioNormal * aux;
 
   //   }
-    
-    
+
+
   // }
   // changeDescuentoPercent(value){
   //   if (value >=0 && value <=100) {
@@ -90,8 +116,8 @@ export class CrearProductoModalComponent implements OnInit {
   //     aux = aux/100;
   //     this.descuentoPorcentaje = this.precioNormal * aux;
   //   }
-    
-    
+
+
   // }
   // clearInputs(){
   //   this.precio = null;

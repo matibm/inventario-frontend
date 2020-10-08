@@ -1,0 +1,96 @@
+<div class="container-fluid">
+    <button *ngIf="!oculto" (click)="oculto = true" class="m-1 btn btn-primary">Nuevo Proveedor</button>
+
+    <div *ngIf="oculto" style="width: 450px;" class="m-4 card">
+
+        <div class="card-header">
+            <h5 class="card-title">Agregar Proveedor</h5>
+
+        </div>
+
+        <div class="card-body">
+            <form (ngSubmit)='crearProveedor(nombre.value, tel.value, comentario.value)' action="">
+                <div class="form-group">
+                    <label for="">nombre</label>
+                    <input #nombre type="text" class="mb-3 form-control" name="" id="" aria-describedby="helpId" placeholder="nombre">
+                    <label for="">telefono</label>
+                    <input #tel type="text" class="mb-3 form-control" name="" id="" aria-describedby="helpId" placeholder="telefono">
+                    <label for="">comentario</label>
+                    <input #comentario type="text" class="mb-3 form-control" name="" id="" aria-describedby="helpId" placeholder="comentario o descripcion sobre proveedor">
+                    <div class="d-flex flex-row-reverse">
+                        <button type="submit" class="m-1 btn btn-outline-success">Agregar</button>
+                        <button type="reset" (click)="oculto = false" class="m-1 btn btn-outline-secondary">Cancelar</button>
+                    </div>
+
+
+                </div>
+            </form>
+
+        </div>
+
+
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>nombre</th>
+                                <th>telefono</th>
+                                <th>comentario</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="table" *ngFor="let item of proveedores">
+                            <tr (click)="selectProveedor(item)" class="list-item list-group-item-action pointer" href="javascript:void">
+                                <td>{{item.nombre}}</td>
+                                <td>{{item.telefono}}</td>
+                                <td>{{item.comentario}}</td>
+                                <td (click)="eliminarProveedor(item._id)">
+                                    <i style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class=" itemsProductos ">
+                    <table class="table tableMatias table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Marca</th>
+                                <th style="width: 25%">Tipo</th>
+                                <th>Cod</th>
+                                <th>Descuento</th>
+                                <th>Precio</th>
+                                <th>En stock</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let producto of productos ">
+                            <tr>
+                                <td class="w70">
+                                    <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer">
+                                </td>
+                                <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}
+                                </td>
+                                <td style="width: 25%" class=" pt-4 col-md-2 ">{{producto.modelo}}</td>
+                                <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
+                                <td class=" pt-4 ">{{producto.descuento}}</td>
+                                <td class=" pt-4 ">{{producto.precio}}</td>
+                                <td class=" pt-4 ">{{producto.stock}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -33,17 +33,16 @@
                         </div>
                         <div class="form-group">
                             <label for="">Precio Bruto</label>
-                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.precioBruto" name="precioBruto" required #precioBruto class="form-control" required aria-describedby="helpId" placeholder="">
 
                         </div>
                         <div class="form-group">
                             <label for="">Precio con Descuento</label>
-                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.descuento" name="descuento" required #precioBruto class="form-control" required aria-describedby="helpId" placeholder="">
+                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.descuento" name="descuento" #precioBruto class="form-control" aria-describedby="helpId" placeholder="">
 
                         </div>
                         <div *ngIf="_editarProductoModalService._loginService.logued" class="form-group">
                             <label for="">Cantidad</label>
-                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.cantidad" name="maererrca" required #cantidad class="form-control" required aria-describedby="helpId" placeholder="">
+                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.cantidad" name="maererrca" #cantidad class="form-control" aria-describedby="helpId" placeholder="">
                         </div>
 
                         <div *ngIf="!_editarProductoModalService._loginService.logued" class=" form-group">
@@ -51,8 +50,30 @@
                             <br>
                             <!-- <label class="form-control" required aria-describedby="helpId" placeholder=""></label> -->
                             <label for="text">Sumar al stock:</label>
-                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.agregarCantidad" name="maesrerrca" required #cantidad class="form-control" required aria-describedby="helpId" placeholder="">
+                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.agregarCantidad" name="maesrerrca" #cantidad class="form-control" aria-describedby="helpId" placeholder="">
                         </div>
+                        <hr>
+                        <h5>Proveedor</h5>
+                        <input [(ngModel)]='_editarProductoModalService.buscador' (ngModelChange)='_editarProductoModalService.buscarProveedor(query.value)' #query ngModel type="text" name="cantsidad" class="form-control" aria-describedby="helpId" placeholder="buscar proveedor">
+                        <div *ngIf="_editarProductoModalService.proveedores">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>nombre</th>
+                                        <th>telefono</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table" *ngFor="let item of _editarProductoModalService.proveedores">
+                                    <tr (click)="_editarProductoModalService.proveedor = item " class="list-item list-group-item-action pointer" href="javascript:void">
+                                        <td>{{item.nombre}}</td>
+                                        <td>{{item.telefono}}</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        <label class="my-4" for="text">Proveedor seleccionado: <span *ngIf="!_editarProductoModalService.proveedor" >[ninguno]</span> <b *ngIf="_editarProductoModalService.proveedor" >{{_editarProductoModalService.proveedor.nombre}}</b></label>
 
                         <div align="center">
                             <img *ngIf="_editarProductoModalService.img && !_editarProductoModalService.imagenSubir" [src]="_editarProductoModalService.img | imagen" class="w150" alt="">

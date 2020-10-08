@@ -1,3 +1,4 @@
+import { ProveedorService } from './../../services/proveedor.service';
 import { EditarProductoModalService } from './editar-producto-modal.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditarProductoModalComponent implements OnInit {
  email
-  constructor(public _editarProductoModalService: EditarProductoModalService) { }
+ proveedores
+  constructor(public _editarProductoModalService: EditarProductoModalService,
+    
+      public _proveedorService: ProveedorService
+    ) { }
 
   ngOnInit() {
+  }
+  buscarProveedor(termino) {
+    if (termino) {
+      this._proveedorService.buscarProveedor(termino).subscribe(proveedores => {
+        
+        
+        this.proveedores = proveedores;
+       
+      })  
+    }else{
+     }
+    
   }
 
 

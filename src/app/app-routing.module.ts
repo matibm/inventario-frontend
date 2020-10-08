@@ -1,3 +1,4 @@
+import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
 import { ResumenComponent } from './pages/resumen/resumen.component';
 import { AppComponent } from './app.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: 'resumen', component: ResumenComponent},
   
   {path: 'productos', component: ProductosComponent},
+  {path: 'proveedores', component: ProveedoresComponent},
   {path: '', component: AppComponent},
   {path: '**', component: AppComponent}
 ];

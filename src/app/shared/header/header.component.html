@@ -15,6 +15,9 @@
             <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/clientes']" routerLinkActive="active">Clientes</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/proveedores']" routerLinkActive="active">Proveedores</a>
+            </li>
             <li *ngIf="_loginService.logued" class="nav-item">
                 <a class="nav-link" [routerLink]="['/resumen']" routerLinkActive="active">Resumen</a>
             </li>

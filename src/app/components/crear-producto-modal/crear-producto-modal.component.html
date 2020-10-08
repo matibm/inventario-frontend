@@ -100,6 +100,29 @@
                             <input [(ngModel)]='_crearProductoModalService.cantidad' ngModel type="number" name="cantidad" required #cantidad class="form-control" required aria-describedby="helpId" placeholder="">
 
                         </div>
+                        <hr>
+                        <h5>Proveedor</h5>
+                        <input (ngModelChange)='buscarProveedor(query.value)' #query ngModel type="text" name="cantsidad" class="form-control" aria-describedby="helpId" placeholder="buscar proveedor">
+                        <div *ngIf="proveedores">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>nombre</th>
+                                        <th>telefono</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table" *ngFor="let item of proveedores">
+                                    <tr (click)="_crearProductoModalService.proveedor = item " class="list-item list-group-item-action pointer" href="javascript:void">
+                                        <td>{{item.nombre}}</td>
+                                        <td>{{item.telefono}}</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        <label class="my-4" for="text">Proveedor seleccionado: <span *ngIf="!_crearProductoModalService.proveedor" >[ninguno]</span> <b *ngIf="_crearProductoModalService.proveedor" >{{_crearProductoModalService.proveedor.nombre}}</b></label>
+
 
                         <div align="center">
                             <img *ngIf="_crearProductoModalService.imagenTemp" [src]="_crearProductoModalService.imagenTemp" class="w150" alt="">

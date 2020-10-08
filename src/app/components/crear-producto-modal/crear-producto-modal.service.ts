@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
   providedIn: 'root'
 })
 export class CrearProductoModalService {
-
+  proveedor
   nombreImagen
   imagenSubir: File;
   imagenTemp: string | ArrayBuffer;
@@ -23,9 +23,7 @@ export class CrearProductoModalService {
   codigo 
   cantidad
   precioBruto
-  descuento
-
-
+  descuento 
   public notificacion = new EventEmitter<any>();
 
   oculto = 'oculto'
@@ -106,12 +104,13 @@ export class CrearProductoModalService {
     this.precioBruto = null;
     this.descuento = null;
     this.cantidad = null;
+ 
   }
 
   registrar(f) {
     // let precioBrutoAux
     // let descuentoAux
-
+    
     // precioBrutoAux = ;
     if (this.brutoIsPercent) {
       f.value.precioBruto = this.precioBrutoPorcentaje;
@@ -142,7 +141,9 @@ export class CrearProductoModalService {
             precioBruto: f.value.precioBruto,
             descuento: f.value.descuento,
             stock: f.value.cantidad,
-            img: this.nombreImagen
+            img: this.nombreImagen,
+            proveedor : this.proveedor._id
+
           }
 
           this._productoService.crearProducto(producto).subscribe(resp => {
@@ -160,6 +161,7 @@ export class CrearProductoModalService {
       var form = document.getElementById("myFormNewProduct");
       //function handleForm(event) { event.preventDefault(); }
       form.addEventListener('submit', this.handleForm);
+      console.log(this.proveedor);
 
       let producto = {
         marca: f.value.marca,
@@ -168,8 +170,8 @@ export class CrearProductoModalService {
         precio: f.value.precio,
         precioBruto: f.value.precioBruto,
         descuento: f.value.descuento,
-        stock: f.value.cantidad
-
+        stock: f.value.cantidad,
+        proveedor : this.proveedor._id
       }
 
       this._productoService.crearProducto(producto).subscribe(resp => {

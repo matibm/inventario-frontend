@@ -77,7 +77,7 @@ export class ProductoService {
     }));
   }
   actualizarProducto(producto) {
-    // console.log(producto);
+    console.log(producto);
 
     let url = URL_SERVICIOS + '/producto/' + producto._id;
 
@@ -123,24 +123,17 @@ export class ProductoService {
             title: 'Venta Realizada',
             showConfirmButton: true
           });
-        }
-  
+        } 
         this.notificacion.emit(resp)
         return resp;
-      }
-   
+      } 
     }));
-  }
-
-
+  } 
   getProductosFaltantes(desde) {
     let url = URL_SERVICIOS + '/producto/faltantes?desde=' + desde;
     return this.http.get(url);
   }
-
-
-
-
+ 
   buscarProductos(termino: string) {
     let url = URL_SERVICIOS + '/busqueda/producto/' + termino;
     return this.http.get(url).pipe(map((resp: any) => {
@@ -148,5 +141,9 @@ export class ProductoService {
     }))
   }
 
+  getProductosPorProveedor(id){
+    let url = URL_SERVICIOS + '/producto/proveedor/'+ id;
+    return this.http.get(url).toPromise();
+  } 
 
 }

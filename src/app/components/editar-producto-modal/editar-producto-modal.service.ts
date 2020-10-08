@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { SubirArchivoService } from './../../services/subir-archivo.service';
 import { ProductoService } from './../../services/producto.service';
 import { Injectable, EventEmitter } from '@angular/core';
+import { ProveedorService } from 'src/app/services/proveedor.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,19 @@ import { Injectable, EventEmitter } from '@angular/core';
 export class EditarProductoModalService {
   marca
   codigo
+  proveedores
   modelo
+  buscador
   precio
   precioBruto
   img
+  proveedor
   descuento
   id
   cantidad
   imagenSubir
   imagenTemp
-  agregarCantidad
+  agregarCantidad = 0
   stock_antes_de_modificar
   comentario = ''
   public notificacion = new EventEmitter<any>();
@@ -30,22 +34,27 @@ export class EditarProductoModalService {
     private _subirArchivoService: SubirArchivoService,
     private _productoService: ProductoService,
     public _loginService: LoginService,
-    public _recargaService: RecargaService
-  ) {   }
+    public _recargaService: RecargaService,
+    public _proveedorService: ProveedorService
+  ) { }
 
   ocultarModal() {
     console.log("ocultando");
-    
+    this.proveedor = null;
     this.oculto = 'oculto'
     this.imagenSubir = null
     this.imagenTemp = ''
     this.agregarCantidad = null;
-   }
+    this.proveedores = null;
+    this.buscador = null;
+  }
 
   guardar() {
+    console.log(this.proveedor);
+
     if (!this._loginService.logued) {
       this.cantidad += this.agregarCantidad;
-    }    
+    }
     var form = document.getElementById("amyFormEditProduct");
     function handleForm(event) { event.preventDefault(); }
     form.addEventListener('submit', handleForm);
@@ -57,7 +66,6 @@ export class EditarProductoModalService {
           // Swal.fire('Imagen subida correctamente','', 'success')
           this.notificacion.emit(resp);
           this.img = resp.nombreArchivo
-
           let producto = {
             _id: this.id,
             marca: this.marca,
@@ -67,13 +75,20 @@ export class EditarProductoModalService {
             precioBruto: this.precioBruto,
             stock: this.cantidad,
             descuento: this.descuento,
-            img: this.img
+            img: this.img,
+            proveedor: ''
           }
+
+          if (this.proveedor) {
+            producto.proveedor = this.proveedor._id
+
+          }
+
 
           //  console.log(marca, modelo, precio, codigo, precioBruto, cantidad);
           this._productoService.actualizarProducto(producto).subscribe(resp => {
             let recarga = {
-              fecha : new Date().valueOf(),
+              fecha: new Date().valueOf(),
               productoId: producto._id,
               cantidadASumar: this.cantidad - this.stock_antes_de_modificar,
               stockAnterior: this.stock_antes_de_modificar,
@@ -83,7 +98,7 @@ export class EditarProductoModalService {
             }
 
             this._recargaService.crearRecarga(recarga).subscribe()
-            
+
             // this._recargaService.crearRecarga(recarga)
             this.ocultarModal()
             this.notificacion.emit(resp)
@@ -107,14 +122,19 @@ export class EditarProductoModalService {
         precioBruto: this.precioBruto,
         stock: this.cantidad,
         descuento: this.descuento,
-        img: this.imagenTemp
+        img: this.img,
+        proveedor: ''
       }
 
+      if (this.proveedor) {
+        producto.proveedor = this.proveedor._id
+
+      }
       this._productoService.actualizarProducto(producto).subscribe(resp => {
         this.ocultarModal()
         this.notificacion.emit(resp)
         let recarga = {
-          fecha : new Date().valueOf(),
+          fecha: new Date().valueOf(),
           productoId: producto._id,
           cantidadASumar: this.cantidad - this.stock_antes_de_modificar,
           stockAnterior: this.stock_antes_de_modificar,
@@ -176,21 +196,29 @@ export class EditarProductoModalService {
       })
   }
 
-  mostarModal(producto) {
+  async mostarModal(producto) {
     console.log("mostrando");
-    
-      this.id = producto._id
-      this.marca = producto.marca
-      this.modelo = producto.modelo
-      this.cantidad = producto.stock
-      this.stock_antes_de_modificar = producto.stock
-      this.codigo = producto.codigo
-      this.precio = producto.precio
-      this.precioBruto = producto.precioBruto
-      this.descuento = producto.descuento
-      this.img = producto.img || ''
-      this.oculto = ''
-      this.imagenTemp = producto.img || ''  
+
+    this.id = producto._id
+    this.marca = producto.marca
+    this.modelo = producto.modelo
+    this.cantidad = producto.stock
+    this.stock_antes_de_modificar = producto.stock
+    this.codigo = producto.codigo
+    this.precio = producto.precio
+    this.precioBruto = producto.precioBruto
+    this.descuento = producto.descuento
+    this.img = producto.img || ''
+    this.oculto = ''
+    this.imagenTemp = producto.img || ''
+    if (producto.proveedor) {
+      console.log(producto);
+
+      let resp: any = await this._proveedorService.getProveedor(producto.proveedor);
+      this.proveedor = resp.proveedor;
+    }
+
+
     // }else{
     //   Swal.fire({
     //     icon: 'error',
@@ -198,6 +226,25 @@ export class EditarProductoModalService {
     //     showConfirmButton: true
     //   });
     // }
-    
+
   }
+
+  buscarProveedor(termino) {
+    if (termino) {
+      this._proveedorService.buscarProveedor(termino).subscribe(proveedores => {
+
+
+        this.proveedores = proveedores;
+
+      })
+    } else {
+    }
+
+  }
+
+
+
+
+
+
 }

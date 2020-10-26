@@ -1,23 +1,39 @@
-<div class="row">
-    <div class=" col">
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <h4>De:</h4>
-                        <input [(ngModel)]="diaDesde" style="width: 3rem;" class="m-1" type="number">
-                        <input [(ngModel)]="mesDesde" style="width: 3rem;" class="m-1" type="number">
-                        <input [(ngModel)]="yearDesde" style="width: 5rem;" class="m-1" type="number">
-                        <h4 class="ml-4">A: </h4>
-                        <input [(ngModel)]="diaHasta" style="width: 3rem;" class="m-1" type="number">
-                        <input [(ngModel)]="mesHasta" style="width: 3rem;" class="m-1" type="number">
-                        <input [(ngModel)]="yearHasta" style="width: 5rem;" class="m-1" type="number">
-                        <button type="button" (click)="filtrar()" class="btn btn-primary">Filtrar</button>
-                    </div>
+<div class="flex-row">
+    <div class="d-flex justify-content-center">
+
+        <div class="card">
+            <div class="card-body">
+                <label class=" lead" for="">Formato: HH:MM DD/MM/AAAA</label>
+                <br>
+                <div class="row">
+
+                    <h4 class="mt-1">De:</h4>
+                    <input [(ngModel)]="horaDesde" style="width: 3rem;" class="m-1" type="number">
+                    <input [(ngModel)]="minutoDesde" style="width: 3rem;" class="m-1" type="number">
+                    <h6 class="mt-2 mr-3" for="">hs. </h6>
+                    <input [(ngModel)]="diaDesde" style="width: 3rem;" class=" m-1" type="number">
+                    <input [(ngModel)]="mesDesde" style="width: 3rem;" class="m-1" type="number">
+                    <input [(ngModel)]="yearDesde" style="width: 5rem;" class="m-1" type="number">
+                    <h4 class="ml-4 mt-1">A: </h4>
+                    <input [(ngModel)]="horaHasta" style="width: 3rem;" class="m-1" type="number">
+                    <input [(ngModel)]="minutoHasta" style="width: 3rem;" class="m-1" type="number">
+                    <h6 class="mt-2 mr-3" for="">hs. </h6>
+                    <input [(ngModel)]="diaHasta" style="width: 3rem;" class="m-1" type="number">
+                    <input [(ngModel)]="mesHasta" style="width: 3rem;" class="m-1" type="number">
+                    <input [(ngModel)]="yearHasta" style="width: 5rem;" class="m-1" type="number">
+                    <button type="button" (click)="filtrar()" class="btn btn-primary">Filtrar</button>
                 </div>
             </div>
         </div>
-        <div class=" mx-auto mt-1 tableMatias">
+    </div>
+
+</div>
+
+
+<div class="row">
+    <div class=" col">
+
+        <div class="  mt-1 tableMatias">
             <div class=" tablaFacturas row animated fadeIn">
                 <div class="col">
                     <h3>Facturas</h3>
@@ -50,16 +66,16 @@
                         <label class="ml-4" for="text"><b>Ganancia posible</b> {{[posibleGanancias]}}  Gs</label>
 
                         <label class="ml-4" for="text"><b>Productos: </b> {{cantidadF}} unidades</label>
+                        <br>
+                        <label class="ml-4" for="text"><b>total Ingresos menos Egresos:</b> {{totalIngresoMenosEgreso}} Gs </label>
                     </div>
                 </div>
             </div>
         </div>
 
     </div>
-
-
     <div class="col ">
-        <div class=" mx-auto mt-5 tableMatias">
+        <div class="   mt-1 tableMatias">
             <div class="row animated fadeIn">
                 <div class="col">
                     <h3>Egresos</h3>

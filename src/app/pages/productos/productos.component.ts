@@ -164,9 +164,6 @@ export class ProductosComponent implements OnInit {
 
   buscarProductoConEnter(termino: string) {
 
-    // this.productos = [];
-    // // console.log(document.getElementById('inputBuscador').nodeValue);
-
     this.nameField.nativeElement.value = null;
 
     if (termino.length <= 0) {
@@ -174,26 +171,46 @@ export class ProductosComponent implements OnInit {
       this.cargarProductos();
       return;
     }
-    this._productoService.buscarProductos(termino).subscribe((productos) => {
+    this._productoService.buscarProductos(termino).subscribe(async (productos) => {
       this.productos = productos
-      // // console.log(this.inputbuscador);
-      // console.log(document.getElementById('inputBuscador').nodeValue);
-
       if (productos.length == 1) {
         let producto = productos[0]
         if (termino === producto.codigo) {
-          // console.log("encontro", producto);
-          this.selecctionarItem(producto, "1")
-          // this.playSound()        
-          // this.productos = [];
+
+          let productoCarrito = this.getProductoOfCarrito(producto._id)
+          if (productoCarrito) {
+            if (productoCarrito.cantidad >= producto.stock) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Cantidad seleccionada supera el stock',
+                showConfirmButton: true
+              });
+              return
+            } else{
+              this.selecctionarItem(producto, "1")
+
+            }
+          } else {
+            this.selecctionarItem(producto, "1")
+
+          }
         }
       }
       this.editName();
     })
-    // this.cargarProductos()
 
   }
 
+
+  getProductoOfCarrito(id) {
+    let producto
+    this.items.forEach((prod: any) => {
+      if (id === prod._id) {
+        producto = prod
+      }
+    })
+    return producto
+  }
 
   buscarProducto(termino: string) {
     this.productos = [];
@@ -328,6 +345,19 @@ export class ProductosComponent implements OnInit {
     this.editName();
   }
 
+  onPrint() {
+
+    let doc = document.createElement('div')
+    doc.id = 'print-section';
+    let p = document.createElement('p');
+    p.innerText = "lorem ipsum"
+    p.style.backgroundColor = 'black'
+    doc.append(p);
+    let main = document.getElementById('main');
+    main.append(doc);
+
+  }
+
   vender() {
 
 
@@ -335,7 +365,7 @@ export class ProductosComponent implements OnInit {
       Swal.fire({
         icon: 'error',
         title: 'No se pudo vender, Lista de carrito vacía',
-        showConfirmButton: true
+        showConfirmButton: false
       });
       return
 
@@ -368,7 +398,7 @@ export class ProductosComponent implements OnInit {
       let id = localStorage.getItem('idCaja')
       if (id) {
         this._cierreCajaService.getCierreCaja(id).subscribe((resp: any) => {
- 
+
           cierrecaja = resp.cierreCaja
           cierrecaja.montoCierre += this.total
           cierrecaja.facturas.push(this.factura)

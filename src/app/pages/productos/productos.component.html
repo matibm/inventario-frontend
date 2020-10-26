@@ -1,4 +1,4 @@
-<div [ngClass]="_productoService.oculto" class="mainP row">
+<div id="main" [ngClass]="_productoService.oculto" class="mainP row">
     <div class="col-7 productos">
         <div class="row animated fadeIn">
             <div class="buscador ml-3 pr-3 col-12">
@@ -101,30 +101,17 @@
     <div class="col-5 ">
         <div class="col carrito  ">
             <div class="card">
-                <div class="row">
-                    <div class="col">
-                        <h3 class="pl-3 pt-4 card-title">Carrito</h3>
-                    </div>
-                    <!-- <div class="col">
-                        <div *ngIf="!descuentoForAll" align="right">
-                            <button type="button" (click)="onToggle(true)" class="mt-4 card-title btn btn-outline-secondary">Activar descuento para todos</button>
-                        </div>
-                        <div *ngIf="descuentoForAll" align="right">
-                            <button type="button" (click)="onToggle(false)" class="mt-4 card-title btn btn-outline-danger">Desactivar descuento para todos</button>
-                        </div>
 
-                    </div> -->
-                </div>
+                <label class=" lead pl-3  mt-1">Carrito</label>
 
 
-                <div class="items card-body">
+                <div class="items m-0 p-0 card-body">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Imagen</th>
+                                <!-- <th>Imagen</th> -->
                                 <th>Marca</th>
                                 <th>Tipo</th>
-                                <th>Descuento</th>
                                 <th>Precio</th>
                                 <th>cantidad</th>
                                 <th></th>
@@ -132,12 +119,12 @@
                         </thead>
                         <tbody *ngFor="let producto of items ; index as i">
                             <tr>
-                                <td class="w70">
+                                <!-- <td class="w70">
                                     <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
-                                </td>
+                                </td> -->
                                 <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}</td>
                                 <td class=" pt-4 ">{{producto.modelo}}</td>
-                                <button align="center" [id]="'desc_'+producto._id" (click)="switchDescuento(true, i )" type="button" class="ml-3 mt-3 btn btn-secondary"> {{producto.descuento}}</button>
+                                <!-- <button align="center" [id]="'desc_'+producto._id" (click)="switchDescuento(true, i )" type="button" class="ml-3 mt-3 btn btn-secondary"> {{producto.descuento}}</button> -->
                                 <td><button align="center" (click)="switchDescuento(false, i )" [id]="'normal_'+producto._id" type="button" class="  mt-1 btn btn-success">
                                         {{producto.precio}}</button></td>
                                 <td class="pt-4 "> {{producto.cantidad}}</td>
@@ -176,8 +163,8 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col"><button [disabled]="diableVender" type="button" (click)="vender()" class="btn btn-success">Vender</button></div>
-                                    <!-- <div class="col"><button type="button" (click)="onCliente()" class="btn btn-outline-primary">Registrar Cliente</button></div> -->
+                                    <div class="col"><button [disabled]="diableVender" type="submit" class="btn btn-success">Vender</button></div>
+                                    <div class="col"><button type="button" (click)="onCliente()" class="btn btn-outline-primary">Registrar Cliente</button></div>
                                 </div>
                             </form>
 
@@ -196,16 +183,9 @@
 
                                     <button *ngIf="debiendo  && (_clienteModalService.cliente.nombre || _clienteModalService.cliente.ci)" (click)="debiendo = false" type="button" class="btn btn-danger">debe</button>
                                 </div>
-
-
-
                             </div>
                         </div>
-
-
                     </div>
-
-
                 </div>
             </div>
         </div>

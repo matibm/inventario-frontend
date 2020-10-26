@@ -16,8 +16,12 @@ export class FacturaComponent implements OnInit {
   items
   total
   cantidad
+  horaDesde = 6
+  minutoDesde = 0
+  horaHasta = 20
+  minutoHasta = 0
   factura
-  egresos
+  egresos = []
   hoy: Date
   diaDesde: number
   mesDesde
@@ -32,7 +36,7 @@ export class FacturaComponent implements OnInit {
   totalBrutoF = 0;
   posibleGanancias = 0;
   cantidadF = 0;
-
+  totalIngresoMenosEgreso = 0;
   constructor(
     private _facturaService: FacturaService,
     public _facturaModalService: FacturaModalService,
@@ -43,14 +47,20 @@ export class FacturaComponent implements OnInit {
   ngOnInit() {
     this.setFechas()
     this.cargarFacturas(this.dateDesde.valueOf(), this.dateHasta.valueOf())
-    this.cargarEgresos()
-    this._facturaModalService.notificacion.subscribe( () =>{
+    this.cargarEgresos(this.dateDesde.valueOf(), this.dateHasta.valueOf())
+    this._facturaModalService.notificacion.subscribe(() => {
       this.cargarFacturas(this.dateDesde.valueOf(), this.dateHasta.valueOf())
+      this.cargarMontos()
     })
     this._egresosService.notificacion.subscribe((r) => {
 
-      this.cargarEgresos()
+      this.cargarEgresos(this.dateDesde.valueOf(), this.dateHasta.valueOf())
+      this.cargarMontos()
+
+
     })
+
+
   }
 
   setFechas() {
@@ -63,8 +73,8 @@ export class FacturaComponent implements OnInit {
     this.dateDesde = this.semanaDesde
     // console.log(this.semanaDesde);
 
-    this.dateDesde.setHours(0, 0, 0);
-    this.dateHasta.setHours(23, 59, 0);
+    this.dateDesde.setHours(this.horaDesde, this.minutoDesde, 0);
+    this.dateHasta.setHours(this.horaHasta, this.minutoHasta, 59);
     // console.log(this.dateHasta);
 
     this.diaDesde = this.dateDesde.getDate();
@@ -76,52 +86,47 @@ export class FacturaComponent implements OnInit {
     this.yearHasta = this.hoy.getFullYear();
   }
 
-
   eliminarEgreso(egreso) {
     this._egresosService.eliminarEgreso(egreso._id).subscribe()
   }
 
-  cargarFacturas(desde, hasta) {
+  async cargarFacturas(desde, hasta) {
     //  this.cargando = true;
-    this._facturaService.getFacturas(this.desde).subscribe((resp: any) => {
+    let resp: any = await this._facturaService.getFacturas(desde, hasta)
+    console.log(resp);
 
-      // this.facturas = resp.facturas.reverse()
-      this.facturas = new Array()
-      // console.log(resp.facturas);
-      for (let i = 0; i < resp.facturas.reverse().length; i++) {
-        const factura = resp.facturas.reverse()[i];
-        if (factura.fecha >= desde && factura.fecha <= hasta) {
-          this.facturas.push(factura)
-        }
-        this.facturas = this.facturas.reverse()
+    this.facturas = new Array()
+    for (let i = 0; i < resp.facturas.reverse().length; i++) {
+      const factura = resp.facturas.reverse()[i];
+      if (factura.fecha >= desde && factura.fecha <= hasta) {
+        this.facturas.push(factura)
       }
-      //  this.cargando = false;
-      this.cargarMontos()
+      this.facturas = this.facturas.reverse()
+    }
 
-    })
   }
-
-
-
+ 
   filtrar() {
     let date = new Date();
     let desde = new Date(date.setUTCFullYear(this.yearDesde, this.mesDesde - 1, this.diaDesde));
-    desde.setHours(0, 0, 0)
+    desde.setHours(this.horaDesde, this.minutoDesde, 0)
 
     date = new Date();
     let hasta = new Date(date.setUTCFullYear(this.yearHasta, this.mesHasta - 1, this.diaHasta));
-    hasta.setHours(23, 59, 0)
-    // console.log(desde);
-    // console.log(hasta);
-    this.cargarFacturas(desde, hasta);
+    hasta.setHours(this.horaHasta, this.minutoHasta, 59)
+
+    this.cargarFacturas(desde.valueOf(), hasta.valueOf());
+    // this.cargarFacturas(this.dateDesde.valueOf(), this.dateHasta.valueOf());
+
+    this.cargarEgresos(desde.valueOf(), hasta.valueOf());
 
   }
-
-
+ 
   cargarMontos() {
     let total = 0;
     let totalBruto = 0;
     let cantidad = 0;
+    let totalEgreso = 0
     for (let i = 0; i < this.facturas.length; i++) {
       const factura = this.facturas[i];
       for (let j = 0; j < factura.productos.length; j++) {
@@ -134,20 +139,25 @@ export class FacturaComponent implements OnInit {
         totalBruto += producto.precioBruto * producto.cantidad;
         cantidad += producto.cantidad;
       }
-
     }
+    for (let i = 0; i < this.egresos.length; i++) {
+      const egreso = this.egresos[i];
+      totalEgreso += egreso.monto;
+    }
+
+
+    this.totalIngresoMenosEgreso = total - totalEgreso;
     this.totalF = total;
     this.totalBrutoF = totalBruto;
     this.cantidadF = cantidad;
     this.posibleGanancias = Math.floor(this.totalF - this.totalBrutoF)
   }
 
-  cargarEgresos() {
-    this._egresosService.getEgresos().subscribe((resp: any) => {
-      this.egresos = resp.egresos.reverse();
-      // console.log(this.egresos);
+  async cargarEgresos(desde, hasta) {
+    let resp: any = await this._egresosService.getEgresos(desde, hasta);
+    this.egresos = resp.egresos.reverse();
+    this.cargarMontos()
 
-    })
   }
 
   verFacturaModal(factura) {

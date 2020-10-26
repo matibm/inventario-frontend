@@ -27,8 +27,7 @@ export class CrearProductoModalComponent implements OnInit {
   // precioBruto
   // descuento
 
-  proveedores
-
+ 
   constructor(
     public _crearProductoModalService: CrearProductoModalService,
     private _subirArchivoService: SubirArchivoService,
@@ -53,18 +52,26 @@ export class CrearProductoModalComponent implements OnInit {
     // }
 
   }
-  buscarProveedor(termino) {
+  async buscarProveedor(termino) {
     if (termino) {
-      this._proveedorService.buscarProveedor(termino).subscribe(proveedores => {
-        
-        
-        this.proveedores = proveedores;
-        console.log(proveedores);
-        // this._crearProductoModalService.proveedor = proveedores[0]._id
-      })  
-    }else{
-     }
-    
+
+      let resp: any = await this._proveedorService.buscarProveedor(termino)
+
+      this._crearProductoModalService.proveedores = resp.proveedores;
+      if (this._crearProductoModalService.proveedores.length == 1) {
+        this._crearProductoModalService.proveedor = this._crearProductoModalService.proveedores[0];
+      }
+
+      if (this._crearProductoModalService.proveedores.length == 0) {
+        this._crearProductoModalService.proveedores = null
+        this._crearProductoModalService.proveedor = null;  
+      }
+
+    } else {
+      this._crearProductoModalService.proveedores = null
+      this._crearProductoModalService.proveedor = null;
+    }
+
   }
 
 

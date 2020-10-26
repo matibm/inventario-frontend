@@ -25,6 +25,8 @@ import { ResumenComponent } from './pages/resumen/resumen.component';
 import { LoginComponent } from './components/login/login.component';
 import { RecargaModalComponent } from './components/recarga-modal/recarga-modal.component';
 import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
+import { NgxPrintModule } from 'ngx-print';
+import { EditarProveedorModalComponent } from './components/editar-proveedor-modal/editar-proveedor-modal.component';
 
 @NgModule({
   declarations: [
@@ -49,12 +51,14 @@ import { ProveedoresComponent } from './pages/proveedores/proveedores.component'
     LoginComponent,
     RecargaModalComponent,
     ProveedoresComponent,
+    EditarProveedorModalComponent,
     
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    NgxPrintModule,
     AppRoutingModule
     
   ],

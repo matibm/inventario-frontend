@@ -2,6 +2,7 @@ import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { URL_SERVICIOS } from './../config/global';
 import { Injectable, EventEmitter } from '@angular/core';
+import Swal from 'sweetalert2'
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,9 @@ export class FacturaService {
     return this.http.get(url)
   }
 
-  getFacturas(desde) {
-    let url = URL_SERVICIOS + '/factura';
-    return this.http.get(url);
+  getFacturas(desde, hasta) {
+    let url = URL_SERVICIOS + '/factura/'+ desde +'?hasta=' + hasta ;
+    return this.http.get(url).toPromise()
   }
   getProductosMasVendidos(desde, hasta) {
     let url = URL_SERVICIOS + '/factura/masvendidos';
@@ -63,6 +64,12 @@ export class FacturaService {
     let url = URL_SERVICIOS + '/factura/' + factura._id;
     return this.http.delete(url).pipe(map((resp: any) => {      
       this.noficacion.emit();
+      Swal.fire({
+        icon: 'success',
+       title: 'Factura Eliminada',
+       showConfirmButton: false,
+       timer: 1500
+     })
       return resp.factura
     })) 
   }

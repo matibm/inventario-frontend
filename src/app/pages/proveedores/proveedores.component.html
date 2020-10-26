@@ -40,7 +40,8 @@
                                 <th>nombre</th>
                                 <th>telefono</th>
                                 <th>comentario</th>
-                                <th></th>
+                                <th>eliminar</th>
+                                <th>editar</th>
                             </tr>
                         </thead>
                         <tbody class="table" *ngFor="let item of proveedores">
@@ -50,6 +51,11 @@
                                 <td>{{item.comentario}}</td>
                                 <td (click)="eliminarProveedor(item._id)">
                                     <i style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
+
+                                </td>
+                                <td (click)="editarProveedor(item)">
+                                    <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+
                                 </td>
                             </tr>
                         </tbody>
@@ -59,9 +65,9 @@
 
         </div>
         <div class="col">
-            <div class="card">
+            <div *ngIf="productos" class=" card">
                 <div class=" itemsProductos ">
-                    <table class="table tableMatias table-bordered table-hover">
+                    <table class="table  tableMatias table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>Imagen</th>
@@ -70,11 +76,13 @@
                                 <th>Cod</th>
                                 <th>Descuento</th>
                                 <th>Precio</th>
+                                <th>Costo</th>
                                 <th>En stock</th>
+                                <th>Stock Minimo</th>
                             </tr>
                         </thead>
                         <tbody *ngFor="let producto of productos ">
-                            <tr>
+                            <tr [ngClass]="getColor(producto.stock, producto.stockMinimo)">
                                 <td class="w70">
                                     <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer">
                                 </td>
@@ -84,10 +92,17 @@
                                 <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
                                 <td class=" pt-4 ">{{producto.descuento}}</td>
                                 <td class=" pt-4 ">{{producto.precio}}</td>
+                                <td class=" pt-4 ">{{producto.precioBruto}}</td>
                                 <td class=" pt-4 ">{{producto.stock}}</td>
+                                <td class=" pt-4 ">{{producto.stockMinimo}}</td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="select-proveedor flex-row" *ngIf="!productos">
+                <div class="col  d-flex justify-content-md-center ">
+                    <h4 class="display-4">Seleccione Proveedor</h4>
                 </div>
             </div>
         </div>

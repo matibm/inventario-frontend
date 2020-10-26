@@ -17,18 +17,20 @@ export class EditarProductoModalComponent implements OnInit {
 
   ngOnInit() {
   }
-  buscarProveedor(termino) {
+   async buscarProveedor(termino) {
     if (termino) {
-      this._proveedorService.buscarProveedor(termino).subscribe(proveedores => {
-        
-        
-        this.proveedores = proveedores;
-       
-      })  
-    }else{
+
+      let resp: any = await this._proveedorService.buscarProveedor(termino)
+
+      this.proveedores = resp.proveedores;
+
+    } else {
+      this.proveedores = null
      }
-    
+
   }
+
+
 
 
   

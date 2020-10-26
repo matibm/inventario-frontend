@@ -22,6 +22,7 @@ export class EditarProductoModalService {
   descuento
   id
   cantidad
+  stockMinimo = 0
   imagenSubir
   imagenTemp
   agregarCantidad = 0
@@ -76,7 +77,8 @@ export class EditarProductoModalService {
             stock: this.cantidad,
             descuento: this.descuento,
             img: this.img,
-            proveedor: ''
+            proveedor: '',
+            stockMinimo: this.stockMinimo
           }
 
           if (this.proveedor) {
@@ -123,7 +125,8 @@ export class EditarProductoModalService {
         stock: this.cantidad,
         descuento: this.descuento,
         img: this.img,
-        proveedor: ''
+        proveedor: '',
+        stockMinimo: this.stockMinimo
       }
 
       if (this.proveedor) {
@@ -210,7 +213,8 @@ export class EditarProductoModalService {
     this.descuento = producto.descuento
     this.img = producto.img || ''
     this.oculto = ''
-    this.imagenTemp = producto.img || ''
+    this.imagenTemp = producto.img || '',
+      this.stockMinimo = producto.stockMinimo || 0
     if (producto.proveedor) {
       console.log(producto);
 
@@ -229,15 +233,23 @@ export class EditarProductoModalService {
 
   }
 
-  buscarProveedor(termino) {
+  async buscarProveedor(termino) {
     if (termino) {
-      this._proveedorService.buscarProveedor(termino).subscribe(proveedores => {
 
+      let resp: any = await this._proveedorService.buscarProveedor(termino) 
+      this.proveedores = resp.proveedores; 
+      if (this.proveedores.length == 1) {
+        this.proveedor = this.proveedores[0]
+      }
+      if (this.proveedores.length == 0) {
+        this.proveedores = null
+        this.proveedor = null;
+      }
+      
 
-        this.proveedores = proveedores;
-
-      })
     } else {
+      this.proveedores = null
+      this.proveedor = null;
     }
 
   }

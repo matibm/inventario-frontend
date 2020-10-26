@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 import { URL_SERVICIOS } from './../config/global';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ import { Injectable } from '@angular/core';
 export class ProveedorService {
 
   constructor(private http: HttpClient) { }
+  public notificacion = new EventEmitter<any>();
 
   getProveedor(id) {
     let url = URL_SERVICIOS + '/proveedor/' + id;
@@ -21,14 +22,14 @@ export class ProveedorService {
   }
 
   buscarProveedor(termino) {
-    console.log(termino);
-    
+     
     let url = URL_SERVICIOS + '/proveedor/buscar/' + termino;
-    return this.http.get(url).pipe(map((resp: any) => {
-      console.log(resp);
-      
-      return resp.proveedores
-    }))
+    return this.http.get(url).toPromise().then(resp => {return resp})
+  }
+
+  updateProveedor(id, proveedor){ 
+    let url = URL_SERVICIOS + '/proveedor/' + id; 
+    return this.http.put(url, proveedor).toPromise(); 
   }
 
   deleteProveedor(id) {

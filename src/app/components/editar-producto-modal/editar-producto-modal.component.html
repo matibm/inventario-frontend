@@ -1,7 +1,7 @@
 <div class="fondo-negro  fadeIn" [ngClass]='_editarProductoModalService.oculto'>
 
     <div class="modal" style="display: block;" tabindex="-1" role="dialog">
-        <div class="modal-dialog  modal-lg  modal-dialog-scrollable" role="document">
+        <div class="modal-dialog  modal-xl  modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Editar Producto </h5>
@@ -10,95 +10,107 @@
                     </button>
                 </div>
                 <form ngNativeValidate id="amyFormEditProduct" class="formProducto" (ngSubmit)="_editarProductoModalService.guardar()" class="modal-body cuerpo ">
-                    <div *ngIf="true">
-                        <div class="form-group">
-                            <label for="">Marca</label>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="">Marca</label>
 
-                            <input [(ngModel)]="_editarProductoModalService.marca" name="marca" ngModel type="text" required #marca class="form-control" required aria-describedby="helpId" placeholder="">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Tipo</label>
-                            <input ngModel type="text" [(ngModel)]="_editarProductoModalService.modelo" name="modelo" required #modelo class="form-control" required aria-describedby="helpId" placeholder="">
+                                <input [(ngModel)]="_editarProductoModalService.marca" name="marca" ngModel type="text" required #marca class="form-control" required aria-describedby="helpId" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Tipo</label>
+                                <input ngModel type="text" [(ngModel)]="_editarProductoModalService.modelo" name="modelo" required #modelo class="form-control" required aria-describedby="helpId" placeholder="">
 
-                        </div>
-                        <div class="form-group">
-                            <label for="">Codigo</label>
-                            <input ngModel type="text" [(ngModel)]="_editarProductoModalService.codigo" name="codigo" required #codigo class="form-control" required aria-describedby="helpId" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Codigo</label>
+                                <input ngModel type="text" [(ngModel)]="_editarProductoModalService.codigo" name="codigo" required #codigo class="form-control" required aria-describedby="helpId" placeholder="">
 
-                        </div>
-                        <div class="form-group">
-                            <label for="">Precio</label>
-                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.precio" name="precio" required #precio class="form-control" required aria-describedby="helpId" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Precio</label>
+                                <input ngModel type="number" [(ngModel)]="_editarProductoModalService.precio" name="precio" required #precio class="form-control" required aria-describedby="helpId" placeholder="">
 
-                        </div>
-                        <div class="form-group">
-                            <label for="">Precio Bruto</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Precio de costo</label>
+                                <input ngModel type="number" [(ngModel)]="_editarProductoModalService.precioBruto" name="precioBruto" class="form-control">
 
-                        </div>
-                        <div class="form-group">
-                            <label for="">Precio con Descuento</label>
-                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.descuento" name="descuento" #precioBruto class="form-control" aria-describedby="helpId" placeholder="">
+                            </div>
+                            <!-- <div class="form-group">
+                                <label for="">Precio con Descuento</label>
+                                <input ngModel type="number" [(ngModel)]="_editarProductoModalService.descuento" name="descuento" #precioBruto class="form-control" aria-describedby="helpId" placeholder="">
+    
+                            </div> -->
 
-                        </div>
-                        <div *ngIf="_editarProductoModalService._loginService.logued" class="form-group">
-                            <label for="">Cantidad</label>
-                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.cantidad" name="maererrca" #cantidad class="form-control" aria-describedby="helpId" placeholder="">
-                        </div>
-
-                        <div *ngIf="!_editarProductoModalService._loginService.logued" class=" form-group">
-                            <label class=" form-group" for="">En stock : {{_editarProductoModalService.cantidad}}</label>
-                            <br>
-                            <!-- <label class="form-control" required aria-describedby="helpId" placeholder=""></label> -->
-                            <label for="text">Sumar al stock:</label>
-                            <input ngModel type="number" [(ngModel)]="_editarProductoModalService.agregarCantidad" name="maesrerrca" #cantidad class="form-control" aria-describedby="helpId" placeholder="">
-                        </div>
-                        <hr>
-                        <h5>Proveedor</h5>
-                        <input [(ngModel)]='_editarProductoModalService.buscador' (ngModelChange)='_editarProductoModalService.buscarProveedor(query.value)' #query ngModel type="text" name="cantsidad" class="form-control" aria-describedby="helpId" placeholder="buscar proveedor">
-                        <div *ngIf="_editarProductoModalService.proveedores">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>nombre</th>
-                                        <th>telefono</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="table" *ngFor="let item of _editarProductoModalService.proveedores">
-                                    <tr (click)="_editarProductoModalService.proveedor = item " class="list-item list-group-item-action pointer" href="javascript:void">
-                                        <td>{{item.nombre}}</td>
-                                        <td>{{item.telefono}}</td>
-                                    </tr>
-                                </tbody>
-
-                            </table>
-                        </div>
-
-                        <label class="my-4" for="text">Proveedor seleccionado: <span *ngIf="!_editarProductoModalService.proveedor" >[ninguno]</span> <b *ngIf="_editarProductoModalService.proveedor" >{{_editarProductoModalService.proveedor.nombre}}</b></label>
-
-                        <div align="center">
-                            <img *ngIf="_editarProductoModalService.img && !_editarProductoModalService.imagenSubir" [src]="_editarProductoModalService.img | imagen" class="w150" alt="">
-                            <img *ngIf="_editarProductoModalService.imagenSubir" [src]="_editarProductoModalService.imagenTemp " class="w150" alt="">
-                            <p *ngIf="!_editarProductoModalService.img && !_editarProductoModalService.imagenTemp" class="mt-5">
-                                Selecciona un archivo para subir
-                            </p>
-                            <form action="/file-upload" class=" p-5 m-4 dropzone dz-clickable" id="my-drospzone">
-
-                                <input (change)="_editarProductoModalService.seleccionImagen($event.target.files[0])" type="file">
-                            </form>
 
                         </div>
-                        <div class="form-group">
-                            <label for="">Comentario</label>
-                            <input ngModel type="text" [(ngModel)]="_editarProductoModalService.comentario" name="comentario" #precioBruto class="form-control" aria-describedby="helpId" placeholder="Comentario opcional para esta modificacion del producto">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" (click)="_editarProductoModalService.eliminarProducto()" class="btn btn-danger">Eliminar</button>
-                            <button type="button" (click)="_editarProductoModalService.ocultarModal()" class="btn btn-secondary">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <!-- <button class="btn btn-succes">Confirmar</button> -->
-                        </div>
+                        <div class="col">
+                            <div *ngIf="_editarProductoModalService._loginService.logued" class="form-group">
+                                <label for="">Cantidad</label>
+                                <input ngModel type="number" [(ngModel)]="_editarProductoModalService.cantidad" name="maererrca" #cantidad class="form-control" aria-describedby="helpId" placeholder="">
+                            </div>
 
+                            <div *ngIf="!_editarProductoModalService._loginService.logued" class=" form-group">
+                                <label class=" form-group" for="">En stock : {{_editarProductoModalService.cantidad}}</label>
+                                <br>
+                                <!-- <label class="form-control" required aria-describedby="helpId" placeholder=""></label> -->
+                                <label for="text">Sumar al stock:</label>
+                                <input ngModel type="number" [(ngModel)]="_editarProductoModalService.agregarCantidad" name="maesrerrca" #canwtidad class="form-control" aria-describedby="helpId" placeholder="">
+                            </div>
+
+                            <div *ngIf="_editarProductoModalService._loginService.logued" class="form-group">
+                                <label for="">Stock Minimo</label>
+                                <input ngModel type="number" [(ngModel)]="_editarProductoModalService.stockMinimo" name="maereerrca" #cantsidad class="form-control" aria-describedby="helpId" placeholder="">
+                            </div>
+                            <hr>
+                            <h5>Proveedor</h5>
+                            <input [(ngModel)]='_editarProductoModalService.buscador' (ngModelChange)='_editarProductoModalService.buscarProveedor(query.value)' #query ngModel autocomplete="off" name="cantsidad" class="form-control" placeholder="buscar proveedor">
+                            <div *ngIf="_editarProductoModalService.proveedores">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>nombre</th>
+                                            <th>telefono</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table" *ngFor="let item of _editarProductoModalService.proveedores">
+                                        <tr (click)="_editarProductoModalService.proveedor = item " class="list-item list-group-item-action pointer" href="javascript:void">
+                                            <td>{{item.nombre}}</td>
+                                            <td>{{item.telefono}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                            <label class="my-4" for="text">Proveedor seleccionado: <span *ngIf="!_editarProductoModalService.proveedor" >[ninguno]</span> <b *ngIf="_editarProductoModalService.proveedor" >{{_editarProductoModalService.proveedor.nombre}}</b></label>
+
+                            <div *ngIf="false" align="center">
+                                <img *ngIf="_editarProductoModalService.img && !_editarProductoModalService.imagenSubir" [src]="_editarProductoModalService.img | imagen" class="w150" alt="">
+                                <img *ngIf="_editarProductoModalService.imagenSubir" [src]="_editarProductoModalService.imagenTemp " class="w150" alt="">
+                                <p *ngIf="!_editarProductoModalService.img && !_editarProductoModalService.imagenTemp" class="mt-5">
+                                    Selecciona un archivo para subir
+                                </p>
+                                <form action="/file-upload" class=" p-5 m-4 dropzone dz-clickable" id="my-drospzone">
+
+                                    <input (change)="_editarProductoModalService.seleccionImagen($event.target.files[0])" type="file">
+                                </form>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="">Comentario</label>
+                                <input ngModel type="text" [(ngModel)]="_editarProductoModalService.comentario" name="comentario" #precioBruto class="form-control" aria-describedby="helpId" placeholder="Comentario opcional para esta modificacion del producto">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" (click)="_editarProductoModalService.eliminarProducto()" class="btn btn-danger">Eliminar</button>
+                                <button type="button" (click)="_editarProductoModalService.ocultarModal()" class="btn btn-secondary">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <!-- <button class="btn btn-succes">Confirmar</button> -->
+                            </div>
+                        </div>
                     </div>
+
                 </form>
             </div>
         </div>

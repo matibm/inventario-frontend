@@ -10,8 +10,7 @@ import Swal from 'sweetalert2'
 export class ProductoService {
 
   public oculto = ''
-  public notificacion = new EventEmitter<any>();
-
+  public notificacion = new EventEmitter<any>(); 
   constructor(
     private http: HttpClient,
     private _clienteModalService: ClienteModalService
@@ -25,8 +24,9 @@ export class ProductoService {
       Swal.fire({
         icon: 'success',
         title: 'Producto eliminado correctamente',
-        showConfirmButton: true
-      });
+        showConfirmButton: false,
+        timer: 1500
+  });
 
       return resp;
     }));
@@ -54,8 +54,9 @@ export class ProductoService {
       Swal.fire({
         icon: 'success',
         title: 'Producto actualizado',
-        showConfirmButton: true
-      });
+        showConfirmButton: false,
+        timer: 1500
+  });
 
       return true;
     }));
@@ -70,8 +71,9 @@ export class ProductoService {
       Swal.fire({
         icon: 'success',
         title: 'Producto creado correctamente',
-        showConfirmButton: true
-      });
+        showConfirmButton: false,
+        timer: 1500
+  });
 
       return true;
     }));
@@ -83,11 +85,13 @@ export class ProductoService {
 
     return this.http.put(url, producto).pipe(map((resp: any) => {
       // console.log(resp);
-
+      this.notificacion.emit()
       Swal.fire({
         icon: 'success',
         title: 'Producto actualizado correctamente',
-        showConfirmButton: true
+        showConfirmButton: false,
+            timer: 1500
+
       });
 
       return resp;
@@ -121,7 +125,9 @@ export class ProductoService {
           Swal.fire({
             icon: 'success',
             title: 'Venta Realizada',
-            showConfirmButton: true
+            showConfirmButton: false,
+            timer: 1500
+
           });
         } 
         this.notificacion.emit(resp)

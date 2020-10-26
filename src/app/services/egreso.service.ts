@@ -11,12 +11,11 @@ export class EgresoService {
 
   constructor(private http: HttpClient) { }
 
-  getEgresos(){
-    let url = URL_SERVICIOS + '/egreso';
-    return this.http.get(url);
+  getEgresos(desde, hasta){
+    let url = URL_SERVICIOS + '/egreso/'+ desde + '?hasta=' + hasta;
+    return this.http.get(url).toPromise()
   }
-  setEgreso(egreso){
-
+  setEgreso(egreso){ 
     let url = URL_SERVICIOS + '/egreso';
     return this.http.post(url, egreso).pipe(map((resp: any) => {
       this.notificacion.emit();

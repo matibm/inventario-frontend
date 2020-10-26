@@ -2,6 +2,7 @@ import { SubirArchivoService } from './../../services/subir-archivo.service';
 import { ProductoService } from './../../services/producto.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import Swal from 'sweetalert2';
+import { faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 
 
 @Injectable({
@@ -23,7 +24,11 @@ export class CrearProductoModalService {
   codigo 
   cantidad
   precioBruto
-  descuento 
+  descuento
+  stockMinimo = 0
+  proveedores
+  proveedorFijado
+
   public notificacion = new EventEmitter<any>();
 
   oculto = 'oculto'
@@ -31,6 +36,11 @@ export class CrearProductoModalService {
     private _subirArchivoService: SubirArchivoService,
     private _productoService: ProductoService
   ) { 
+    
+    this.proveedorFijado = JSON.parse(localStorage.getItem('proveedorFijado'))
+    if (this.proveedorFijado) {
+        this.proveedor = this.proveedorFijado
+    }
     if (localStorage.getItem('brutoIsPercent')) {
       if (localStorage.getItem('brutoIsPercent') == 'true') {
         this.brutoIsPercent = true;    
@@ -104,6 +114,7 @@ export class CrearProductoModalService {
     this.precioBruto = null;
     this.descuento = null;
     this.cantidad = null;
+    this.stockMinimo = 0;
  
   }
 
@@ -132,7 +143,7 @@ export class CrearProductoModalService {
           var form = document.getElementById("myFormNewProduct");
           function handleForm(event) { event.preventDefault(); }
           form.addEventListener('submit', handleForm);
-
+          
           let producto = {
             marca: f.value.marca,
             modelo: f.value.modelo,
@@ -142,9 +153,16 @@ export class CrearProductoModalService {
             descuento: f.value.descuento,
             stock: f.value.cantidad,
             img: this.nombreImagen,
-            proveedor : this.proveedor._id
+            proveedor : '',
+            stockMinimo: f.value.stockMinimo
+
 
           }
+          if (this.proveedor) {
+            producto.proveedor = this.proveedor._id
+    
+          }
+          
 
           this._productoService.crearProducto(producto).subscribe(resp => {
             this.notificacion.emit(resp)
@@ -162,7 +180,11 @@ export class CrearProductoModalService {
       //function handleForm(event) { event.preventDefault(); }
       form.addEventListener('submit', this.handleForm);
       console.log(this.proveedor);
-
+      if(this.proveedor){
+        
+      }
+      console.log(this.stockMinimo);
+      
       let producto = {
         marca: f.value.marca,
         modelo: f.value.modelo,
@@ -171,9 +193,17 @@ export class CrearProductoModalService {
         precioBruto: f.value.precioBruto,
         descuento: f.value.descuento,
         stock: f.value.cantidad,
-        proveedor : this.proveedor._id
+        proveedor : '',
+        stockMinimo: f.value.stockMinimo
       }
 
+
+      if (this.proveedor) {
+        producto.proveedor = this.proveedor._id
+
+      }
+      console.log(producto);
+      
       this._productoService.crearProducto(producto).subscribe(resp => {
         this.notificacion.emit(resp)
         this.ocultarModal()
@@ -219,5 +249,18 @@ export class CrearProductoModalService {
   }
 
 
+  fijar(proveedor){
+    this.proveedorFijado = proveedor
+    proveedor = JSON.stringify(proveedor)
+    localStorage.setItem('proveedorFijado', proveedor)
+  }
 
+  desfijar(){
+    localStorage.removeItem('proveedorFijado')
+    this.proveedor = null;     
+    this.proveedores = null;
+    this.proveedorFijado = null;
+  }
+
+  
 }

@@ -27,6 +27,11 @@ import { RecargaModalComponent } from './components/recarga-modal/recarga-modal.
 import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
 import { NgxPrintModule } from 'ngx-print';
 import { EditarProveedorModalComponent } from './components/editar-proveedor-modal/editar-proveedor-modal.component';
+import { CrearServicioModalComponent } from './components/crear-servicio-modal/crear-servicio-modal.component';
+import { EditarServicioModalComponent } from './components/editar-servicio-modal/editar-servicio-modal.component';
+import { CrearIngresoModalComponent } from './components/crear-ingreso-modal/crear-ingreso-modal.component';
+import { ReabastecerComponent } from './components/reabastecer/reabastecer.component';
+import { PrecioPipe } from './pipes/precio.pipe';
 
 @NgModule({
   declarations: [
@@ -52,17 +57,22 @@ import { EditarProveedorModalComponent } from './components/editar-proveedor-mod
     RecargaModalComponent,
     ProveedoresComponent,
     EditarProveedorModalComponent,
+    CrearServicioModalComponent,
+    EditarServicioModalComponent,
+    CrearIngresoModalComponent,
+    ReabastecerComponent,
+    PrecioPipe,
     
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule,
+     FormsModule,
     NgxPrintModule,
     AppRoutingModule
     
   ],
-  exports: [ImagenPipe],
+  exports: [ImagenPipe ],
   providers: [],
   bootstrap: [AppComponent]
 })

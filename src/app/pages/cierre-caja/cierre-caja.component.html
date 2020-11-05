@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="m-3 carrito col-7">
+    <div class="m-3 carrito col-5">
 
         <div class=" mx-auto mt-5 tableMatias">
             <div class="row animated fadeIn">
@@ -10,23 +10,17 @@
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Monto Inicial</th>
-                                        <th>Monto Final</th>
-                                        <th>Cant Facturas</th>
-                                        <th>Cant Egresos</th>
                                         <th>Fecha Inicial</th>
                                         <th>Fecha Final</th>
-                                        <th style="width: 8%"></th>
+                                        <th style="width: 8%"> </th>
                                     </tr>
                                 </thead>
                                 <tbody class="pointer" *ngFor="let cierreCaja of cierreCajas">
                                     <tr (click)="onCierreCaja(cierreCaja)">
-                                        <td class=" pt-4 ">{{cierreCaja.montoInicio}} Gs </td>
-                                        <td class=" pt-4 ">{{cierreCaja.montoCierre}} Gs </td>
-                                        <td class=" pt-4 ">{{cierreCaja.facturas.length}}</td>
-                                        <td class=" pt-4 ">{{cierreCaja.egresos.length}} </td>
+
                                         <td class=" pt-4 ">{{cierreCaja.fechaInicio | fecha :'fecha'}} <br> {{cierreCaja.fechaInicio | fecha :'hora'}}</td>
-                                        <td *ngIf="cierreCaja.fechaCierre" class=" pt-4 ">{{cierreCaja.fechaCierre | fecha :'fecha'}} <br> {{cierreCaja.fechaCierre | fecha :'hora'}}</td>
+                                        <td *ngIf="cierreCaja.fechaCierre" class=" pt-4 ">
+                                            {{cierreCaja.fechaCierre | fecha :'fecha'}} <br> {{cierreCaja.fechaCierre | fecha :'hora'}}</td>
                                         <td *ngIf="!cierreCaja.fechaCierre" class=" pt-4 "> <b>sin cerrar</b> </td>
                                         <td class=" pt-4 ">
                                             <i (click)="eliminarCaja(cierreCaja)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
@@ -42,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class=" carrito col-5 m-3  ">
+    <div class=" carrito col m-3  ">
         <div class=" mx-auto mt-5 tableMatias">
             <div class="row animated fadeIn">
                 <div class="col">
@@ -53,10 +47,13 @@
                         <li style="cursor: pointer;" (click)="switchTab('egresos')" class="nav-item">
                             <a id="egresos_tab" href="javascript:undefined" class="nav-link">Egresos</a>
                         </li>
+                        <li style="cursor: pointer;" (click)="switchTab('ingresos')" class="nav-item">
+                            <a id="ingresos_tab" href="javascript:undefined" class="nav-link">Ingresos</a>
+                        </li>
                     </ul>
 
-                    <div *ngIf="facturaTab" class="carrito card">
-                        <div class="itemsFacturas">
+                    <div *ngIf="tab == 'factura'" class="carrito card">
+                        <div class="itemsArqueo">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -83,8 +80,8 @@
                         </div>
                     </div>
 
-                    <div *ngIf="!facturaTab" class="carrito card">
-                        <div class="">
+                    <div *ngIf="tab == 'egreso'" class="carrito card">
+                        <div class="itemsArqueo">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -112,9 +109,66 @@
                         <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
                         </div>
                     </div>
+                    <div *ngIf="tab == 'ingreso'" class="carrito card">
+                        <div class="itemsArqueo">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Monto</th>
+                                        <th>Comision</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <!-- <th style="width: 15%"></th> -->
+
+                                    </tr>
+                                </thead>
+                                <tbody class="pointer" *ngFor="let ingreso of ingresos">
+                                    <tr>
+                                        <td class=" pt-4 ">{{ingreso.nombre}}</td>
+                                        <td class=" pt-4 ">{{ingreso.monto}} Gs </td>
+                                        <td class=" pt-4 ">{{ingreso.comision}} Gs </td>
+                                        <td class=" pt-4 ">{{ingreso.fecha | fecha: 'fecha'}}</td>
+                                        <td class=" pt-4 ">{{ingreso.fecha | fecha :'hora'}}</td>
+                                        <!-- <td>
+                                            <i (click)="eliminarEgreso(egreso)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
+                        <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
+                        </div>
+                    </div>
 
                 </div>
             </div>
         </div>
+        <div class="m-4 row">
+            <div class="col">
+                <label for="">Monto Fijo: <b>{{montoFijo | precio }} Gs</b></label>
+
+                <br>
+                <label for="">Monto en Egresos: <b class="text-danger">{{montoEgresos | precio }} Gs</b></label>
+                <br>
+                <label for="">Monto en Ingresos: <b>{{montoIngresos | precio }} Gs</b> </label>
+                <br>
+                <label for="">Monto en Ventas: <b>{{montoVentas | precio}} Gs</b> </label>
+
+                <hr>
+
+                <p class="display-4">Total: <b>{{(montoFijo + montoIngresos+ montoVentas) -montoEgresos | precio }} Gs</b></p>
+            </div>
+            <div class="col">
+                <p class="lead">Ganancia posible</p>
+                <label for="">Comisión por Ingresos: <b>{{comision | precio }} Gs</b> </label>
+                <br>
+                <label for="">Ganancias por Ventas: <b>{{montoVentas - costo | precio}} Gs</b> </label>
+                <hr>
+                <p class="display-4">Total: <b>{{(montoVentas - costo) + comision  | precio}} Gs</b></p>
+            </div>
+
+        </div>
+
     </div>
 </div>

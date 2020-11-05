@@ -26,8 +26,12 @@
                                 <input [(ngModel)]='_crearProductoModalService.codigo' ngModel type="text" name="codigo" required #codigo class="form-control" required aria-describedby="helpId" placeholder="">
 
                             </div>
+                            <div class=" mt-2">
+                                <label for="">Precio de costo</label>
+                                <input [(ngModel)]='_crearProductoModalService.precioBruto' ngModel type="number" name="precioBruto" required #precioBruto class="form-control" required aria-describedby="helpId" placeholder="">
+                            </div>
                             <div class="form-group">
-                                <label for="">Precio</label>
+                                <label for="">Precio de venta</label>
                                 <input [(ngModel)]='_crearProductoModalService.precio' (change)="_crearProductoModalService.changePrecioNormal($event.target.value)" ngModel type="number" name="precio" required #precio class="form-control" required aria-describedby="helpId" placeholder="">
                             </div>
                             <div class="form-group">
@@ -59,10 +63,7 @@
     
     
                                 </div> -->
-                                <div class=" mt-2">
-                                    <label for="">Precio de costo</label>
-                                    <input [(ngModel)]='_crearProductoModalService.precioBruto' ngModel type="number" name="precioBruto" required #precioBruto class="form-control" required aria-describedby="helpId" placeholder="">
-                                </div>
+
 
 
                             </div>

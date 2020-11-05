@@ -10,7 +10,7 @@ import Swal from 'sweetalert2'
 export class ProductoService {
 
   public oculto = ''
-  public notificacion = new EventEmitter<any>(); 
+  public notificacion = new EventEmitter<any>();
   constructor(
     private http: HttpClient,
     private _clienteModalService: ClienteModalService
@@ -26,7 +26,7 @@ export class ProductoService {
         title: 'Producto eliminado correctamente',
         showConfirmButton: false,
         timer: 1500
-  });
+      });
 
       return resp;
     }));
@@ -56,7 +56,7 @@ export class ProductoService {
         title: 'Producto actualizado',
         showConfirmButton: false,
         timer: 1500
-  });
+      });
 
       return true;
     }));
@@ -73,7 +73,7 @@ export class ProductoService {
         title: 'Producto creado correctamente',
         showConfirmButton: false,
         timer: 1500
-  });
+      });
 
       return true;
     }));
@@ -90,7 +90,7 @@ export class ProductoService {
         icon: 'success',
         title: 'Producto actualizado correctamente',
         showConfirmButton: false,
-            timer: 1500
+        timer: 1500
 
       });
 
@@ -102,9 +102,8 @@ export class ProductoService {
 
     let url = URL_SERVICIOS + '/producto/decrementar';
 
-    return this.http.put(url, arrObj).pipe(map((resp: any) => {
+    return this.http.put(url, arrObj).toPromise().then((resp: any) => {
 
- 
       if (resp.ok == false) {
         let str = "";
         for (let i = 0; i < resp.productos.length; i++) {
@@ -112,7 +111,7 @@ export class ProductoService {
           str += ' ' + producto.marca + " " + producto.precio + " -";
 
         }
-         Swal.fire({
+        Swal.fire({
           icon: 'error',
           title: 'Error al registrar ventas',
           text: `por favor verifique los siguientes productos que se vendieron:${str}`,
@@ -129,27 +128,32 @@ export class ProductoService {
             timer: 1500
 
           });
-        } 
+        }
         this.notificacion.emit(resp)
         return resp;
-      } 
-    }));
-  } 
+      }
+    });
+  }
   getProductosFaltantes(desde) {
     let url = URL_SERVICIOS + '/producto/faltantes?desde=' + desde;
     return this.http.get(url);
   }
- 
+
   buscarProductos(termino: string) {
     let url = URL_SERVICIOS + '/busqueda/producto/' + termino;
-    return this.http.get(url).pipe(map((resp: any) => {
+    return this.http.get(url).toPromise().then((resp: any) => {
       return resp.productos
-    }))
+    })
   }
 
-  getProductosPorProveedor(id){
-    let url = URL_SERVICIOS + '/producto/proveedor/'+ id;
+  getProductosPorProveedor(id) {
+    let url = URL_SERVICIOS + '/producto/proveedor/' + id;
     return this.http.get(url).toPromise();
-  } 
+  }
+
+  saveMultiple(list){
+    let url = URL_SERVICIOS + '/producto/multiple'  ;
+    return this.http.put(url, list).toPromise();
+  }
 
 }

@@ -28,7 +28,9 @@ export class FacturaService {
 
   getFacturas(desde, hasta) {
     let url = URL_SERVICIOS + '/factura/'+ desde +'?hasta=' + hasta ;
-    return this.http.get(url).toPromise()
+    return this.http.get(url).toPromise().then((resp:any)=>{
+      return resp.facturas
+    })
   }
   getProductosMasVendidos(desde, hasta) {
     let url = URL_SERVICIOS + '/factura/masvendidos';
@@ -44,9 +46,9 @@ export class FacturaService {
   setFactura(factura){
 
     let url = URL_SERVICIOS + '/factura';
-    return this.http.post(url, factura).pipe(map((resp: any) => {
+    return this.http.post(url, factura).toPromise().then( (resp:any)=>{
       return resp.factura
-    }))
+    } )
   }
   putFactura(factura){
 

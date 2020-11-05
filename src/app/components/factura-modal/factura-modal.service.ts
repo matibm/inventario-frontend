@@ -14,6 +14,7 @@ export class FacturaModalService {
   public notificacion = new EventEmitter<any>();
   cliente = null;
   productos = null;
+  prohibirEliminar = false
   constructor(
     public _facturaService: FacturaService,
     private _clienteService: ClienteService
@@ -38,9 +39,10 @@ export class FacturaModalService {
     // this.ocultarModal()
   }
 
-  mostrarModal(factura) {
-
-    // console.log(factura);
+  mostrarModal(factura, habilitarEliminar?) {
+    
+    this.prohibirEliminar = habilitarEliminar || false;
+    console.log(this.prohibirEliminar);
     if (factura.cliente) {
       this._clienteService.getCliente(factura.cliente).subscribe(cliente => {
         this.cliente = cliente;

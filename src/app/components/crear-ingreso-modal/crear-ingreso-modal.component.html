@@ -1,0 +1,52 @@
+<div class="fondo-negro  fadeIn" [ngClass]='_crearIngresoModalService.oculto'>
+
+
+    <div class="modal" style="display: block;" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registrar Servicio </h5>
+                    <button type="button" class="close" (click)="_crearIngresoModalService.ocultarModal()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form ngNativeValidate id="myFdform" (ngSubmit)="_crearIngresoModalService.crearIngreso()" class="modal-body cuerpo ">
+
+                    <!-- <p class="lead">Buscar Pago de Servicio</p>
+                    <input (ngModelChange)='_crearIngresoModalService.buscarServicio(query.value)' #query ngModel type="text" name="cantsidad" autocomplete="off" class="form-control" aria-describedby="helpId" placeholder="buscar Pago de Servicio">
+                    <div *ngIf="_crearIngresoModalService.servicios">
+                        <table class="table">
+                            <tbody class="table" *ngFor="let item of _crearIngresoModalService.servicios">
+                                <tr (click)="_crearProductoModalService.proveedor = item " class="list-item list-group-item-action pointer" href="javascript:void">
+                                    <td>{{item.nombre}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> -->
+
+
+
+                    <div>
+                        <div class="form-group">
+                            <label for="">Nombre</label>
+                            <input type="text" [(ngModel)]='_crearIngresoModalService.nombre' name="nombre" class="form-control" aria-describedby="helpId" placeholder="nombre del ingreso o pago de Servicio">
+                        </div>
+                        <div class="form-group">
+                            <label for="">monto</label>
+                            <input type="number" [(ngModel)]='_crearIngresoModalService.monto' name="monto" class="form-control" aria-describedby="helpId" placeholder="">
+                        </div>
+                        <div class="form-group">
+                            <label for="">comisión</label>
+                            <input type="number" [(ngModel)]='_crearIngresoModalService.comision' name="comision" class="form-control" aria-describedby="helpId" placeholder="monto en ganancia por comision">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="_crearIngresoModalService.ocultarModal()">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Crear</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

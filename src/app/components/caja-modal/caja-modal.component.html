@@ -6,50 +6,54 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Cierre de Caja </h5>
-                    <button type="button" class="close" (click)="_cajaModalService.ocultarModal()" aria-label="Close">
+                    <button type="button" class="close" (click)="montoFijo =null" (click)="_cajaModalService.ocultarModal()" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
 
                 </div>
+                <form ngNativeValidate id="mwyForm" (ngSubmit)="crearCaja( )" action="">
 
-                <div *ngIf="_cajaModalService.cerrado">
+                    <div *ngIf="!_cajaService.cajaActual">
 
-                    <div class="m-3 form-group">
-                        <label for="">Monto</label>
-                        <input ngModel type="number" required #monto (keyup)='registrarMonto(monto.value)' class="form-control" aria-describedby="helpId" placeholder="Ingresar Monto">
-                        <small id="helpId" class="form-text text-muted">Cantidad de dinero inicial de caja</small>
-                    </div>
-                </div>
-
-                <div *ngIf="!_cajaModalService.cerrado">
-
-                    <div class="m-3 form-group">
-                        <label for="">Monto Inicial: {{_cajaModalService.montoInicio}} Gs</label>
-                        <br>
-                        <label for="">Monto Actual: {{_cajaModalService.montoCierre}} Gs</label>
-
-
+                        <div class="m-3 form-group">
+                            <label for="">Monto Fijo</label>
+                            <input ngModel type="number" [(ngModel)]='montoFijo' name="monto" required #monto class="form-control" aria-describedby="helpId" placeholder="Ingresar Monto">
+                            <small id="helpId" class="form-text text-muted">Cantidad de dinero inicial de caja</small>
+                        </div>
                     </div>
 
-                    <div class="m-3 form-group">
-                        <label for="">Posible ganancia: {{_cajaModalService.posibleGanancia}} Gs</label>
+                    <div *ngIf="_cajaService.cajaActual">
+
+                        <div class="m-3 form-group">
+                            <label for="">Monto Fijo: {{_cajaService.cajaActual.montoFijo}} Gs</label>
+                            <br>
+
+                            <!-- <div class="m-3 form-group">
+                                <label for="">Sumar Monto</label>
+                                <input ngModel type="number" required #monwto (keyup)='registrarMonto(monto.value)' class="form-control" aria-describedby="helpId" placeholder="Ingresar Monto">
+                                <small id="helpId" class="form-text text-muted">Sumar un monto a la caja</small>
+                            </div> -->
+                            <!-- <label for="">Monto Actual: {{_cajaModalService.montoCierre}} Gs</label> -->
 
 
+                        </div>
+
+                        <div class="m-3 form-group">
+                            <!-- <label for="">Posible ganancia: {{_cajaModalService.posibleGanancia}} Gs</label> -->
+
+
+
+                        </div>
 
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="montoFijo =null" (click)="_cajaModalService.ocultarModal()">Cancelar</button>
+                        <button type="submit" *ngIf="!_cajaService.cajaActual" class="btn btn-primary">Abrir Caja</button>
+                        <button type="button" *ngIf="_cajaService.cajaActual" (click)="cerrarCaja()" class="btn btn-primary">Cerrar Caja</button>
 
+                    </div>
+                </form>
 
-
-                </div>
-
-
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" (click)="_cajaModalService.ocultarModal()">Cancelar</button>
-                    <button type="submit" *ngIf="_cajaModalService.cerrado" (click)="crearCaja()" class="btn btn-primary">Abrir Caja</button>
-                    <button type="submit" *ngIf="!_cajaModalService.cerrado" (click)="cerrarCaja()" class="btn btn-primary">Cerrar Caja</button>
-
-                </div>
             </div>
         </div>
     </div>

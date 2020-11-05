@@ -1,4 +1,4 @@
-<div class="flex-row">
+<div *ngIf="false" class="flex-row">
     <div class="d-flex justify-content-center">
 
         <div class="card">
@@ -6,7 +6,6 @@
                 <label class=" lead" for="">Formato: HH:MM DD/MM/AAAA</label>
                 <br>
                 <div class="row">
-
                     <h4 class="mt-1">De:</h4>
                     <input [(ngModel)]="horaDesde" style="width: 3rem;" class="m-1" type="number">
                     <input [(ngModel)]="minutoDesde" style="width: 3rem;" class="m-1" type="number">
@@ -26,7 +25,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 
@@ -39,7 +37,7 @@
                     <h3>Facturas</h3>
                     <div class="card">
 
-                        <div class=" scroll">
+                        <div class="  scroll">
                             <table class=" table table-hover">
                                 <thead>
                                     <tr>
@@ -51,7 +49,7 @@
                                 <tbody class=" pointer" *ngFor="let factura of facturas">
                                     <tr (click)="verFacturaModal(factura)">
 
-                                        <td class=" pt-4 ">{{factura.monto}} Gs </td>
+                                        <td class=" pt-4 ">{{factura.monto |precio }} Gs </td>
                                         <td class=" pt-4 ">{{factura.fecha | fecha: 'fecha'}}</td>
                                         <td class=" pt-4 "> {{factura.fecha | fecha :'hora'}}</td>
                                     </tr>
@@ -60,14 +58,24 @@
                             <!-- <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button> -->
                         </div>
                     </div>
-                    <div *ngIf="_loginService.logued" class="mt-1 row">
-                        <label class="ml-4" for="text"><b>total:</b> {{totalF}} Gs </label>
-                        <label class="ml-4" for="text"><b>Precio Bruto:</b> {{totalBrutoF}} Gs</label>
-                        <label class="ml-4" for="text"><b>Ganancia posible</b> {{[posibleGanancias]}}  Gs</label>
+                    <div *ngIf="false" class="mt-1 d-flesx">
+                        <label class="ml-4" for="text"><b>Ventas:</b> {{totalF}} Gs </label>
+                        <label class="ml-4" for="text"><b>Precio Costo:</b> {{totalBrutoF |precio}} Gs</label>
+                        <label class="ml-4" for="text"><b>Ganancia posible</b> {{[posibleGanancias]}} Gs</label>
 
                         <label class="ml-4" for="text"><b>Productos: </b> {{cantidadF}} unidades</label>
                         <br>
-                        <label class="ml-4" for="text"><b>total Ingresos menos Egresos:</b> {{totalIngresoMenosEgreso}} Gs </label>
+                        <label class="ml-4" for="text"><b>Egresos:</b> {{totalEgreso}} Gs </label>
+                        <br>
+                        <label class="ml-4" for="text"><b>Monto fijo:</b> {{_cierreDeCajaModal.montoFijo |precio}} Gs
+                        </label>
+                        <hr>
+
+                        <label class="ml-4" for="text"><b>Suma Total:</b> {{totalIngresoMenosEgreso |precio}} Gs
+                        </label>
+
+
+
                     </div>
                 </div>
             </div>
@@ -81,7 +89,7 @@
                     <h3>Egresos</h3>
                     <div class="card">
 
-                        <div class="">
+                        <div class="egresos ">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
@@ -100,6 +108,44 @@
                                         <td class=" pt-4 ">{{egreso.fecha | fecha :'hora'}}</td>
                                         <td class=" pt-4 ">
                                             <i (click)="eliminarEgreso(egreso)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
+                        <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="   mt-1 tableMatias">
+            <div class="row animated fadeIn">
+                <div class="col">
+                    <h3>Ingresos </h3>
+                    <div class="card">
+
+                        <div class="egresos">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Monto</th>
+                                        <th>Comisión</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="pointer" *ngFor="let ingreso of ingresos">
+                                    <tr>
+                                        <td class=" pt-4 ">{{ingreso.nombre}}</td>
+                                        <td class=" pt-4 ">{{ingreso.monto}} Gs </td>
+                                        <td class=" pt-4 ">{{ingreso.comision}} Gs </td>
+                                        <td class=" pt-4 ">{{ingreso.fecha | fecha: 'fecha'}}</td>
+                                        <td class=" pt-4 ">{{ingreso.fecha | fecha :'hora'}}</td>
+                                        <td class=" pt-4 ">
+                                            <i (click)="eliminarIngreso(ingreso._id)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
                                         </td>
                                     </tr>
                                 </tbody>

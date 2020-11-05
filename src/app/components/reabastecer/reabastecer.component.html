@@ -1,0 +1,126 @@
+<div class="fondo-negro  fadeIn" [ngClass]="_reabastecerService.oculto">
+
+
+    <div class="modal" style="display: block;" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reabastecer productos </h5>
+                    <button type="button" class="close" (click)="  cerrar()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div *ngIf="!producto">
+                        <form align="center" (ngSubmit)="buscarProducto(input1.value)">
+                            <div style="display: inline-flex;">
+                                <input #input1 type="text" class="form-control mx-3" style="width: 400px;" aria-describedby="helpId" placeholder="Buscar producto">
+                                <button type="submit" class="btn mx-3 btn-primary">Buscar</button>
+                            </div>
+
+                            <div *ngIf="productos" class="  m-3 border rounded">
+                                <table class="table items tableMatias table-hover">
+                                    <thead>
+                                        <tr>
+
+                                            <th>Marca</th>
+                                            <th>Tipo</th>
+                                            <th style="width: 23%">Precio</th>
+                                            <th style="width: 17%   ">Stock</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr (click)="selectItem(item)" *ngFor="let item of productos" class="pointer">
+
+                                            <td class="col-auto justify-content-center table-item  p-auto ">
+                                                {{item.marca}}
+                                            </td>
+                                            <td style="width: 25%" class=" table-item col-md-2 ">{{item.modelo}}
+                                            </td>
+                                            <!-- <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
+                                            <td class=" pt-4 ">{{producto.descuento}}</td> -->
+                                            <td class="  table-item ">{{item.precio | precio}}</td>
+                                            <td class=" table-item "> {{item.stock}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div *ngIf="producto" class="">
+                        <div class="row">
+                            <div class="col">
+                                <label for="" class="lead">marca: <b>{{producto.marca}} - {{producto.modelo}}
+                                    </b></label>
+                                <br>
+                                <label for="" class="lead">stock: <b>{{producto.stock}}</b></label>
+                                <br>
+                                <label for="" class="lead">precio: <b>{{producto.precio | precio}} Gs</b></label>
+                                <br>
+                                <label for="" class="lead">costo: <b>{{producto.precioBruto  | precio}} Gs</b></label>
+                            </div>
+
+                            <div align="center" class="col">
+                                <form (ngSubmit)="pushALista(cantidad.value)" action="">
+
+                                    <p class="lead">Sumar al Stock actual</p>
+
+                                    <input type="number" #cantidad class="form-control mx-3 mb-3 " style="width: 200px;" aria-describedby="helpId" placeholder="cantidad a sumar">
+                                    <button type="reset" (click)="producto = null; setFocus()" class="btn mx-3 btn-danger">cancelar</button>
+                                    <button type="submit" class="btn mx-3 btn-success">agregar</button>
+                                </form>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div *ngIf="lista.length>0">
+                        <div class="m-3 border rounded">
+                            <table class="table items tableMatias table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Marca</th>
+                                        <th>Tipo</th>
+                                        <th style="width: 17%   ">Stock actual</th>
+                                        <th style="width: 17%   ">Nuevo Stock</th>
+                                        <th style="width: 17%   ">remover</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let producto of lista" class="pointer">
+
+                                        <td class="col-auto justify-content-center table-item  p-auto ">
+                                            {{producto.marca}}
+                                        </td>
+                                        <td style="width: 25%" class=" table-item col-md-2 ">{{producto.modelo}}
+                                        </td>
+
+                                        <td class="  table-item ">{{producto.stock}}</td>
+                                        <td class=" table-item "> {{producto.cantidad + producto.stock }}</td>
+                                        <td class=" table-item "> <i (click)="quitar(producto)" style="color: red;" class="pointer pt-3 fa fa-trash" aria-hidden="true"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div align="end" class="mt-4">
+                        <button type="button" (click)="  cerrar() " class="btn mx-3 btn-danger">Cancelar</button>
+                        <button type="button" (click)="guardarTodo()" class="btn mx-3 btn-success">Guardar Todo</button>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

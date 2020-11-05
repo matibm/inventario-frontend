@@ -1,3 +1,8 @@
+import { navBarService } from './../../services/navbar.service';
+import { IngresoService } from './../../services/ingreso.service';
+import { CierreCajaService } from './../../services/cierre-caja.service';
+ import { CajaModalService } from './../../components/caja-modal/caja-modal.service';
+import { CajaModalComponent } from './../../components/caja-modal/caja-modal.component';
 import { LoginService } from './../../components/login/login.service';
 import { EgresoService } from './../../services/egreso.service';
 import { FacturaModalService } from './../../components/factura-modal/factura-modal.service';
@@ -22,6 +27,7 @@ export class FacturaComponent implements OnInit {
   minutoHasta = 0
   factura
   egresos = []
+  ingresos = []
   hoy: Date
   diaDesde: number
   mesDesde
@@ -37,22 +43,58 @@ export class FacturaComponent implements OnInit {
   posibleGanancias = 0;
   cantidadF = 0;
   totalIngresoMenosEgreso = 0;
+  totalEgreso = 0;
+  cajaActual
+
+
+
   constructor(
     private _facturaService: FacturaService,
     public _facturaModalService: FacturaModalService,
     public _egresosService: EgresoService,
-    public _loginService: LoginService
+    public _loginService: LoginService,
+    public _cierreDeCajaModal: CajaModalService,
+    public _cajaService: CierreCajaService,
+    public _ingresoService: IngresoService,
+    public _navBarService: navBarService
+
   ) { }
 
   ngOnInit() {
-    this.setFechas()
+
+    this._navBarService.navBgColor = 'bg-info'
+    this.cajaActual = this._cajaService.cajaActual
+ 
+    if (!this.cajaActual) {
+      return
+    }
+
+    // this.setFechas()
+    this.dateDesde = new Date(this.cajaActual.fechaInicio)
+
+ 
+    
+ 
+    this.dateHasta = new Date()
+    this.cargarIngresos(this.dateDesde.valueOf(), this.dateHasta.valueOf())
     this.cargarFacturas(this.dateDesde.valueOf(), this.dateHasta.valueOf())
     this.cargarEgresos(this.dateDesde.valueOf(), this.dateHasta.valueOf())
     this._facturaModalService.notificacion.subscribe(() => {
+      this.dateHasta = new Date()
+
       this.cargarFacturas(this.dateDesde.valueOf(), this.dateHasta.valueOf())
       this.cargarMontos()
     })
+
+    this._ingresoService.notificacion.subscribe(()=>{
+      console.log("se intento ");
+      this.dateHasta = new Date()
+
+      this.cargarIngresos(this.dateDesde.valueOf(), this.dateHasta.valueOf())
+    } )
+
     this._egresosService.notificacion.subscribe((r) => {
+      this.dateHasta = new Date()
 
       this.cargarEgresos(this.dateDesde.valueOf(), this.dateHasta.valueOf())
       this.cargarMontos()
@@ -61,6 +103,11 @@ export class FacturaComponent implements OnInit {
     })
 
 
+  }
+
+
+  eliminarIngreso(id){
+    this._ingresoService.removeIngreso(id)
   }
 
   setFechas() {
@@ -92,12 +139,11 @@ export class FacturaComponent implements OnInit {
 
   async cargarFacturas(desde, hasta) {
     //  this.cargando = true;
-    let resp: any = await this._facturaService.getFacturas(desde, hasta)
-    console.log(resp);
+    let facturasResp: any = await this._facturaService.getFacturas(desde, hasta)
 
     this.facturas = new Array()
-    for (let i = 0; i < resp.facturas.reverse().length; i++) {
-      const factura = resp.facturas.reverse()[i];
+    for (let i = 0; i < facturasResp.reverse().length; i++) {
+      const factura = facturasResp.reverse()[i];
       if (factura.fecha >= desde && factura.fecha <= hasta) {
         this.facturas.push(factura)
       }
@@ -105,7 +151,7 @@ export class FacturaComponent implements OnInit {
     }
 
   }
- 
+
   filtrar() {
     let date = new Date();
     let desde = new Date(date.setUTCFullYear(this.yearDesde, this.mesDesde - 1, this.diaDesde));
@@ -121,12 +167,12 @@ export class FacturaComponent implements OnInit {
     this.cargarEgresos(desde.valueOf(), hasta.valueOf());
 
   }
- 
+
   cargarMontos() {
     let total = 0;
     let totalBruto = 0;
     let cantidad = 0;
-    let totalEgreso = 0
+    this.totalEgreso = 0
     for (let i = 0; i < this.facturas.length; i++) {
       const factura = this.facturas[i];
       for (let j = 0; j < factura.productos.length; j++) {
@@ -142,20 +188,26 @@ export class FacturaComponent implements OnInit {
     }
     for (let i = 0; i < this.egresos.length; i++) {
       const egreso = this.egresos[i];
-      totalEgreso += egreso.monto;
+      this.totalEgreso += egreso.monto;
     }
 
 
-    this.totalIngresoMenosEgreso = total - totalEgreso;
+    this.totalIngresoMenosEgreso = total - this.totalEgreso;
+    this.totalIngresoMenosEgreso += parseInt(this._cierreDeCajaModal.montoFijo)
     this.totalF = total;
     this.totalBrutoF = totalBruto;
     this.cantidadF = cantidad;
     this.posibleGanancias = Math.floor(this.totalF - this.totalBrutoF)
   }
 
+
+  async cargarIngresos(desde, hasta){
+    this.ingresos = await this._ingresoService.getIngresos(desde,hasta)
+  }
+
   async cargarEgresos(desde, hasta) {
-    let resp: any = await this._egresosService.getEgresos(desde, hasta);
-    this.egresos = resp.egresos.reverse();
+    let egresos: any = await this._egresosService.getEgresos(desde, hasta);
+    this.egresos = egresos.reverse();
     this.cargarMontos()
 
   }
@@ -179,14 +231,14 @@ export class FacturaComponent implements OnInit {
     this.cantidad = cantidad
   }
 
-  vender() {
+  async vender() {
     let date = new Date()
     this.factura = {
       productos: this.items,
       fecha: date.getTime(),
       monto: this.total
     }
-    this._facturaService.setFactura(this.factura).subscribe()
+    await this._facturaService.setFactura(this.factura)
 
   }
 

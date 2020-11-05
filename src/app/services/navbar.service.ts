@@ -3,11 +3,13 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class CajaService {
+export class navBarService {
 
   constructor() { }
 
-  getCaja(){
+  navBgColor = 'bg-primary'
+
+  getCaja(){  
 
   }
 

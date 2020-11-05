@@ -65,18 +65,13 @@ export class CrearEgresoService {
 
   confirmarGuardar() { 
     let cierrecaja
-
-    let id = localStorage.getItem('idCaja')
-    if (id) {
-      this._cierreCajaService.getCierreCaja(id).subscribe((resp: any) => {
+    this.confirmar = false
+      
+      
         this.ocultarModal();
-        cierrecaja = resp.cierreCaja
-        cierrecaja.montoCierre -= this.montoT
-        cierrecaja.egresos.push(this.egreso)
-        this._cierreCajaService.putCierreCaja(cierrecaja).subscribe()
-        this._egresoService.setEgreso(this.egreso).subscribe();
-      })
-    }
+        
+         this._egresoService.setEgreso(this.egreso).subscribe();
+   
     
   }  
 

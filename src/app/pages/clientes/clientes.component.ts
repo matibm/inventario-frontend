@@ -1,3 +1,4 @@
+import { navBarService } from './../../services/navbar.service';
 import { FacturaService } from './../../services/factura.service';
 import { ClienteService } from './../../services/cliente.service';
 import { Component, OnInit } from '@angular/core';
@@ -15,12 +16,15 @@ export class ClientesComponent implements OnInit {
   items
   constructor(
     public _clienteService: ClienteService,
-    public _facturaService: FacturaService
+    public _facturaService: FacturaService,
+    public _navBarService: navBarService
+
   ) { }
   getItems(facturas) {
     this.items = facturas.length
   }
   ngOnInit() {
+    this._navBarService.navBgColor = 'bg-danger'
     this.getClientes();
     this._clienteService.noficacion.subscribe(() => {
       this.getClientes();

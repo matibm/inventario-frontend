@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+<nav [ngClass]="_navBarService.navBgColor" class="navbar sticky-top  navbar-expand-sm navbar-dark ">
     <div class="collapse navbar-collapse" id="collapsibleNavId">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item ">
@@ -9,9 +9,9 @@
                 <a class="nav-link" [routerLink]="['/facturas']" routerLinkActive="active">Caja</a>
             </li>
 
-            <!-- <li class="nav-item">
+            <li *ngIf="_loginService.logued" class="nav-item">
                 <a class="nav-link" [routerLink]="['/caja']" routerLinkActive="active">Historial de caja</a>
-            </li> -->
+            </li>
             <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/clientes']" routerLinkActive="active">Clientes</a>
             </li>
@@ -25,25 +25,27 @@
 
 
         <div class="form-inline mr-3 my-2 my-lg-0">
-            <button class="btn btn-light my-2 my-sm-0" (click)="_crearProductoModalService.mostrarModal()">Cargar Nuevo Producto</button>
+            <button class="btn btn-outline-light my-2 my-sm-0" (click)="_crearProductoModalService.mostrarModal()">Cargar Nuevo Producto</button>
 
         </div>
 
         <div class="form-inline mr-3 my-2 my-lg-0">
-            <button class="btn btn-light my-2 my-sm-0" (click)="registrarEgreso()">Registrar Egreso</button>
-
+            <button class="btn btn-outline-light my-2 my-sm-0" (click)="registrarEgreso()">Registrar Egreso</button>
+        </div>
+        <div class="form-inline mr-3 my-2 my-lg-0">
+            <button class="btn btn-outline-light my-2 my-sm-0" (click)="registrarIngreso()">Registrar Ingreso</button>
         </div>
         <div *ngIf="!_loginService.logued" class="form-inline mr-3 my-2 my-lg-0">
-            <button class="btn btn-light my-2 my-sm-0" (click)="_loginService.mostrarModal()">Iniciar Sesion</button>
+            <button class="btn btn-outline-light my-2 my-sm-0" (click)="_loginService.mostrarModal()">Iniciar Sesion</button>
         </div>
 
         <div *ngIf="_loginService.logued" class="form-inline mr-3 my-2 my-lg-0">
-            <button class="btn btn-light my-2 my-sm-0" (click)="_loginService.logout()">Cerrar Sesion</button>
+            <button class="btn btn-outline-light my-2 my-sm-0" (click)="_loginService.logout()">Cerrar Sesion</button>
         </div>
 
         <div class="form-inline my-2 my-lg-0">
-            <button *ngIf="_cajaModalService.cerrado" class="btn btn-success my-2 my-sm-0" (click)="cierrDeCaja()">Abrir Caja</button>
-            <button *ngIf="!_cajaModalService.cerrado" class="btn btn-danger my-2 my-sm-0" (click)="cierrDeCaja()">Cierre de Caja</button>
+            <button *ngIf="!_cajaService.cajaActual  " class="btn btn-success my-2 my-sm-0" (click)="cierrDeCaja()">Abrir Caja</button>
+            <button *ngIf="_loginService.logued && _cajaService.cajaActual" class="btn btn-danger my-2 my-sm-0" (click)="cierrDeCaja()">Cierre de Caja</button>
         </div>
 
     </div>

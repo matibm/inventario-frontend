@@ -1,3 +1,6 @@
+import { CrearIngresoModalService } from './../../components/crear-ingreso-modal/crear-ingreso-modal.service';
+import { CierreCajaService } from './../../services/cierre-caja.service';
+import { navBarService } from '../../services/navbar.service';
 import { LoginService } from './../../components/login/login.service';
 import  Swal  from 'sweetalert2';
 import { CrearProductoModalService } from './../../components/crear-producto-modal/crear-producto-modal.service';
@@ -13,24 +16,45 @@ import { ImprimirFacturaService } from 'src/app/components/imprimir-factura/impr
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(
+
+
+   constructor(
+    public _navBarService: navBarService,
     public _egresoModalService: CrearEgresoService,
     public _cajaModalService: CajaModalService,
     public _crearProductoModalService: CrearProductoModalService,
     public _imprimirFacturaService: ImprimirFacturaService,
-    public _loginService: LoginService
+    public _loginService: LoginService,
+    public _cajaService: CierreCajaService,
+    public _ingresoModalService: CrearIngresoModalService
     ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this._cajaService.cajaActual = await this._cajaService.getCajaAbierta()
+     
   }
 
   cierrDeCaja(){
     this._cajaModalService.mostrarModal()
   }
 
+  
+
+  registrarIngreso(){
+    if (this._cajaService.cajaActual) {
+      this._ingresoModalService.mostrarModal()
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'No se puede registrar ingreso, abre la caja primero',
+        showConfirmButton: true
+      });
+
+    }
+  }
 
   registrarEgreso(){
-    if (!this._cajaModalService.cerrado) {
+    if (this._cajaService.cajaActual) {
       this._egresoModalService.mostrarModal()  
     }else{
       Swal.fire({

@@ -1,3 +1,4 @@
+import { navBarService } from './../../services/navbar.service';
 import { RecargaModalServiceService } from './../../components/recarga-modal/recarga-modal-service.service';
 import { RecargaService } from './../../services/recarga.service';
 import { FacturaModalService } from './../../components/factura-modal/factura-modal.service';
@@ -51,11 +52,14 @@ export class ResumenComponent implements OnInit {
     public _facturaService: FacturaService,
     public _facturaModalService: FacturaModalService,
     public _recargasService: RecargaService,
-    public _recargaModalService: RecargaModalServiceService
+    public _recargaModalService: RecargaModalServiceService,
+    public _navBarService: navBarService
+
   ) {
 
   }
   ngOnInit() {
+    this._navBarService.navBgColor = 'bg-secondary'
     this.setFechas()
     this.cargarFaltantes()
     this.cargarMasVendidos()

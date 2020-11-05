@@ -8,8 +8,8 @@
 }
 
 .img-50 {
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
 }
 
 .productosOculto {
@@ -22,6 +22,11 @@
 
 .w150 {
     width: 150px;
+}
+
+.inputvender {
+    background-color: transparent;
+    color: white;
 }
 
 .oculto {
@@ -41,4 +46,9 @@
     width: 100%;
     height: 100%;
     z-index: 9999;
+}
+
+.table-item {
+    vertical-align: middle !important;
+    font-size: 22px;
 }

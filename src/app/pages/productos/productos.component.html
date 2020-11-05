@@ -1,5 +1,5 @@
 <div id="main" [ngClass]="_productoService.oculto" class="mainP row">
-    <div class="col-7 productos">
+    <div class="col-6 productos">
         <div class="row animated fadeIn">
             <div class="buscador ml-3 pr-3 col-12">
                 <div class="card">
@@ -26,31 +26,44 @@
                             <table class="table tableMatias table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Imagen</th>
+                                        <th style="width: 8%">
+                                            <!-- <i class="fas fa-pen-square    "></i> -->
+                                            <i class="fas fa-pen    "></i>
+                                        </th>
                                         <th>Marca</th>
                                         <th style="width: 25%">Tipo</th>
                                         <!-- <th>Cod</th>
                                         <th>Descuento</th> -->
-                                        <th>Precio</th>
-                                        <th>En stock</th>
-                                        <th>Cantidad</th>
-                                        <th></th>
+                                        <th style="width: 13%">Precio</th>
+                                        <th style="width: 10%">Stock</th>
+                                        <th style="width: 18%">Cantidad</th>
+                                        <!-- <th style="width: 12%"></th> -->
                                     </tr>
                                 </thead>
                                 <tbody *ngFor="let producto of productos">
                                     <tr>
-                                        <td class="w70">
-                                            <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer">
+                                        <!-- <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer"> -->
+                                        <td class="table-item">
+                                            <button (click)="_editarProductoModalService.mostarModal(producto)" type="button" class="btn btn-outline-secondary">
+                                            <i class="fas fa-pen    "></i>
+
+                                          </button>
+
                                         </td>
-                                        <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}
+                                        <td class="col-auto justify-content-center table-item  p-auto ">{{producto.marca}}
                                         </td>
-                                        <td style="width: 25%" class=" pt-4 col-md-2 ">{{producto.modelo}}</td>
+                                        <td style="width: 25%" class=" table-item col-md-2 ">{{producto.modelo}}</td>
                                         <!-- <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
                                         <td class=" pt-4 ">{{producto.descuento}}</td> -->
-                                        <td class=" pt-4 ">{{producto.precio}}</td>
-                                        <td class=" pt-4 "> {{producto.stock}}</td>
-                                        <td class=" pt-4 "> <input type="number" style="width: 50px" (keyup)="null" #cant value="{{cantidad}}"></td>
-                                        <button (click)="selecctionarItem(producto, cant.value)" [disabled]="cant.value<1" class=" mt-3 btn btn-outline-primary">Seleccionar</button>
+                                        <td class="  table-item ">{{producto.precio | precio}}</td>
+                                        <td class=" table-item "> {{producto.stock}}</td>
+                                        <td class=" table-item"> <input type="number" class="form-control     m-1" style="display: inline; width: 50px" (keyup)="null" #cant value="{{cantidad}}">
+                                            <button (click)="selecctionarItem(producto, cant.value)" [disabled]="cant.value<1" class="m-1 btn btn-outline-primary">
+                                            <i class="fa fa-share" aria-hidden="true"></i>
+                                                
+                                            </button>
+
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -61,8 +74,8 @@
                 <div>
                     <div class="row m-3 form-group">
 
-                        <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
-                        <button (click)="cambiarDesde(5)" type="button" class="ml-2 btn btn-secondary">Siguientes</button>
+                        <button (click)="cambiarDesde(-6)" type="button" class="btn btn-secondary">Anteriores</button>
+                        <button (click)="cambiarDesde(6)" type="button" class="ml-2 btn btn-secondary">Siguientes</button>
                     </div>
 
                     <!-- <div class="row m-3 form-group">
@@ -98,12 +111,11 @@
             </div>
         </div>
     </div>
-    <div class="col-5 ">
+    <div class="col-6 ">
         <div class="col carrito  ">
             <div class="card">
 
                 <label class=" lead pl-3  mt-1">Carrito</label>
-
 
                 <div class="items m-0 p-0 card-body">
                     <table class="table table-hover">
@@ -112,23 +124,25 @@
                                 <!-- <th>Imagen</th> -->
                                 <th>Marca</th>
                                 <th>Tipo</th>
-                                <th>Precio</th>
-                                <th>cantidad</th>
-                                <th></th>
+                                <th style="width: 15%">Precio</th>
+                                <th style="width: 15%">cantidad</th>
+                                <th style="width: 10%">quitar</th>
                             </tr>
                         </thead>
-                        <tbody *ngFor="let producto of items ; index as i">
-                            <tr>
+                        <tbody>
+                            <tr *ngFor="let producto of items ; index as i">
                                 <!-- <td class="w70">
                                     <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
                                 </td> -->
-                                <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}</td>
-                                <td class=" pt-4 ">{{producto.modelo}}</td>
+
+                                <td class="lead col-auto justify-content-center bold p-auto pt-4 "><b>{{producto.marca}}</b></td>
+                                <td class="lead pt-4 "><b>{{producto.modelo}}</b></td>
                                 <!-- <button align="center" [id]="'desc_'+producto._id" (click)="switchDescuento(true, i )" type="button" class="ml-3 mt-3 btn btn-secondary"> {{producto.descuento}}</button> -->
-                                <td><button align="center" (click)="switchDescuento(false, i )" [id]="'normal_'+producto._id" type="button" class="  mt-1 btn btn-success">
-                                        {{producto.precio}}</button></td>
-                                <td class="pt-4 "> {{producto.cantidad}}</td>
-                                <td>
+                                <!-- <td><button align="center" (click)="switchDescuento(false, i )" [id]="'normal_'+producto._id" type="button" class="  mt-1 btn btn-success">
+                                        {{producto.precio}}</button></td> -->
+                                <td style="width: 15%" class="pt-4 lead"> <b>{{producto.precio | precio}}</b></td>
+                                <td style="width: 15%" class="pt-4 lead"><b> {{producto.cantidad}}</b></td>
+                                <td style="width: 15%">
                                     <i (click)="quitar(producto)" style="color: red;" class="pointer pt-3 fa fa-trash" aria-hidden="true"></i>
 
                                 </td>
@@ -137,39 +151,39 @@
                         </tbody>
                     </table>
                 </div>
-                <hr>
-                <div class=" fondoMontos montos">
+                <div class="bg-dark   text-white fondoMontos montos">
                     <div class="  row">
-                        <div class="col">
-                            <form ngNativeValidate id="amyFormEditProduct" class="formProducto" (ngSubmit)="vender()" class="modal-body cuerpo ">
+                        <div class="col   pb-4 ">
+                            <form ngNativeValidate id="amyFormEditProduct" class=" formProducto" (ngSubmit)="vender()" class="  cuerpo ">
 
                                 <div class="row">
-                                    <div class="col-10">
-                                        <h3>Total: {{total}}</h3>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <div class=" ml-0 row">
+                                    <div class="col-6">
+                                        <h6 class="display-4">Total: <br> <b class="">{{total |precio}} Gs</b></h6>
+
+                                        <div class="my-4 row">
                                             <h3>Ingreso</h3>
-                                            <input name="ing" ngModel class="inputvender ml-3" [(ngModel)]="ingresoInput" #ingress (keyup)='ingreso(ingress.value)' type="number">
+                                            <input name="ing" ngModel class="inputvender border rounded ml-3  " [(ngModel)]="ingresoInput" #ingress (keyup)='ingreso(ingress.value)' type="number">
+
                                         </div>
                                     </div>
-                                </div>
-                                <div class=" mb-3 row">
-                                    <div class="    col ">
-                                        <h3>Vuelto: {{vuelto}}</h3>
+                                    <div class="col-6">
+                                        <h3 class="display-4">Vuelto:
+                                            <br>
+                                            <b class="text-danger"> {{vuelto | precio}} Gs</b> </h3>
+
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col"><button [disabled]="diableVender" type="submit" class="btn btn-success">Vender</button></div>
-                                    <div class="col"><button type="button" (click)="onCliente()" class="btn btn-outline-primary">Registrar Cliente</button></div>
+
+
+                                <div class="mt-4 row">
+                                    <div class="col"><button [disabled]="vendiendo" type="submit" class="btn btn-lg btn-success">Vender</button></div>
+                                    <div class="col"><button type="button" (click)="onCliente()" class="btn btn-outline-light">Cliente</button></div>
                                 </div>
                             </form>
 
                         </div>
-                        <div class="col">
+                        <div *ngIf="false" class="col">
                             <h3 align="center">Cliente</h3>
                             <h4>Nombre : <a href="#">{{_clienteModalService.cliente.nombre}}</a></h4>
                             <!-- <h4>RUC : <a href="#">{{_clienteModalService.cliente.ruc}}</a> </h4> -->

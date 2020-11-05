@@ -1,5 +1,6 @@
 <div class="container-fluid">
     <button *ngIf="!oculto" (click)="oculto = true" class="m-1 btn btn-primary">Nuevo Proveedor</button>
+    <button *ngIf="!oculto" (click)="_reabastecerService.mostrarModal()" class="m-1 btn btn-primary">Reabastecer Producto</button>
 
     <div *ngIf="oculto" style="width: 450px;" class="m-4 card">
 
@@ -33,7 +34,10 @@
     <div class="row">
         <div class="col-4">
             <div class="card">
+
                 <div class="card-body">
+                    <h1 class="lead">Proveedores</h1>
+
                     <table class="table">
                         <thead>
                             <tr>
@@ -55,7 +59,6 @@
                                 </td>
                                 <td (click)="editarProveedor(item)">
                                     <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-
                                 </td>
                             </tr>
                         </tbody>
@@ -65,40 +68,52 @@
 
         </div>
         <div class="col">
-            <div *ngIf="productos" class=" card">
-                <div class=" itemsProductos ">
-                    <table class="table  tableMatias table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Imagen</th>
-                                <th>Marca</th>
-                                <th style="width: 25%">Tipo</th>
-                                <th>Cod</th>
-                                <th>Descuento</th>
-                                <th>Precio</th>
-                                <th>Costo</th>
-                                <th>En stock</th>
-                                <th>Stock Minimo</th>
-                            </tr>
-                        </thead>
-                        <tbody *ngFor="let producto of productos ">
-                            <tr [ngClass]="getColor(producto.stock, producto.stockMinimo)">
-                                <td class="w70">
-                                    <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer">
-                                </td>
-                                <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}
-                                </td>
-                                <td style="width: 25%" class=" pt-4 col-md-2 ">{{producto.modelo}}</td>
-                                <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
-                                <td class=" pt-4 ">{{producto.descuento}}</td>
-                                <td class=" pt-4 ">{{producto.precio}}</td>
-                                <td class=" pt-4 ">{{producto.precioBruto}}</td>
-                                <td class=" pt-4 ">{{producto.stock}}</td>
-                                <td class=" pt-4 ">{{producto.stockMinimo}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div *ngIf="productos">
+                <div class=" card">
+                    <div class=" itemsProductos ">
+                        <table class="table  tableMatias table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Imagen</th>
+                                    <th>Marca</th>
+                                    <th style="width: 25%">Tipo</th>
+                                    <th>Cod</th>
+                                    <th>Descuento</th>
+                                    <th>Precio</th>
+                                    <th>Costo</th>
+                                    <th>En stock</th>
+                                    <th>Stock Minimo</th>
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let producto of productos ">
+                                <tr [ngClass]="getColor(producto.stock, producto.stockMinimo)">
+                                    <td class="w70">
+                                        <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer">
+                                    </td>
+                                    <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}
+                                    </td>
+                                    <td style="width: 25%" class=" pt-4 col-md-2 ">{{producto.modelo}}</td>
+                                    <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
+                                    <td class=" pt-4 ">{{producto.descuento}}</td>
+                                    <td class=" pt-4 ">{{producto.precio | precio}}</td>
+                                    <td class=" pt-4 ">{{producto.precioBruto | precio }}</td>
+                                    <td class=" pt-4 ">{{producto.stock}}</td>
+                                    <td class=" pt-4 ">{{producto.stockMinimo}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
                 </div>
+                <div *ngIf="_loginService.logued" class="lead m-3"> <label for="">Total de Stock: <b>{{cantidadProductos | precio}} Gs</b></label>
+                    <br>
+                    <label for="">Total precios por cantidad: <b>{{totalPrecios | precio }} Gs</b></label>
+                    <br>
+                    <label for="">Total Inversion: <b>{{totalCosto | precio }} Gs</b></label>
+                    <br>
+                    <label for="">Ganancia posible: <b>{{totalPrecios -totalCosto  | precio}} Gs</b></label></div>
+
             </div>
             <div class="select-proveedor flex-row" *ngIf="!productos">
                 <div class="col  d-flex justify-content-md-center ">

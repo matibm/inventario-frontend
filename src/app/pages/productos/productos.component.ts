@@ -34,6 +34,7 @@ export class ProductosComponent implements OnInit {
   onafterprint() {
 
   }
+  busquedaDinamica = false;
   pagina = 0;
   readEscape = false;
   inputbuscador = '';
@@ -184,7 +185,7 @@ export class ProductosComponent implements OnInit {
 
         }
       }
-      this.cargarProductos()
+      // this.cargarProductos()
 
     } else {
       let producto
@@ -211,7 +212,7 @@ export class ProductosComponent implements OnInit {
         this.selecctionarItem(producto, "1")
 
       }
-      this.cargarProductos()
+      // this.cargarProductos()
 
 
     }
@@ -235,25 +236,79 @@ export class ProductosComponent implements OnInit {
     return producto
   }
 
+  onTypeBuscar(value){
+    if (this.busquedaDinamica == true) {
+      this.buscarProducto(value)
+    } 
+  }
+
   async buscarProducto(termino: string) {
-    this.productos = [];
+ 
     if (termino.length <= 0) {
+
       this.cargarProductos();
       return;
     }
     let productos = await this._productoService.buscarProductos(termino)
 
     this.productos = productos
-
     if (productos.length == 1) {
       let producto = productos[0]
-      if (termino === producto.codigo) {
-        // console.log("encontro", producto);
-        this.selecctionarItem(producto, "1")
-        this.playSound()
-        this.inputbuscador = ''
-      }
+    //   if (termino === producto.codigo) {
+
+    //     let productoCarrito = this.getProductoOfCarrito(producto._id)
+    //     if (productoCarrito) {
+    //       if (productoCarrito.cantidad >= producto.stock) {
+    //         Swal.fire({
+    //           icon: 'error',
+    //           title: 'Cantidad seleccionada supera el stock',
+    //           showConfirmButton: true
+    //         });
+    //         return
+    //       } else {
+    //         this.selecctionarItem(producto, "1")
+
+    //       }
+    //     } else {
+    //       this.selecctionarItem(producto, "1")
+
+    //     }
+    //   }
+    //   // this.cargarProductos()
+
+    // } else {
+    //   let producto
+    //   productos.forEach(productoAux => {
+    //     if (productoAux.codigo === termino) {
+    //       producto = productoAux
+    //     }
+    //   });
+
+    //   let productoCarrito = this.getProductoOfCarrito(producto._id)
+    //   if (productoCarrito) {
+    //     if (productoCarrito.cantidad >= producto.stock) {
+    //       Swal.fire({
+    //         icon: 'error',
+    //         title: 'Cantidad seleccionada supera el stock',
+    //         showConfirmButton: true
+    //       });
+    //       return
+    //     } else {
+    //       this.selecctionarItem(producto, "1")
+
+    //     }
+    //   } else {
+    //     this.selecctionarItem(producto, "1")
+
+    //   }
+      // this.cargarProductos()
+
+
     }
+
+
+
+
     this.editName();
   }
 
@@ -352,6 +407,15 @@ export class ProductosComponent implements OnInit {
 
   }
 
+  sumarTotal() {
+    this.total = 0
+    for (let i = 0; i < this.items.length; i++) {
+      const producto = this.items[i];
+      this.total += producto.cantidad * producto.precio
+    }
+
+  }
+
   playSound = (function beep() {
 
     return function () {
@@ -402,6 +466,7 @@ export class ProductosComponent implements OnInit {
       return
 
     }
+
     this.vendiendo = true;
     let costo = this.getMontoDeCosto(this.items);
     // if (!this._cierreCajaModalService.cerrado) {
@@ -537,5 +602,10 @@ export class ProductosComponent implements OnInit {
     if (tecla == 37) {
       this.cambiarDesde(-6)
     }
+  }
+  switchPrecio(item, cantidad) {
+    item.precio = parseFloat(cantidad)
+    this.sumarTotal()
+    return item
   }
 }

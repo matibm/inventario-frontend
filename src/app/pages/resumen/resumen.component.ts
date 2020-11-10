@@ -1,3 +1,4 @@
+import { ProveedorService } from './../../services/proveedor.service';
 import { navBarService } from './../../services/navbar.service';
 import { RecargaModalServiceService } from './../../components/recarga-modal/recarga-modal-service.service';
 import { RecargaService } from './../../services/recarga.service';
@@ -45,6 +46,8 @@ export class ResumenComponent implements OnInit {
   yearVentaDiaria
   ocultar = false;
   recargas
+  itemProveedores = []
+
   constructor(
 
     public _editarProductoModalService: EditarProductoModalService,
@@ -53,7 +56,8 @@ export class ResumenComponent implements OnInit {
     public _facturaModalService: FacturaModalService,
     public _recargasService: RecargaService,
     public _recargaModalService: RecargaModalServiceService,
-    public _navBarService: navBarService
+    public _navBarService: navBarService,
+    public _proveedorService: ProveedorService
 
   ) {
 
@@ -61,16 +65,17 @@ export class ResumenComponent implements OnInit {
   ngOnInit() {
     this._navBarService.navBgColor = 'bg-secondary'
     this.setFechas()
-    this.cargarFaltantes()
-    this.cargarMasVendidos()
-    this.cargarFacturasSinPagar();
+    // this.cargarFaltantes()
+    // this.cargarMasVendidos()
+    // this.cargarFacturasSinPagar();
     this.cargarProductosVendidos(this.dateDesde.valueOf(), this.dateHasta.valueOf());
     this.cargarRecargas(this.dateDesde.valueOf(), this.dateHasta.valueOf())
     this.semanal(this.dateHasta);
     this.diario(this.dateHasta);
-    this._recargasService.noficacion.subscribe(() =>{
+    this._recargasService.noficacion.subscribe(() => {
       this.filtrarRecargas()
     })
+    this.gestionProveedores()
   }
 
   @HostListener('window:afterprint')
@@ -164,12 +169,12 @@ export class ResumenComponent implements OnInit {
     date = new Date();
     let hasta = new Date(date.setUTCFullYear(this.yearHasta, this.mesHasta - 1, this.diaHasta));
     hasta.setUTCHours(23, 59, 59)
-    this.recargas = [ ];
-    this._recargasService.getRecargaFiltrado(desde.valueOf(), hasta.valueOf()).then( (resp:any) =>{
+    this.recargas = [];
+    this._recargasService.getRecargaFiltrado(desde.valueOf(), hasta.valueOf()).then((resp: any) => {
       console.log(resp);
-      
+
       this.recargas = resp.recargas;
-    } )
+    })
   }
 
   filtrarVentaSemanal() {
@@ -178,7 +183,7 @@ export class ResumenComponent implements OnInit {
 
   }
 
-  mostrarDetallesDeRecarga(recarga){
+  mostrarDetallesDeRecarga(recarga) {
     this._recargaModalService.mostrarModal(recarga)
   }
   cargarMasVendidos(desde?, hasta?) {
@@ -371,6 +376,36 @@ export class ResumenComponent implements OnInit {
   verFacturaModal(factura) {
     localStorage.setItem('factura', factura)
     this._facturaModalService.mostrarModal(factura)
+  }
+
+
+  async gestionProveedores() {
+    let resp: any = await this._proveedorService.getProveedores();
+    let proveedores = resp.proveedores
+    for (let i = 0; i < proveedores.length; i++) {
+      const proveedor = proveedores[i];
+      let itemP = {
+        nombre: proveedor.nombre,
+        stock: 0,
+        ganancia: 0,
+        total: 0,
+        percent: 0
+      }
+      let e: any = await this._productosService.getProductosPorProveedor(proveedor._id);
+      let productosPorProveedor = e.productos
+      for (let j = 0; j < productosPorProveedor.length; j++) {
+        const producto = productosPorProveedor[j];
+        itemP.total += producto.precio * producto.stock;
+        // itemP.ganancia += producto.precio - producto.precioBruto;
+        itemP.stock += producto.stock * producto.precioBruto
+
+      }
+      itemP.ganancia = itemP.total - itemP.stock;
+      itemP.percent = (itemP.ganancia * 100) / itemP.total;
+      itemP.percent = Math.round(itemP.percent)
+
+      this.itemProveedores.push(itemP)
+    }
   }
 
 }

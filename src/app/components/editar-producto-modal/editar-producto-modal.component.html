@@ -29,12 +29,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Precio</label>
-                                <input ngModel type="number" [(ngModel)]="_editarProductoModalService.precio" name="precio" required #precio class="form-control" required aria-describedby="helpId" placeholder="">
+                                <input ngModel type="number" [(ngModel)]="_editarProductoModalService.precio" step="any" name="precio" required #precio class="form-control" required aria-describedby="helpId" placeholder="">
 
                             </div>
                             <div class="form-group">
                                 <label for="">Precio de costo</label>
-                                <input ngModel type="number" [(ngModel)]="_editarProductoModalService.precioBruto" name="precioBruto" class="form-control">
+                                <input ngModel type="number" [(ngModel)]="_editarProductoModalService.precioBruto" step="any" name="precioBruto" class="form-control">
 
                             </div>
                             <!-- <div class="form-group">

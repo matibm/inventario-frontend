@@ -8,6 +8,7 @@
             <a class="list-group-item list-group-item-action" href="javascript:void" (click)="seccion = 'ventasSemanales'">Ventas Semanales</a>
             <a class="list-group-item list-group-item-action" href="javascript:void" (click)="seccion = 'ventasDiarias'">Ventas Diarias</a>
             <a class="list-group-item list-group-item-action" href="javascript:void" (click)="seccion = 'reabastecimientos'">Reabastecimientos</a>
+            <a class="list-group-item list-group-item-action" href="javascript:void" (click)="seccion = 'proveedores'">Proveedores</a>
         </div>
         <button type="button" (click)="imprimir()" class=" mt-3 btn btn-primary">Imprimir</button>
     </div>
@@ -87,7 +88,6 @@
             </div>
         </div>
     </div>
-
     <div *ngIf="seccion == 'ventasSemanales'" class="col">
         <div *ngIf="!ocultar">
             <div class="card-header">
@@ -309,6 +309,38 @@
                                 <td class=" pt-4 "> {{recarga.fecha | fecha :'hora'}}</td>
                                 <td class=" pt-4 "> {{recarga.stockAnterior}}</td>
                                 <td class=" pt-4 "> {{recarga.cantidadASumar}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="seccion == 'proveedores'" class="col">
+        <div class="col-12   pr-3 tablaFacturas">
+            <h3>Proveedores</h3>
+            <div class="card-body">
+
+                <div class="pt-4 scroll">
+                    <table class=" table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Proveedor </th>
+                                <th>Stock</th>
+                                <th>Ganancia</th>
+                                <th>Total</th>
+                                <th>%</th>
+
+                            </tr>
+                        </thead>
+                        <tbody class=" pointer" *ngFor="let item of itemProveedores">
+                            <tr>
+                                <td class=" pt-4 ">{{item.nombre}} </td>
+                                <td class=" pt-4 ">{{item.stock | precio}}</td>
+                                <td class=" pt-4 "> {{item.ganancia | precio}}</td>
+                                <td class=" pt-4 "> {{item.total | precio}}</td>
+                                <td class=" pt-4 "> {{item.percent}} %</td>
                             </tr>
                         </tbody>
                     </table>

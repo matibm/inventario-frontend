@@ -33,13 +33,13 @@ export class ProveedoresComponent implements OnInit {
 
   async ngOnInit() {
     this._navbarService.navBgColor = 'bg-success'
-    this.getProveedores() 
+    this.getProveedores()
     this._productoService.notificacion.subscribe(() => {
 
       this.getProductos(this.proveedor._id)
-    }) 
+    })
   }
- 
+
 
   async getProveedores() {
     let resp: any = await this._proveedorService.getProveedores()
@@ -72,7 +72,7 @@ export class ProveedoresComponent implements OnInit {
       this.cantidadProductos += producto.stock;
     }
     console.log(this.totalPrecios);
-    
+
   }
 
   async crearProveedor(nombre, tel, comentario) {
@@ -130,5 +130,7 @@ export class ProveedoresComponent implements OnInit {
 
     }
   }
+
+
 
 }

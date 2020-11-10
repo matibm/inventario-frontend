@@ -29,7 +29,6 @@
                                                     <th>Tipo</th>
 
                                                     <th>Precio</th>
-                                                    <th>Descuento</th>
 
                                                     <th>Cantidad</th>
                                                 </tr>
@@ -43,11 +42,11 @@
                                                         {{producto.marca}}</td>
                                                     <td class=" pt-4 ">{{producto.modelo}}</td>
                                                     <td class=" pt-4 ">{{producto.precio | precio }}</td>
-                                                    <td class=" pt-4 ">
+                                                    <!-- <td class=" pt-4 ">
                                                         <div style="color: red" *ngIf="producto.desc">
                                                             {{producto.descuento}}</div>
                                                         <div *ngIf="!producto.desc">Sin Desc</div>
-                                                    </td>
+                                                    </td> -->
 
                                                     <td class=" pt-4 "> {{producto.cantidad}}</td>
                                                 </tr>

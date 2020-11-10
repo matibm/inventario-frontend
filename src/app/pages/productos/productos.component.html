@@ -6,11 +6,15 @@
                     <div class="card-body mx-auto">
 
                         <form (ngSubmit)="buscarProductoConEnter(input.value)" class=" row">
-                            <div class="col  ">
-                                <input name="buscador" matInput #input [ngModel]="inputbuscador" id="inputBuscador" type="text" class="form-control" placeholder="Buscar producto">
+                            <div class="col">
+                                <button type="button" (click)="busquedaDinamica = false" *ngIf="busquedaDinamica" class="btn btn-outline-info">Dinamica</button>
+                                <button type="button" (click)="busquedaDinamica = true" *ngIf="!busquedaDinamica" class="btn btn-outline-secondary">Simple</button>
                             </div>
                             <div class="col  ">
-                                <button type="submit" class="btn btn-primary">Buscar</button>
+                                <input name="buscador" matInput #input (ngModelChange)="onTypeBuscar(input.value)" [ngModel]="inputbuscador" id="inputBuscador" type="text" class="form-control" placeholder="Buscar producto">
+                            </div>
+                            <div class="col  ">
+                                <button type="submit" *ngIf="!busquedaDinamica" class="btn btn-primary">Buscar</button>
                             </div>
                         </form>
                     </div>
@@ -34,7 +38,7 @@
                                         <th style="width: 25%">Tipo</th>
                                         <!-- <th>Cod</th>
                                         <th>Descuento</th> -->
-                                        <th style="width: 13%">Precio</th>
+                                        <th style="width: 14%">Precio</th>
                                         <th style="width: 10%">Stock</th>
                                         <th style="width: 18%">Cantidad</th>
                                         <!-- <th style="width: 12%"></th> -->
@@ -45,22 +49,24 @@
                                         <!-- <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer"> -->
                                         <td class="table-item">
                                             <button (click)="_editarProductoModalService.mostarModal(producto)" type="button" class="btn btn-outline-secondary">
-                                            <i class="fas fa-pen    "></i>
+                                                <i class="fas fa-pen    "></i>
 
-                                          </button>
+                                            </button>
 
                                         </td>
-                                        <td class="col-auto justify-content-center table-item  p-auto ">{{producto.marca}}
+                                        <td class="col-auto justify-content-center table-item  p-auto ">
+                                            {{producto.marca}}
                                         </td>
                                         <td style="width: 25%" class=" table-item col-md-2 ">{{producto.modelo}}</td>
                                         <!-- <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
                                         <td class=" pt-4 ">{{producto.descuento}}</td> -->
-                                        <td class="  table-item ">{{producto.precio | precio}}</td>
+                                        <td class=" table-item ">{{producto.precio | precio}}</td>
+
                                         <td class=" table-item "> {{producto.stock}}</td>
                                         <td class=" table-item"> <input type="number" class="form-control     m-1" style="display: inline; width: 50px" (keyup)="null" #cant value="{{cantidad}}">
                                             <button (click)="selecctionarItem(producto, cant.value)" [disabled]="cant.value<1" class="m-1 btn btn-outline-primary">
-                                            <i class="fa fa-share" aria-hidden="true"></i>
-                                                
+                                                <i class="fa fa-share" aria-hidden="true"></i>
+
                                             </button>
 
                                         </td>
@@ -130,17 +136,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let producto of items ; index as i">
+                            <tr #t *ngFor="let producto of items ; index as i">
                                 <!-- <td class="w70">
                                     <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
                                 </td> -->
 
-                                <td class="lead col-auto justify-content-center bold p-auto pt-4 "><b>{{producto.marca}}</b></td>
+                                <td class="lead col-auto justify-content-center bold p-auto pt-4 ">
+                                    <b>{{producto.marca}}</b></td>
                                 <td class="lead pt-4 "><b>{{producto.modelo}}</b></td>
                                 <!-- <button align="center" [id]="'desc_'+producto._id" (click)="switchDescuento(true, i )" type="button" class="ml-3 mt-3 btn btn-secondary"> {{producto.descuento}}</button> -->
                                 <!-- <td><button align="center" (click)="switchDescuento(false, i )" [id]="'normal_'+producto._id" type="button" class="  mt-1 btn btn-success">
                                         {{producto.precio}}</button></td> -->
-                                <td style="width: 15%" class="pt-4 lead"> <b>{{producto.precio | precio}}</b></td>
+                                <td *ngIf="!t.getAttribute('costo')" (click)="t.setAttribute('costo',producto.precio); producto = switchPrecio(producto, producto.precioBruto) " style="width: 15%" class="pt-4 pointer lead"> <b>{{producto.precio | precio}}</b>
+                                </td>
+                                <td *ngIf="t.getAttribute('costo')" (click)="producto = switchPrecio(producto, t.getAttribute('costo')); t.removeAttribute('costo');  " style="width: 15%" class="pt-4 pointer text-danger lead">
+                                    <b>{{producto.precio | precio}}</b></td>
                                 <td style="width: 15%" class="pt-4 lead"><b> {{producto.cantidad}}</b></td>
                                 <td style="width: 15%">
                                     <i (click)="quitar(producto)" style="color: red;" class="pointer pt-3 fa fa-trash" aria-hidden="true"></i>

@@ -31,7 +31,7 @@ export class RecargaModalServiceService {
     this.oculto = '';
     this.id = recarga.productoId;
     this.recarga = recarga;
-    let producto: any = await this.getProducto(this.id);
+    let producto: any  
  
     this.marca = producto.marca;
     this.tipo = producto.modelo

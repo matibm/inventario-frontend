@@ -58,15 +58,16 @@
                                 <thead>
                                     <tr>
                                         <th>Monto total</th>
+                                        <th>Monto en P. costo</th>
                                         <th>Fecha</th>
                                         <th>Hora</th>
                                         <!-- <th style="width: 15%"></th> -->
-
                                     </tr>
                                 </thead>
                                 <tbody class="pointer" *ngFor="let factura of facturas">
                                     <tr (click)="verFacturaModal(factura)">
-                                        <td class=" pt-4 ">{{factura.monto}} Gs </td>
+                                        <td class=" pt-4 ">{{factura.monto | precio}} Gs </td>
+                                        <td class=" pt-4 ">{{factura.costo | precio}} Gs </td>
                                         <td class=" pt-4 ">{{factura.fecha | fecha: 'fecha'}}</td>
                                         <td class=" pt-4 "> {{factura.fecha | fecha :'hora'}}</td>
                                         <!-- <td>
@@ -90,7 +91,6 @@
                                         <th>Fecha</th>
                                         <th>Hora</th>
                                         <!-- <th style="width: 15%"></th> -->
-
                                     </tr>
                                 </thead>
                                 <tbody class="pointer" *ngFor="let egreso of egresos">

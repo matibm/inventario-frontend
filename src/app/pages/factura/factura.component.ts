@@ -141,14 +141,14 @@ export class FacturaComponent implements OnInit {
     //  this.cargando = true;
     let facturasResp: any = await this._facturaService.getFacturas(desde, hasta)
 
-    this.facturas = new Array()
-    for (let i = 0; i < facturasResp.reverse().length; i++) {
-      const factura = facturasResp.reverse()[i];
-      if (factura.fecha >= desde && factura.fecha <= hasta) {
-        this.facturas.push(factura)
-      }
-      this.facturas = this.facturas.reverse()
-    }
+    this.facturas = facturasResp
+    // for (let i = 0; i < facturasResp.reverse().length; i++) {
+    //   const factura = facturasResp.reverse()[i];
+    //   if (factura.fecha >= desde && factura.fecha <= hasta) {
+    //     this.facturas.push(factura)
+    //   }
+    //   this.facturas = this.facturas.reverse()
+    // }
 
   }
 

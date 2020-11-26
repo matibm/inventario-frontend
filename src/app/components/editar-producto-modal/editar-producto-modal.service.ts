@@ -99,7 +99,7 @@ export class EditarProductoModalService {
               comentario: this.comentario
             }
 
-            this._recargaService.crearRecarga(recarga).subscribe()
+            // this._recargaService.crearRecarga(recarga).subscribe()
 
             // this._recargaService.crearRecarga(recarga)
             this.ocultarModal()
@@ -145,7 +145,7 @@ export class EditarProductoModalService {
           tipo: this.modelo,
           comentario: this.comentario
         }
-        this._recargaService.crearRecarga(recarga).subscribe()
+        // this._recargaService.crearRecarga(recarga).subscribe()
 
       })
 

@@ -22,18 +22,38 @@ export class ProductosComponent implements OnInit {
   @ViewChild("input", { static: true }) nameField: ElementRef;
   editName(): void {
     this.nameField.nativeElement.focus();
+
   }
 
   @HostListener('document:keypress', ['$event'])
   teclaEvento(event: KeyboardEvent) {
+    console.log(event);
+    if (event.key == 'Enter' && event.shiftKey == false) {
+      this.buscarProductoConEnter(this.termino)
+      this.termino = ''
+    } else if (event.key == 'Enter' && event.shiftKey == true) {
 
 
+      this.editName()
+    }
+
+    else {
+      this.termino += event.key
+
+
+    }
+    setTimeout(() => {
+      this.termino = ''
+    }, 3000);
   }
 
   @HostListener('window:afterprint')
   onafterprint() {
 
   }
+
+  termino = ''
+
   busquedaDinamica = false;
   pagina = 0;
   readEscape = false;
@@ -63,11 +83,12 @@ export class ProductosComponent implements OnInit {
   factura
   inversion
   ingresoInput
-  vendiendo = false;
+  vendiendo = true;
   ngOnInit() {
     this._navBarService.navBgColor = 'bg-primary'
-    this.nameField.nativeElement.focus();
+    // this.nameField.nativeElement.focus();
 
+    ////this.editName()
     this.cargarProductos()
     this._editarProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._crearProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
@@ -103,7 +124,7 @@ export class ProductosComponent implements OnInit {
       }
 
     }
-    this.editName();
+    ////this.editName();
   }
 
   cambiarDesde(num) {
@@ -113,18 +134,20 @@ export class ProductosComponent implements OnInit {
     if (this.pagina < 0) {
     }
     this.cargarProductos()
-    this.editName();
+    //this.editName();
   }
 
   ingreso(ing) {
     let vueltoAux = 0;
+    this.vuelto = 0
+
     vueltoAux = ing - this.total
     if (vueltoAux >= 0 && ing) {
       this.vuelto = vueltoAux;
-      // this.diableVender = false
+      this.vendiendo = false
     } else {
       this.vuelto = 0;
-      // this.diableVender = true
+      this.diableVender = true
     }
   }
 
@@ -140,7 +163,7 @@ export class ProductosComponent implements OnInit {
     //  this.cargando = true;
     this._productoService.getProductos(this.desde).subscribe((resp: any) => {
       //// // console.log(resp);
-      this.editName();
+      //this.editName();
       this.inversion = 0;
       this.productos = resp.productos.reverse();
       for (let index = 0; index < this.productos.length; index++) {
@@ -152,12 +175,13 @@ export class ProductosComponent implements OnInit {
   }
 
   async buscarProductoConEnter(termino: string) {
+    console.log(termino);
 
     this.nameField.nativeElement.value = null;
 
     if (termino.length <= 0) {
 
-      this.cargarProductos();
+      // this.cargarProductos();
       return;
     }
     let productos = await this._productoService.buscarProductos(termino)
@@ -194,24 +218,26 @@ export class ProductosComponent implements OnInit {
           producto = productoAux
         }
       });
+      if (producto) {
+        let productoCarrito = this.getProductoOfCarrito(producto._id)
+        if (productoCarrito) {
+          if (productoCarrito.cantidad >= producto.stock) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Cantidad seleccionada supera el stock',
+              showConfirmButton: true
+            });
+            return
+          } else {
+            this.selecctionarItem(producto, "1")
 
-      let productoCarrito = this.getProductoOfCarrito(producto._id)
-      if (productoCarrito) {
-        if (productoCarrito.cantidad >= producto.stock) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Cantidad seleccionada supera el stock',
-            showConfirmButton: true
-          });
-          return
+          }
         } else {
           this.selecctionarItem(producto, "1")
 
         }
-      } else {
-        this.selecctionarItem(producto, "1")
-
       }
+
       // this.cargarProductos()
 
 
@@ -220,7 +246,7 @@ export class ProductosComponent implements OnInit {
 
 
 
-    this.editName();
+    //this.editName();
 
 
   }
@@ -236,14 +262,14 @@ export class ProductosComponent implements OnInit {
     return producto
   }
 
-  onTypeBuscar(value){
+  onTypeBuscar(value) {
     if (this.busquedaDinamica == true) {
       this.buscarProducto(value)
-    } 
+    }
   }
 
   async buscarProducto(termino: string) {
- 
+
     if (termino.length <= 0) {
 
       this.cargarProductos();
@@ -254,53 +280,53 @@ export class ProductosComponent implements OnInit {
     this.productos = productos
     if (productos.length == 1) {
       let producto = productos[0]
-    //   if (termino === producto.codigo) {
+      //   if (termino === producto.codigo) {
 
-    //     let productoCarrito = this.getProductoOfCarrito(producto._id)
-    //     if (productoCarrito) {
-    //       if (productoCarrito.cantidad >= producto.stock) {
-    //         Swal.fire({
-    //           icon: 'error',
-    //           title: 'Cantidad seleccionada supera el stock',
-    //           showConfirmButton: true
-    //         });
-    //         return
-    //       } else {
-    //         this.selecctionarItem(producto, "1")
+      //     let productoCarrito = this.getProductoOfCarrito(producto._id)
+      //     if (productoCarrito) {
+      //       if (productoCarrito.cantidad >= producto.stock) {
+      //         Swal.fire({
+      //           icon: 'error',
+      //           title: 'Cantidad seleccionada supera el stock',
+      //           showConfirmButton: true
+      //         });
+      //         return
+      //       } else {
+      //         this.selecctionarItem(producto, "1")
 
-    //       }
-    //     } else {
-    //       this.selecctionarItem(producto, "1")
+      //       }
+      //     } else {
+      //       this.selecctionarItem(producto, "1")
 
-    //     }
-    //   }
-    //   // this.cargarProductos()
+      //     }
+      //   }
+      //   // this.cargarProductos()
 
-    // } else {
-    //   let producto
-    //   productos.forEach(productoAux => {
-    //     if (productoAux.codigo === termino) {
-    //       producto = productoAux
-    //     }
-    //   });
+      // } else {
+      //   let producto
+      //   productos.forEach(productoAux => {
+      //     if (productoAux.codigo === termino) {
+      //       producto = productoAux
+      //     }
+      //   });
 
-    //   let productoCarrito = this.getProductoOfCarrito(producto._id)
-    //   if (productoCarrito) {
-    //     if (productoCarrito.cantidad >= producto.stock) {
-    //       Swal.fire({
-    //         icon: 'error',
-    //         title: 'Cantidad seleccionada supera el stock',
-    //         showConfirmButton: true
-    //       });
-    //       return
-    //     } else {
-    //       this.selecctionarItem(producto, "1")
+      //   let productoCarrito = this.getProductoOfCarrito(producto._id)
+      //   if (productoCarrito) {
+      //     if (productoCarrito.cantidad >= producto.stock) {
+      //       Swal.fire({
+      //         icon: 'error',
+      //         title: 'Cantidad seleccionada supera el stock',
+      //         showConfirmButton: true
+      //       });
+      //       return
+      //     } else {
+      //       this.selecctionarItem(producto, "1")
 
-    //     }
-    //   } else {
-    //     this.selecctionarItem(producto, "1")
+      //     }
+      //   } else {
+      //     this.selecctionarItem(producto, "1")
 
-    //   }
+      //   }
       // this.cargarProductos()
 
 
@@ -309,10 +335,10 @@ export class ProductosComponent implements OnInit {
 
 
 
-    this.editName();
+    //this.editName();
   }
 
-  selecctionarItem(producto, cant) {
+  selecctionarItem(producto, cant, hab?) {
     let noagregarmas = false;
     let numeroC
     let id_producto = producto._id;
@@ -348,7 +374,10 @@ export class ProductosComponent implements OnInit {
 
       return
     }
+    if (hab) {
+      this.editName()
 
+    }
     for (let i = 0; i < this.items.length; i++) {
 
       if (this.items[i]._id == producto._id) {
@@ -378,12 +407,12 @@ export class ProductosComponent implements OnInit {
     }
 
     if (!noagregarmas) {
-      this.items.push(producto)
+      this.items.unshift(producto)
       let obj = {
         id: producto._id,
         cantidad: cant
       }
-      this.decremento.push(obj)
+      this.decremento.unshift(obj)
     }
 
 
@@ -403,12 +432,13 @@ export class ProductosComponent implements OnInit {
 
     this.total += cant * producto.precio
     // console.log(document.getElementById('inputBuscador'));
-    this.editName();
+    //this.editName();
 
   }
 
   sumarTotal() {
     this.total = 0
+    this.vuelto = 0
     for (let i = 0; i < this.items.length; i++) {
       const producto = this.items[i];
       this.total += producto.cantidad * producto.precio
@@ -428,7 +458,7 @@ export class ProductosComponent implements OnInit {
 
   onCliente() {
     this._clienteModalService.oculto = ''
-    this.editName();
+    //this.editName();
   }
 
   onPrint() {
@@ -445,6 +475,9 @@ export class ProductosComponent implements OnInit {
   }
 
   async vender() {
+    if (this.vendiendo) {
+      return;
+    }
     if (!this._cierreCajaService.cajaActual) {
       Swal.fire({
         icon: 'error',
@@ -497,7 +530,8 @@ export class ProductosComponent implements OnInit {
     await this._facturaService.setFactura(this.factura)
 
 
-    this.nameField.nativeElement.focus();
+    // this.nameField.nativeElement.focus();
+    //this.editName()
     this.decremento = new Array();
     for (let i = 0; i < this.factura.productos.length; i++) {
       const producto = this.factura.productos[i];
@@ -505,7 +539,7 @@ export class ProductosComponent implements OnInit {
         id: producto._id,
         cantidad: producto.cantidad
       }
-      this.decremento.push(dec);
+      this.decremento.unshift(dec);
     }
 
     await this._productoService.decrementarProducto(this.decremento)
@@ -543,9 +577,9 @@ export class ProductosComponent implements OnInit {
     //   });
 
     // }
-    this.vendiendo = false;
+    // this.vendiendo = false;
 
-    this.editName();
+    //this.editName();
   }
 
   switchDescuento(descuento, index) {
@@ -564,7 +598,7 @@ export class ProductosComponent implements OnInit {
 
       document.getElementById('normal_' + item._id).className = 'mt-1 btn btn-success'
     }
-    this.editName();
+    //this.editName();
   }
 
   getMontoDeCosto(items) {
@@ -572,7 +606,7 @@ export class ProductosComponent implements OnInit {
     if (items) {
       for (let index = 0; index < items.length; index++) {
         const item = items[index];
-        costo += item.precioBruto
+        costo += item.precioBruto * item.cantidad
       }
     }
     return costo
@@ -581,7 +615,7 @@ export class ProductosComponent implements OnInit {
     for (let i = 0; i < this.items.length; i++) {
       this.switchDescuento(suich, i)
     }
-    this.editName();
+    //this.editName();
   }
 
   onToggle(resp) {
@@ -591,7 +625,7 @@ export class ProductosComponent implements OnInit {
     } if (!resp) {
       this.activarDescuentos(false)
     }
-    this.editName();
+    //this.editName();
   }
   @HostListener('document:keyup', ['$event'])
   onKeyUp(event) {

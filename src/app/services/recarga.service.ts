@@ -14,27 +14,27 @@ export class RecargaService {
 
   ) { }
 
-  getRecargaById(id){
-    let url = URL_SERVICIOS + '/recarga/' + id; 
+  getRecargaById(id) {
+    let url = URL_SERVICIOS + '/recarga/' + id;
     return this.http.get(url).toPromise();
   }
 
-  getRecargaFiltrado(desde, hasta){
-    let url = URL_SERVICIOS + '/recarga/filtro/' +desde +'?hasta=' + hasta;
+  getRecargaFiltrado(desde, hasta) {
+    let url = URL_SERVICIOS + '/recarga/filtro/' + desde + '?hasta=' + hasta;
     return this.http.get(url).toPromise();
   }
 
-  deleteRecarga(recarga){
+  deleteRecarga(recarga) {
     let url = URL_SERVICIOS + '/recarga/' + recarga._id;
-    return this.http.delete(url).pipe(map((resp: any) => {      
+    return this.http.delete(url).pipe(map((resp: any) => {
       this.noficacion.emit();
-      return resp 
-    })) 
+      return resp
+    }))
   }
-  crearRecarga(recarga){
+  crearRecarga(recarga) {
     let url = URL_SERVICIOS + '/recarga';
-    return this.http.post(url, recarga).pipe(map((resp: any) => {
-      return resp.factura
-    }));
+    return this.http.post(url, recarga).toPromise().then((resp: any) => {
+      return resp.recarga
+    });
   }
 }

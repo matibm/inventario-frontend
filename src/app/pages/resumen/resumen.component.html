@@ -293,22 +293,20 @@
                     <table class=" table table-hover">
                         <thead>
                             <tr>
-                                <th>Marca </th>
-                                <th>Tipo</th>
+
+                                <th>Nro factura</th>
                                 <th>Fecha</th>
                                 <th>Hora</th>
-                                <th>Stock Anterior</th>
-                                <th>Cantidad Agregada</th>
+                                <th>monto</th>
+
                             </tr>
                         </thead>
                         <tbody class=" pointer" *ngFor="let recarga of recargas">
                             <tr (click)="mostrarDetallesDeRecarga(recarga)">
-                                <td class=" pt-4 ">{{recarga.marca}} Gs </td>
-                                <td class=" pt-4 ">{{recarga.tipo}}</td>
+                                <td class=" pt-4 ">{{recarga.nfactura}} Gs </td>
                                 <td class=" pt-4 "> {{recarga.fecha | fecha :'fecha'}}</td>
                                 <td class=" pt-4 "> {{recarga.fecha | fecha :'hora'}}</td>
-                                <td class=" pt-4 "> {{recarga.stockAnterior}}</td>
-                                <td class=" pt-4 "> {{recarga.cantidadASumar}}</td>
+                                <td class=" pt-4 "> {{recarga.monto | precio }} gs</td>
                             </tr>
                         </tbody>
                     </table>
@@ -349,4 +347,5 @@
             </div>
         </div>
     </div>
+
 </div>

@@ -1,3 +1,4 @@
+import { RecargaService } from './../../services/recarga.service';
 import { ProductoService } from './../../services/producto.service';
 import { ReabastecerService } from './reabastecer.service';
 import { Component, OnInit, ViewChild, ElementRef, NgZone, Renderer2, Input, Directive, AfterViewInit, ViewChildren, QueryList } from '@angular/core';
@@ -14,12 +15,16 @@ export class ReabastecerComponent implements OnInit, AfterViewInit {
   constructor(
     public _reabastecerService: ReabastecerService,
     public _productoService: ProductoService,
+    public _recargaService: RecargaService,
     private ngZone: NgZone,
     private renderer: Renderer2
   ) { }
 
   producto: any
   productos
+  configRecarga = true; 
+  recarga
+
 
   lista = []
   ngOnInit() {
@@ -29,6 +34,17 @@ export class ReabastecerComponent implements OnInit, AfterViewInit {
         this.setFocus()
       }, 0);
     })
+  }
+
+  crearRecarga(nfactura, comentario){
+    this.recarga = {
+      nfactura: nfactura,
+      comentario: comentario,
+      productos: [],
+      fecha: null,
+      monto: 0
+    }
+    this.configRecarga = false;
   }
 
   ngAfterViewInit() {
@@ -125,6 +141,15 @@ export class ReabastecerComponent implements OnInit, AfterViewInit {
   async guardarTodo() {
     let msg = await this._productoService.saveMultiple(this.lista)
     console.log(msg);
+    this.recarga.productos = this.lista
+    this.recarga.fecha = new Date().valueOf();
+    let cant = 0
+    for (let i = 0; i < this.lista.length; i++) {
+      const item = this.lista[i];
+      cant += item.precio;
+    }
+    this.recarga.monto = cant
+    await this._recargaService.crearRecarga(this.recarga)
     this.cerrar()
     
     Swal.fire({
@@ -145,6 +170,7 @@ export class ReabastecerComponent implements OnInit, AfterViewInit {
   cerrar(){
     this.producto = null;
     this.lista = [];
+    this.recarga = null;
     this.productos = null;
     this._reabastecerService.ocultarModal()
   }

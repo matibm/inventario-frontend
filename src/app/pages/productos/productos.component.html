@@ -11,7 +11,7 @@
                                 <button type="button" (click)="busquedaDinamica = true" *ngIf="!busquedaDinamica" class="btn btn-outline-secondary">Simple</button>
                             </div>
                             <div class="col  ">
-                                <input name="buscador" matInput #input (ngModelChange)="onTypeBuscar(input.value)" [ngModel]="inputbuscador" id="inputBuscador" type="text" class="form-control" placeholder="Buscar producto">
+                                <input name="buscador" #e (ngModelChange)="onTypeBuscar(e.value)" [ngModel]="inputbuscador" id="inputBuscador" type="text" class="form-control" placeholder="Buscar producto">
                             </div>
                             <div class="col  ">
                                 <button type="submit" *ngIf="!busquedaDinamica" class="btn btn-primary">Buscar</button>
@@ -64,7 +64,7 @@
 
                                         <td class=" table-item "> {{producto.stock}}</td>
                                         <td class=" table-item"> <input type="number" class="form-control     m-1" style="display: inline; width: 50px" (keyup)="null" #cant value="{{cantidad}}">
-                                            <button (click)="selecctionarItem(producto, cant.value)" [disabled]="cant.value<1" class="m-1 btn btn-outline-primary">
+                                            <button (click)="selecctionarItem(producto, cant.value, true)" [disabled]="cant.value<1" class="m-1 btn btn-outline-primary">
                                                 <i class="fa fa-share" aria-hidden="true"></i>
 
                                             </button>
@@ -172,7 +172,7 @@
 
                                         <div class="my-4 row">
                                             <h3>Ingreso</h3>
-                                            <input name="ing" ngModel class="inputvender border rounded ml-3  " [(ngModel)]="ingresoInput" #ingress (keyup)='ingreso(ingress.value)' type="number">
+                                            <input name="ing" ngModel class="inputvender border rounded ml-3  " matInput #input [(ngModel)]="ingresoInput" #ingress (keyup)='ingreso(ingress.value)' type="number">
 
                                         </div>
                                     </div>
@@ -183,9 +183,6 @@
 
                                     </div>
                                 </div>
-
-
-
                                 <div class="mt-4 row">
                                     <div class="col"><button [disabled]="vendiendo" type="submit" class="btn btn-lg btn-success">Vender</button></div>
                                     <div class="col"><button type="button" (click)="onCliente()" class="btn btn-outline-light">Cliente</button></div>

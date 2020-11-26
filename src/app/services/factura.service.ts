@@ -29,6 +29,8 @@ export class FacturaService {
   getFacturas(desde, hasta) {
     let url = URL_SERVICIOS + '/factura/'+ desde +'?hasta=' + hasta ;
     return this.http.get(url).toPromise().then((resp:any)=>{
+      console.log(resp.facturas);
+      
       return resp.facturas
     })
   }
@@ -45,10 +47,27 @@ export class FacturaService {
 
   setFactura(factura){
 
+    let infoFactura = {              
+      tienda: 'minimercado Nombre tienda',
+      fecha: new Date(factura.fecha),
+      monto: factura.monto,
+      costo: factura.costo,
+      productos: factura.productos,
+      debiendo: factura.debiendo,
+
+      printerName: 'EPSON TM-U220 Receipt'
+    }
+
+    let url2 = 'http://localhost:8080' ;
+      this.http.post(url2, infoFactura).toPromise().then( (resp:any)=>{
+      console.log(resp);
+      
+    } )
     let url = URL_SERVICIOS + '/factura';
     return this.http.post(url, factura).toPromise().then( (resp:any)=>{
       return resp.factura
     } )
+    
   }
   putFactura(factura){
 

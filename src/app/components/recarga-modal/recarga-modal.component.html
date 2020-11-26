@@ -10,17 +10,41 @@
                     </button>
                 </div>
                 <div class="card-body">
-                    <h5><b>Marca:</b> {{ _recargaModalService.marca}}</h5>
+                    <!-- <h5><b>Marca:</b> {{ _recargaModalService.marca}}</h5>
                     <h5><b>Tipo:</b> {{ _recargaModalService.tipo}}</h5>
                     <h5><b>Precio:</b> {{ _recargaModalService.precio}}</h5>
                     <h5><b>Stock Actual: </b>{{ _recargaModalService.stockActual}}</h5>
                     <h5><b>Fecha de Modificacion: </b>{{ _recargaModalService.fecha | fecha :'fecha'}} - {{ _recargaModalService.fecha | fecha :'hora'}} </h5>
                     <h5><b>Stock Antes de modificar: </b>{{ _recargaModalService.stockAnterior}}</h5>
                     <h5><b>Cantidad Agregada: </b>{{ _recargaModalService.stockAgregado}}</h5>
-                    <h5><b>Comentario: </b>{{ _recargaModalService.comentario}}</h5>
+                    <h5><b>Comentario: </b>{{ _recargaModalService.comentario}}</h5> -->
 
+                    <table *ngIf="_recargaModalService.recarga" class="table table-striped ">
+                        <thead>
+                            <tr>
+                                <th>marca</th>
+                                <th>tipo</th>
+                                <th>precio</th>
+                                <th>stock anterior</th>
+                                <th>stock agregado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of _recargaModalService.recarga.productos">
+                                <td>{{item.marca}}</td>
+                                <td>{{item.modelo}}</td>
+                                <td>{{item.precio | precio}}</td>
+                                <td>{{item.stock}}</td>
+                                <td>{{item.cantidad}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <p *ngIf="_recargaModalService.recarga" class="lead">comentario: {{_recargaModalService.recarga.comentario}}</p>
                 </div>
                 <div class="modal-footer">
+                    <h4 class="mx-3" *ngIf="_recargaModalService.recarga">Total:{{_recargaModalService.recarga.monto | precio}} Gs</h4>
+
                     <button type="button" (click)="_recargaModalService.eliminarRegistro(_recargaModalService.recarga)" class="btn btn-danger">Eliminar Registro</button>
                 </div>
             </div>

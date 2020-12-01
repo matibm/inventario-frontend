@@ -27,13 +27,12 @@ export class ProductosComponent implements OnInit {
 
   @HostListener('document:keypress', ['$event'])
   teclaEvento(event: KeyboardEvent) {
-    console.log(event);
-    if (event.key == 'Enter' && event.shiftKey == false) {
+     if (event.key == 'Enter' && event.shiftKey == false) {
       this.buscarProductoConEnter(this.termino)
+
       this.termino = ''
     } else if (event.key == 'Enter' && event.shiftKey == true) {
-
-
+ 
       this.editName()
     }
 
@@ -44,7 +43,9 @@ export class ProductosComponent implements OnInit {
     }
     setTimeout(() => {
       this.termino = ''
-    }, 3000);
+    
+    }, 4000);
+    
   }
 
   @HostListener('window:afterprint')
@@ -53,7 +54,7 @@ export class ProductosComponent implements OnInit {
   }
 
   termino = ''
-
+  permitirbuscar = true;
   busquedaDinamica = false;
   pagina = 0;
   readEscape = false;
@@ -93,12 +94,12 @@ export class ProductosComponent implements OnInit {
     this._editarProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._crearProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._productoService.notificacion.subscribe(resp => {
-      this.items = new Array
-      this.factura = null
-      this.ingresoInput = null
-      this.total = 0
-      this.vuelto = 0
-      this.decremento = new Array
+      // this.items = new Array
+      // this.factura = null
+      // this.ingresoInput = null
+      // this.total = 0
+      // this.vuelto = 0
+      // this.decremento = new Array
       this.cargarProductos();
 
     })
@@ -174,18 +175,30 @@ export class ProductosComponent implements OnInit {
     })
   }
 
-  async buscarProductoConEnter(termino: string) {
-    console.log(termino);
+  pruebaSubmit(){
+    console.log("submit funcionando");
+    
+  }
 
+  async buscarProductoConEnter(termino: string) {
+    this.inputbuscador = ''
+    let inputb:any = document.getElementById('inputBuscador');
+    inputb.value = ''
     this.nameField.nativeElement.value = null;
 
     if (termino.length <= 0) {
-
+       
       // this.cargarProductos();
       return;
     }
-    let productos = await this._productoService.buscarProductos(termino)
 
+    if (this.permitirbuscar == false) {
+      return;
+    }
+
+    this.permitirbuscar = false;
+    let productos = await this._productoService.buscarProductos(termino)
+    this.permitirbuscar = true;
     this.productos = productos
     if (productos.length == 1) {
       let producto = productos[0]
@@ -242,7 +255,6 @@ export class ProductosComponent implements OnInit {
 
 
     }
-
 
 
 

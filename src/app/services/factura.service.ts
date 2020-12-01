@@ -55,14 +55,14 @@ export class FacturaService {
       productos: factura.productos,
       debiendo: factura.debiendo,
 
-      printerName: 'EPSON TM-U220 Receipt'
+      printerName: 'Microsoft Print to PDF'
     }
 
-    let url2 = 'http://localhost:8080' ;
-      this.http.post(url2, infoFactura).toPromise().then( (resp:any)=>{
-      console.log(resp);
+    // let url2 = 'http://localhost:8080' ;
+    //   this.http.post(url2, infoFactura).toPromise().then( (resp:any)=>{
+    //   console.log(resp);
       
-    } )
+    // } )
     let url = URL_SERVICIOS + '/factura';
     return this.http.post(url, factura).toPromise().then( (resp:any)=>{
       return resp.factura

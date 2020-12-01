@@ -5,16 +5,16 @@
                 <div class="card">
                     <div class="card-body mx-auto">
 
-                        <form (ngSubmit)="buscarProductoConEnter(input.value)" class=" row">
+                        <form (ngSubmit)="buscarProductoConEnter(e.value);pruebaSubmit();" class=" row">
                             <div class="col">
                                 <button type="button" (click)="busquedaDinamica = false" *ngIf="busquedaDinamica" class="btn btn-outline-info">Dinamica</button>
                                 <button type="button" (click)="busquedaDinamica = true" *ngIf="!busquedaDinamica" class="btn btn-outline-secondary">Simple</button>
                             </div>
                             <div class="col  ">
-                                <input name="buscador" #e (ngModelChange)="onTypeBuscar(e.value)" [ngModel]="inputbuscador" id="inputBuscador" type="text" class="form-control" placeholder="Buscar producto">
+                                <input #e autocomplete="off" (ngModelChange)="onTypeBuscar(e.value)" [ngModel]="inputbuscador" id="inputBuscador" name="inputBuscador" type="text" class="form-control" placeholder="Buscar producto">
                             </div>
                             <div class="col  ">
-                                <button type="submit" *ngIf="!busquedaDinamica" class="btn btn-primary">Buscar</button>
+                                <button type="submit" [disabled]="!permitirbuscar" *ngIf="!busquedaDinamica" class="btn btn-primary">Buscar</button>
                             </div>
                         </form>
                     </div>

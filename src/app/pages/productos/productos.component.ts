@@ -21,18 +21,18 @@ import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular
 export class ProductosComponent implements OnInit {
   @ViewChild("input", { static: true }) nameField: ElementRef;
   editName(): void {
-    this.nameField.nativeElement.focus();
+    // this.nameField.nativeElement.focus();
 
   }
 
   @HostListener('document:keypress', ['$event'])
   teclaEvento(event: KeyboardEvent) {
-     if (event.key == 'Enter' && event.shiftKey == false) {
+    if (event.key == 'Enter' && event.shiftKey == false) {
       this.buscarProductoConEnter(this.termino)
 
       this.termino = ''
     } else if (event.key == 'Enter' && event.shiftKey == true) {
- 
+
       this.editName()
     }
 
@@ -43,9 +43,9 @@ export class ProductosComponent implements OnInit {
     }
     setTimeout(() => {
       this.termino = ''
-    
+
     }, 4000);
-    
+
   }
 
   @HostListener('window:afterprint')
@@ -111,7 +111,7 @@ export class ProductosComponent implements OnInit {
       const element = this.items[index];
       if (element.codigo == producto.codigo) {
         let aux = index + 1
-        this.items.splice(index, aux);
+        this.items.splice(index, 1);
         let auxtotal = element.precio * element.cantidad
         this.total -= auxtotal
       }
@@ -175,19 +175,19 @@ export class ProductosComponent implements OnInit {
     })
   }
 
-  pruebaSubmit(){
+  pruebaSubmit() {
     console.log("submit funcionando");
-    
+
   }
 
   async buscarProductoConEnter(termino: string) {
     this.inputbuscador = ''
-    let inputb:any = document.getElementById('inputBuscador');
+    let inputb: any = document.getElementById('inputBuscador');
     inputb.value = ''
     this.nameField.nativeElement.value = null;
 
     if (termino.length <= 0) {
-       
+
       // this.cargarProductos();
       return;
     }
@@ -387,7 +387,7 @@ export class ProductosComponent implements OnInit {
       return
     }
     if (hab) {
-      this.editName()
+      // this.editName()
 
     }
     for (let i = 0; i < this.items.length; i++) {
@@ -555,7 +555,12 @@ export class ProductosComponent implements OnInit {
     }
 
     await this._productoService.decrementarProducto(this.decremento)
-
+    this.items = new Array
+    this.factura = null
+    this.ingresoInput = null
+    this.total = 0
+    this.vuelto = 0
+    this.decremento = new Array
     // if (this._clienteModalService.imprimir) {
     //   this._productoService.oculto = 'oculto';
     //   this._imprimirFacturaService.mostrarFactura(this._clienteModalService.cliente, this.factura)

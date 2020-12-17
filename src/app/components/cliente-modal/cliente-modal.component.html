@@ -9,7 +9,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="row m-3">
+                <div class="row mt-3">
                     <div class="col">
                         <button type="button" (click)="_clienteModalService.mostrarTabla()" class="btn btn-sm btn-block btn-primary">Buscar Cliente</button>
                     </div>
@@ -30,22 +30,24 @@
                                     </div>
                                 </form>
                             </div>
-
                         </div>
-
                     </div>
-                    <div>
-                        <table class="table">
+                    <div class="m-3">
+                        <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>nombre</th>
                                     <th>ci</th>
+                                    <th>tel</th>
+                                    <th style="width: 30%;">direccion</th>
                                 </tr>
                             </thead>
                             <tbody *ngFor="let item of _clienteModalService.clientes">
                                 <tr class="pointer" (click)="_clienteModalService.seleccionarCliente(item)">
                                     <td>{{item.nombre}}</td>
                                     <td>{{item.ci}}</td>
+                                    <td>{{item.tel}}</td>
+                                    <td>{{item.direccion}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -53,21 +55,27 @@
                 </div>
 
                 <form *ngIf="!_clienteModalService.tablaBoolean" ngNativeValidate id="amyFormEditProduct" class="formProducto" (ngSubmit)="_clienteModalService.agregarCliente()" class="modal-body cuerpo ">
+                    <h3>Nuevo cliente</h3>
                     <div *ngIf="true">
                         <div class="form-group">
-                            <label for="">Cedula de Identidad</label>
-
-                            <input [(ngModel)]="_clienteModalService.cliente.ci" name="marca" ngModel type="text" #marca class="form-control" aria-describedby="helpId" placeholder="">
+                            <label for="">C.I./R.U.C.</label>
+                            <input [(ngModel)]="_clienteModalService.cliente.ci" name="marca" ngModel type="text" #marca class="form-control" aria-describedby="helpId" placeholder="cedula de identidad o ruc">
                         </div>
-                        <!-- <div  class="form-group">
-                            <label for="">RUC</label>
-                            <input ngModel type="text" [(ngModel)]="_clienteModalService.cliente.ruc" name="modelo" #modelo class="form-control" aria-describedby="helpId" placeholder="">
 
-                        </div> -->
                         <div class="form-group">
                             <label for="">Nombres</label>
-                            <input ngModel type="text" [(ngModel)]="_clienteModalService.cliente.nombre" name="nombre" #modelo class="form-control" aria-describedby="helpId" placeholder="">
+                            <input ngModel type="text" [(ngModel)]="_clienteModalService.cliente.nombre" name="nombre" #modelo class="form-control" aria-describedby="helpId" placeholder="Nombre y apellido">
 
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Telefono</label>
+                            <input ngModel type="text" [(ngModel)]="_clienteModalService.cliente.tel" name="modelo" #tel class="form-control" aria-describedby="helpId" placeholder="numero de telefono">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="">Direccion</label>
+                            <input ngModel type="text" [(ngModel)]="_clienteModalService.cliente.direccion" name="modelo" #direccion class="form-control" aria-describedby="helpId" placeholder="Direccion del cliente">
                         </div>
 
                         <div class="modal-footer">
@@ -75,7 +83,6 @@
                             <button type="submit" class="btn btn-primary">Guardar</button>
                             <!-- <button class="btn btn-succes">Confirmar</button> -->
                         </div>
-
                     </div>
                 </form>
             </div>

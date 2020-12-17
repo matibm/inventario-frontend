@@ -516,13 +516,14 @@ export class ProductosComponent implements OnInit {
     let costo = this.getMontoDeCosto(this.items);
     // if (!this._cierreCajaModalService.cerrado) {
     let date = new Date()
-    if (this._clienteModalService.cliente._id) {
+     
+    if (this._clienteModalService.clienteSelected) {
       this.factura = {
         productos: this.items,
         fecha: date.getTime(),
         monto: this.total,
         debiendo: this.debiendo,
-        cliente: this._clienteModalService.cliente._id,
+        cliente: this._clienteModalService.clienteSelected._id,
         costo: costo
       }
     } else {

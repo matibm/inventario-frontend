@@ -46,5 +46,14 @@ export class ClienteService {
     }));
   }
 
+  editarCliente(cliente){
+    let url = URL_SERVICIOS + '/cliente/' + cliente._id;
+
+    return this.http.put(url, cliente).pipe(map((resp: any) => {
+      this.noficacion.emit();
+      return resp.cliente;
+    }));
+  }
+
 }
 

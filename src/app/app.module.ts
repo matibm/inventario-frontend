@@ -32,6 +32,7 @@ import { EditarServicioModalComponent } from './components/editar-servicio-modal
 import { CrearIngresoModalComponent } from './components/crear-ingreso-modal/crear-ingreso-modal.component';
 import { ReabastecerComponent } from './components/reabastecer/reabastecer.component';
 import { PrecioPipe } from './pipes/precio.pipe';
+import { EditClientComponent } from './components/edit-client/edit-client.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { PrecioPipe } from './pipes/precio.pipe';
     CrearIngresoModalComponent,
     ReabastecerComponent,
     PrecioPipe,
+    EditClientComponent,
     
   ],
   imports: [

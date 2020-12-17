@@ -9,12 +9,13 @@ import { Injectable } from '@angular/core';
 export class ClienteModalService {
   oculto = 'oculto'
   cliente = {
-    ci: '',
-    // ruc: '',
+    ci: '',    
     nombre: '',
-    _id: ''
-
+    _id: '',
+    tel: '',
+    direccion: ''
   }
+  clienteSelected 
   clientes = new Array
   tablaBoolean = false;
   factura
@@ -30,13 +31,13 @@ export class ClienteModalService {
   }
 
   buscarCliente(termino: string) {
-    
+
     if (termino.length <= 0) {
       // this.cargarProductos();
       return;
     }
 
-    this._clienteService.buscarClientes(termino).subscribe(resp =>{
+    this._clienteService.buscarClientes(termino).subscribe(resp => {
       this.clientes = resp
     })
   }
@@ -48,27 +49,29 @@ export class ClienteModalService {
     this.tablaBoolean = true;
     localStorage.setItem('mostarTabla', 'false');
     // console.log("Mostar tabla");
-    
-    this._clienteService.getClientes().subscribe((resp :any)=>{
+
+    this._clienteService.getClientes().subscribe((resp: any) => {
       // console.log(resp);
-      
+
       this.clientes = resp.clientes;
     })
   }
 
-  seleccionarCliente(cliente){
+  seleccionarCliente(cliente) {
     console.log(cliente);
-    this.cliente =cliente;
+    this.clienteSelected = cliente;
     this.ocultarModal()
   }
 
-  agregarCliente(){
+  agregarCliente() {
     let cliente = {
       nombre: this.cliente.nombre,
-      ci: this.cliente.ci
+      ci: this.cliente.ci,
+      tel: this.cliente.tel,
+      direccion: this.cliente.direccion
       // ruc: this.cliente.ruc
     }
-    this._clienteService.crearCliente(cliente).subscribe((cliente:any )=>{
+    this._clienteService.crearCliente(cliente).subscribe((cliente: any) => {
       this.cliente = cliente
     })
     this.ocultarModal()

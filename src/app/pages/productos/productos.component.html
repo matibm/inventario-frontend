@@ -181,16 +181,31 @@
                                             <br>
                                             <b class="text-danger"> {{vuelto | precio}} Gs</b> </h3>
 
+                                        <div *ngIf="_clienteModalService.clienteSelected" class="scol">
+                                            <p class="lead">Nombre : <a href="#">{{_clienteModalService.clienteSelected.nombre}}</a></p>
+                                            <!-- <h4>RUC : <a href="#">{{_clienteModalService.cliente.ruc}}</a> </h4> -->
+                                            <p class="m-0 lead">C.I : <a href="#">{{_clienteModalService.clienteSelected.ci}}</a> </p>
+
+
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="mt-4 row">
+                                <div class="mt-1 row">
                                     <div class="col"><button [disabled]="vendiendo" type="submit" class="btn btn-lg btn-success">Vender</button></div>
-                                    <div class="col"><button type="button" (click)="onCliente()" class="btn btn-outline-light">Cliente</button></div>
+                                    <div class="col">
+                                        <div class="mt-2 row">
+                                            <button type="button" (click)="onCliente()" class="btn mx-3 btn-outline-light">Cliente</button>
+                                            <div *ngIf="_clienteModalService.clienteSelected">
+                                                <button *ngIf="!debiendo && (_clienteModalService.clienteSelected.nombre || _clienteModalService.clienteSelected.ci)" (click)="debiendo = true" type="button" class="btn btn-success">paga</button>
+
+                                                <button *ngIf="debiendo  && (_clienteModalService.clienteSelected.nombre || _clienteModalService.clienteSelected.ci)" (click)="debiendo = false" type="button" class="btn btn-danger">debe</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
-
                         </div>
-                        <div *ngIf="false" class="col">
+                        <div *ngIf="false" class="scol">
                             <h3 align="center">Cliente</h3>
                             <h4>Nombre : <a href="#">{{_clienteModalService.cliente.nombre}}</a></h4>
                             <!-- <h4>RUC : <a href="#">{{_clienteModalService.cliente.ruc}}</a> </h4> -->
@@ -201,7 +216,6 @@
                                 </div>
                                 <div class="mt-2 row">
                                     <button *ngIf="!debiendo && (_clienteModalService.cliente.nombre || _clienteModalService.cliente.ci)" (click)="debiendo = true" type="button" class="btn btn-success">paga</button>
-
                                     <button *ngIf="debiendo  && (_clienteModalService.cliente.nombre || _clienteModalService.cliente.ci)" (click)="debiendo = false" type="button" class="btn btn-danger">debe</button>
                                 </div>
                             </div>

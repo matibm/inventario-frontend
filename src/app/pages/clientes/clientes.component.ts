@@ -14,6 +14,8 @@ export class ClientesComponent implements OnInit {
   facturas
   factura
   items
+  editCliente = false;
+
   constructor(
     public _clienteService: ClienteService,
     public _facturaService: FacturaService,
@@ -23,6 +25,12 @@ export class ClientesComponent implements OnInit {
   getItems(facturas) {
     this.items = facturas.length
   }
+
+  editarCliente(cliente) {
+    this.cliente = cliente
+    this.editCliente = true;
+  }
+
   ngOnInit() {
     this._navBarService.navBgColor = 'bg-danger'
     this.getClientes();
@@ -66,16 +74,20 @@ export class ClientesComponent implements OnInit {
   }
 
   buscarCliente(termino) {
+    if (termino) {
+      this._clienteService.buscarClientes(termino).subscribe((resp: any) => {
+        this.clientes = resp
+        // console.log(resp);
 
-    this._clienteService.buscarClientes(termino).subscribe((resp: any) => {
-      this.clientes = resp
-      // console.log(resp);
+      })
+    } else {
+      this.getClientes()
+    }
 
-    })
   }
 
   eliminarCliente(cliente) {
-    
+
     this._clienteService.eliminarCliente(cliente._id).subscribe()
   }
   eliminarFactura(factura) {

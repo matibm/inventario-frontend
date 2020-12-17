@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-3">
+    <div class="col-4">
 
         <div class="col">
             <div class="carsd">
@@ -20,17 +20,27 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>nombre</th>
+                    <th>nombre
+                    </th>
                     <th>ci</th>
-                    <th style="width: 15%"></th>
+                    <th>telefono
+                        <hr class="m-0"> direccion
+                    </th>
+
+                    <th style="width: 15%">acciones</th>
                 </tr>
             </thead>
             <tbody class="table" *ngFor="let item of clientes">
                 <tr class="list-item list-group-item-action pointer" href="javascript:void" (click)="seleccionarCliente(item)">
                     <td>{{item.nombre}}</td>
                     <td>{{item.ci}}</td>
+                    <td>{{item.tel}}
+                        <hr class="m-0"> {{item.direccion}}
+                    </td>
+
                     <td>
                         <i (click)="eliminarCliente(item)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
+                        <i (click)="editarCliente(item)" class="ml-2 fa fa-pen" aria-hidden="true"></i>
                     </td>
                 </tr>
 
@@ -44,7 +54,7 @@
                     <th>Fecha</th>
                     <th>Monto</th>
                     <th>Pagado</th>
-                    <th style="width: 15%"></th>
+                    <th style="width: 15%">acciones</th>
                 </tr>
             </thead>
             <tbody *ngFor="let item of facturas">
@@ -60,11 +70,11 @@
             </tbody>
         </table>
     </div>
-    <div class="col-5">
+    <div class="col-4">
         <table *ngIf="factura" class="table  table-hover">
             <thead>
                 <tr>
-                    <th>Imagen</th>
+                    <!-- <th>Imagen</th> -->
                     <th>Marca</th>
                     <th>Tipo</th>
 
@@ -76,9 +86,9 @@
             </thead>
             <tbody *ngFor="let producto of factura.productos">
                 <tr>
-                    <td class="w70">
+                    <!-- <td class="w70">
                         <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
-                    </td>
+                    </td> -->
                     <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}</td>
                     <td style="width: 25%" class=" pt-4 ">{{producto.modelo}}</td>
                     <td class=" pt-4 ">{{producto.precio}}</td>
@@ -96,4 +106,10 @@
             </div>
         </table>
     </div>
+</div>
+
+<div *ngIf="editCliente">
+    <app-edit-client [clienteToEdit]="cliente" (oncomplete)="editCliente = false"></app-edit-client>
+
+
 </div>

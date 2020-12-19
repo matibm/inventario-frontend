@@ -11,6 +11,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CierreCajaComponent implements OnInit {
 
+  diaDesde: number
+  mesDesde
+  yearDesde
+  productosVendidos
+  semanaDesde: Date
+  diaHasta
+  hasta
+  mesHasta
+  arraySemanal
+  yearHasta
+  dateDesde: Date
+  dateHasta: Date = new Date();
+  ventasSemanales
+  fechasSemanales
+  ventasDiarias
+  fechasDiarias
+  diaVentaSemanal
+  mesVentaSemanal
+  yearVentaSemanal
+  diaVentaDiaria
+  mesVentaDiaria
+  infoSemanal
+  diariasBoolean = false;
+  yearVentaDiaria
+
   cierreCajas
   cierreCaja
   facturas
@@ -26,12 +51,17 @@ export class CierreCajaComponent implements OnInit {
   costo = 0;
   montoFijo = 0;
    
+  cajaIngreso
+  cajaEgreso
+  cajaCosto
+
   constructor(public _cierreCajaService: CierreCajaService,
     public _facturaModalService: FacturaModalService,
      public _navBarService: navBarService
   ) { }
 
   ngOnInit() {
+    this.setFechas()
     this._navBarService.navBgColor = 'bg-dark'
     this.cargarCierreCajas()
     this._cierreCajaService.notificacion.subscribe((resp) => {
@@ -41,8 +71,11 @@ export class CierreCajaComponent implements OnInit {
   }
 
   cargarCierreCajas() {
-    this._cierreCajaService.getCierreCajas().subscribe((resp: any) => {
-      // console.log(resp);
+    this._cierreCajaService.getCierreCajasFiltrado(this.dateDesde.valueOf(), this.dateHasta.valueOf()).subscribe((resp: any) => {
+      console.log(resp);
+      if (!resp.cierreCajas[0]) {
+        return;
+      }
       this.cierreCaja = resp.cierreCajas[0];
       this.cierreCajas = resp.cierreCajas.reverse()
       let caja = this.cierreCajas[0];
@@ -57,7 +90,7 @@ export class CierreCajaComponent implements OnInit {
       this.costo = caja.costoVentas
       this.montoFijo = caja.montoFijo
       console.log(caja);
-
+      this.sumarCierres(resp.cierreCajas)
     })
   }
 
@@ -136,6 +169,70 @@ export class CierreCajaComponent implements OnInit {
     // this.cierreCaja.facturas = this.facturas;
 
     // this.cierreCaja = await this._cierreCajaService.putCierreCaja(this.cierreCaja) 
+  }
+
+
+  hoy
+  setFechas() {
+    this.dateDesde = new Date()
+    this.hoy = new Date()
+
+    this.semanaDesde = new Date(this.dateDesde.setFullYear(this.dateDesde.getFullYear(), this.dateDesde.getMonth(), this.dateDesde.getDate().valueOf() - 7))
+    this.dateDesde = this.semanaDesde;
+
+    this.dateDesde.setUTCHours(0, 0, 0);
+    this.dateHasta.setUTCHours(23, 59, 0);
+
+    this.diaDesde = this.dateDesde.getDate();
+    this.mesDesde = this.dateDesde.getMonth() + 1;
+    this.yearDesde = this.dateDesde.getFullYear();
+
+    this.diaHasta = this.hoy.getUTCDate();
+    this.mesHasta = this.hoy.getUTCMonth() + 1;
+    this.yearHasta = this.hoy.getUTCFullYear();
+
+    this.diaVentaSemanal = this.diaHasta;
+    this.mesVentaSemanal = this.mesHasta;
+    this.yearVentaSemanal = this.yearHasta;
+
+    this.diaVentaDiaria = this.diaHasta;
+    this.mesVentaDiaria = this.mesHasta;
+    this.yearVentaDiaria = this.yearHasta;
+
+
+  }
+
+  cajaServicios
+  sumarCierres(cierres){
+    let ingreso = 0 
+    let costo = 0 
+    let egreso = 0
+    let servicios = 0 
+    for (let i = 0; i < cierres.length; i++) {
+      const cierre = cierres[i];
+      ingreso += cierre.montoVentas
+      costo += cierre.costoVentas
+      servicios += cierre.montoIngresos
+      egreso += cierre.montoEgresos
+    }
+    this.cajaCosto = costo
+    this.cajaIngreso = ingreso
+    this.cajaServicios = servicios
+    this.cajaEgreso = egreso
+  }
+
+
+  filtrar() {
+    let date = new Date();
+    let desde = new Date(date.setUTCFullYear(this.yearDesde, this.mesDesde - 1, this.diaDesde));
+    desde.setUTCHours(0, 0, 0)
+
+    date = new Date();
+    let hasta = new Date(date.setUTCFullYear(this.yearHasta, this.mesHasta - 1, this.diaHasta));
+    hasta.setUTCHours(23, 59, 59)
+    this.dateDesde = desde;;
+    this.dateHasta = hasta;
+    this.cargarCierreCajas()
   }
 
 }

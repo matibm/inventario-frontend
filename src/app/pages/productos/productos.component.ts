@@ -16,34 +16,28 @@ import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular
   styleUrls: ['./productos.component.scss']
 })
 
-
-
 export class ProductosComponent implements OnInit {
   @ViewChild("input", { static: true }) nameField: ElementRef;
   editName(): void {
-    // this.nameField.nativeElement.focus();
+    this.nameField.nativeElement.focus();
 
   }
 
   @HostListener('document:keypress', ['$event'])
   teclaEvento(event: KeyboardEvent) {
+
     if (event.key == 'Enter' && event.shiftKey == false) {
       this.buscarProductoConEnter(this.termino)
 
       this.termino = ''
     } else if (event.key == 'Enter' && event.shiftKey == true) {
-
-      this.editName()
-    }
-
+      this.vender()  
+    } 
     else {
       this.termino += event.key
-
-
-    }
+   }
     setTimeout(() => {
-      this.termino = ''
-
+      this.termino = '' 
     }, 4000);
 
   }

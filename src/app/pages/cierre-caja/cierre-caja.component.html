@@ -1,37 +1,70 @@
 <div class="row">
-    <div class="m-3 carrito col-5">
+    <div class="m-3 carrito col">
+        <h3 class="mx-3">Historial de Caja</h3>
 
-        <div class=" mx-auto mt-5 tableMatias">
-            <div class="row animated fadeIn">
+        <div class="card-body">
+            <div class="row">
+                <h4>De:</h4>
+                <input [(ngModel)]="diaDesde" style="width: 3rem;" class="m-1" type="number">
+                <input [(ngModel)]="mesDesde" style="width: 3rem;" class="m-1" type="number">
+                <input [(ngModel)]="yearDesde" style="width: 5rem;" class="m-1" type="number">
+                <h4 class="ml-4">A: </h4>
+                <input [(ngModel)]="diaHasta" style="width: 3rem;" class="m-1" type="number">
+                <input [(ngModel)]="mesHasta" style="width: 3rem;" class="m-1" type="number">
+                <input [(ngModel)]="yearHasta" style="width: 5rem;" class="m-1" type="number">
+                <button type="button" (click)="filtrar()" class="btn btn-primary">Filtrar</button>
+            </div>
+        </div>
+        <div class=" mx-auto  tableMatias">
+            <div class="row an  imated fadeIn">
                 <div class="col">
-                    <h3>Historial de Caja</h3>
                     <div class="card">
-                        <div class="itemsFacturas ">
+                        <div class="cierrecaja ">
                             <table class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <th>Fecha Inicial</th>
-                                        <th>Fecha Final</th>
-                                        <th style="width: 8%"> </th>
+                                        <th>Apertura</th>
+                                        <th>Cierre</th>
+                                        <th>Ingreso <br> p/ventas</th>
+                                        <th>costo <br> de ventas</th>
+                                        <th>Resultado</th>
+                                        <th>Ingresos <br> p/servicios</th>
+                                        <th>Egresos</th>
+                                        <th style="width:5%"> </th>
                                     </tr>
                                 </thead>
                                 <tbody class="pointer" *ngFor="let cierreCaja of cierreCajas">
                                     <tr (click)="onCierreCaja(cierreCaja)">
-
                                         <td class=" pt-4 ">{{cierreCaja.fechaInicio | fecha :'fecha'}} <br> {{cierreCaja.fechaInicio | fecha :'hora'}}</td>
                                         <td *ngIf="cierreCaja.fechaCierre" class=" pt-4 ">
+
                                             {{cierreCaja.fechaCierre | fecha :'fecha'}} <br> {{cierreCaja.fechaCierre | fecha :'hora'}}</td>
+
                                         <td *ngIf="!cierreCaja.fechaCierre" class=" pt-4 "> <b>sin cerrar</b> </td>
+                                        <td>{{cierreCaja.montoVentas | precio}}</td>
+                                        <td>{{cierreCaja.costoVentas | precio}}</td>
+                                        <td> {{cierreCaja.montoVentas - cierreCaja.costoVentas | precio}} </td>
+                                        <td>{{cierreCaja.montoIngresos | precio}}</td>
+                                        <td>{{cierreCaja.montoEgresos | precio}}</td>
                                         <td class=" pt-4 ">
                                             <i (click)="eliminarCaja(cierreCaja)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
-                        <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
+
+
                         </div>
+
+
                     </div>
+                    <h1>Suma total</h1>
+                    <h5>Ingresos p/ventas: {{cajaIngreso | precio}}</h5>
+                    <h5>Costo: {{cajaCosto | precio}}</h5>
+                    <h5>Ingresos p/servicios: {{cajaServicios | precio}}</h5>
+                    <h5>Egresos: {{cajaEgreso | precio}}</h5>
+                    <h5>Ingreso - Costo: {{cajaIngreso - cajaCosto | precio}}</h5>
+                    <h5>Ingreso + I. Servicios - Costo - Egreso: {{cajaIngreso + cajaServicios- cajaCosto - cajaEgreso | precio}}</h5>
                 </div>
             </div>
         </div>
@@ -61,7 +94,6 @@
                                         <th>Monto en P. costo</th>
                                         <th>Fecha</th>
                                         <th>Hora</th>
-                                        <!-- <th style="width: 15%"></th> -->
                                     </tr>
                                 </thead>
                                 <tbody class="pointer" *ngFor="let factura of facturas">

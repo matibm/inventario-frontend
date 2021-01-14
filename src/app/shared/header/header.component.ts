@@ -1,7 +1,9 @@
+import { Router } from '@angular/router';
+import { LoginService } from './../../services/login.service';
 import { CrearIngresoModalService } from './../../components/crear-ingreso-modal/crear-ingreso-modal.service';
 import { CierreCajaService } from './../../services/cierre-caja.service';
 import { navBarService } from '../../services/navbar.service';
-import { LoginService } from './../../components/login/login.service';
+// import { LoginService } from './../../components/login/login.service';
 import  Swal  from 'sweetalert2';
 import { CrearProductoModalService } from './../../components/crear-producto-modal/crear-producto-modal.service';
 import { CajaModalService } from './../../components/caja-modal/caja-modal.service';
@@ -26,7 +28,8 @@ export class HeaderComponent implements OnInit {
     public _imprimirFacturaService: ImprimirFacturaService,
     public _loginService: LoginService,
     public _cajaService: CierreCajaService,
-    public _ingresoModalService: CrearIngresoModalService
+    public _ingresoModalService: CrearIngresoModalService,
+    public route: Router
     ) { }
 
   async ngOnInit() {

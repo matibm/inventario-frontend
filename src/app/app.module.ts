@@ -1,3 +1,6 @@
+import { PagesModule } from './pages/pages.module';
+import { PAGES_ROUTES } from './pages/pages.routes';
+import { LoginComponent } from './pages/login/login.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -22,7 +25,7 @@ import { ImprimirFacturaComponent } from './components/imprimir-factura/imprimir
 import { ClienteModalComponent } from './components/cliente-modal/cliente-modal.component';
 import { ClientesComponent } from './pages/clientes/clientes.component';
 import { ResumenComponent } from './pages/resumen/resumen.component';
-import { LoginComponent } from './components/login/login.component';
+// import { LoginComponent } from './components/login/login.component';
 import { RecargaModalComponent } from './components/recarga-modal/recarga-modal.component';
 import { ProveedoresComponent } from './pages/proveedores/proveedores.component';
 import { NgxPrintModule } from 'ngx-print';
@@ -33,6 +36,8 @@ import { CrearIngresoModalComponent } from './components/crear-ingreso-modal/cre
 import { ReabastecerComponent } from './components/reabastecer/reabastecer.component';
 import { PrecioPipe } from './pipes/precio.pipe';
 import { EditClientComponent } from './components/edit-client/edit-client.component';
+import { UsuariosComponent } from './pages/usuarios/usuarios.component';
+import { PagesComponent } from './pages/pages.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +59,7 @@ import { EditClientComponent } from './components/edit-client/edit-client.compon
     ClienteModalComponent,
     ClientesComponent,
     ResumenComponent,
+    // LoginComponent,
     LoginComponent,
     RecargaModalComponent,
     ProveedoresComponent,
@@ -64,14 +70,18 @@ import { EditClientComponent } from './components/edit-client/edit-client.compon
     ReabastecerComponent,
     PrecioPipe,
     EditClientComponent,
+    UsuariosComponent,
+    PagesComponent,
     
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    PagesModule,
      FormsModule,
     NgxPrintModule,
-    AppRoutingModule
+    AppRoutingModule,
+    PAGES_ROUTES
     
   ],
   exports: [ImagenPipe ],

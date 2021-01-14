@@ -30,7 +30,7 @@
                             <table class="table tableMatias table-hover">
                                 <thead>
                                     <tr>
-                                        <th style="width: 8%">
+                                        <th *ngIf="_loginService.isAdmin" style="width: 8%">
                                             <!-- <i class="fas fa-pen-square    "></i> -->
                                             <i class="fas fa-pen    "></i>
                                         </th>
@@ -47,7 +47,7 @@
                                 <tbody *ngFor="let producto of productos">
                                     <tr>
                                         <!-- <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer"> -->
-                                        <td class="table-item">
+                                        <td *ngIf="_loginService.isAdmin" class="table-item">
                                             <button (click)="_editarProductoModalService.mostarModal(producto)" type="button" class="btn btn-outline-secondary">
                                                 <i class="fas fa-pen    "></i>
 

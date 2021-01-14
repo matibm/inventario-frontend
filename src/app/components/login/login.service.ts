@@ -14,6 +14,8 @@ export class LoginService {
     if (localStorage.getItem('logued') == 'true') {
       this.logued = true;
     }
+
+
   }
 
 

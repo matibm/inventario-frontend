@@ -12,8 +12,10 @@ export class FacturaModalService {
   fecha
   debiendo
   public notificacion = new EventEmitter<any>();
+  public guardado = new EventEmitter();
   cliente = null;
   productos = null;
+  mostrarcomision = false;
   prohibirEliminar = false
   constructor(
     public _facturaService: FacturaService,
@@ -27,9 +29,7 @@ export class FacturaModalService {
     this.debiendo = null;
   }
 
-  eliminarFactura(factura) {
-
-
+  eliminarFactura(factura) { 
     this._facturaService.eliminarFactura(this.factura).subscribe(
       resp => {
         this.ocultarModal()
@@ -39,16 +39,23 @@ export class FacturaModalService {
     // this.ocultarModal()
   }
 
-  mostrarModal(factura, habilitarEliminar?) {
-    
+  guardarFactura(factura){
+    this._facturaService.putFactura(factura).subscribe(()=>{
+      this.guardado.emit()
+      this.ocultarModal()
+    })
+  }
+
+  mostrarModal(factura, habilitarEliminar?, comsion? ) { 
     this.prohibirEliminar = habilitarEliminar || false;
+    this.mostrarcomision = comsion || false;
     console.log(this.prohibirEliminar);
+
     if (factura.cliente) {
       this._clienteService.getCliente(factura.cliente).subscribe(cliente => {
         this.cliente = cliente;
         this.debiendo = factura.debiendo;
-      })
-
+      }) 
     }
 
     this.fecha = factura.fecha

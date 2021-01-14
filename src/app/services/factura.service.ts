@@ -48,7 +48,10 @@ export class FacturaService {
     let original = factura;
     let url = URL_SERVICIOS + '/factura';
     await this.http.post(url, original).toPromise().then((resp: any) => {
+      console.log(resp);
+
       resp.factura
+
     })
     for (let i = 0; i < factura.productos.length; i++) {
       const prod = factura.productos[i];
@@ -109,6 +112,8 @@ export class FacturaService {
 
     let url = URL_SERVICIOS + '/factura/' + factura._id;
     return this.http.put(url, factura).pipe(map((resp: any) => {
+      console.log(resp);
+
       return resp.factura
     }))
   }
@@ -130,5 +135,15 @@ export class FacturaService {
       return resp.factura
     }))
   }
+
+  getFacturasPorUsuario(idUsuario, desde, hasta) {
+    let url = URL_SERVICIOS + '/factura/facturas_por_usuario/' + idUsuario + '/' + desde + '?hasta=' + hasta;
+    return this.http.get(url).toPromise().then((resp: any) => {
+      console.log(resp);
+
+      return resp.facturas;
+    })
+  }
+
 
 }

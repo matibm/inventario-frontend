@@ -9,43 +9,50 @@
                 <a class="nav-link" [routerLink]="['/facturas']" routerLinkActive="active">Caja</a>
             </li>
 
-            <li *ngIf="_loginService.logued" class="nav-item">
+            <li *ngIf="_loginService.isAdmin" class="nav-item">
                 <a class="nav-link" [routerLink]="['/caja']" routerLinkActive="active">Historial de caja</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/clientes']" routerLinkActive="active">Clientes</a>
             </li>
-            <li class="nav-item">
+            <li *ngIf="_loginService.isAdmin" class="nav-item">
                 <a class="nav-link" [routerLink]="['/proveedores']" routerLinkActive="active">Proveedores</a>
             </li>
-            <li *ngIf="_loginService.logued" class="nav-item">
+            <li *ngIf="_loginService.isAdmin" class="nav-item">
                 <a class="nav-link" [routerLink]="['/resumen']" routerLinkActive="active">Resumen</a>
+            </li>
+            <li *ngIf="_loginService.isAdmin" class="nav-item">
+                <a class="nav-link" [routerLink]="['/usuarios']" routerLinkActive="active">Usuarios</a>
             </li>
         </ul>
 
 
-        <div class="form-inline mr-3 my-2 my-lg-0">
+        <div class="form-inline text-white mr-3 my-2 my-lg-0">
+            <label for="">{{_loginService.user.email}}</label>
+
+        </div>
+        <div *ngIf="_loginService.isAdmin" class="form-inline mr-3 my-2 my-lg-0">
             <button class="btn btn-outline-light my-2 my-sm-0" (click)="_crearProductoModalService.mostrarModal()">Cargar Nuevo Producto</button>
 
         </div>
 
-        <div class="form-inline mr-3 my-2 my-lg-0">
+        <div *ngIf="_loginService.isAdmin" class="form-inline mr-3 my-2 my-lg-0">
             <button class="btn btn-outline-light my-2 my-sm-0" (click)="registrarEgreso()">Registrar Egreso</button>
         </div>
-        <div class="form-inline mr-3 my-2 my-lg-0">
+        <div *ngIf="_loginService.isAdmin" class="form-inline mr-3 my-2 my-lg-0">
             <button class="btn btn-outline-light my-2 my-sm-0" (click)="registrarIngreso()">Registrar Ingreso</button>
         </div>
-        <div *ngIf="!_loginService.logued" class="form-inline mr-3 my-2 my-lg-0">
-            <button class="btn btn-outline-light my-2 my-sm-0" (click)="_loginService.mostrarModal()">Iniciar Sesion</button>
-        </div>
+        <!-- <div *ngIf="!_loginService.isAdmin" class="form-inline mr-3 my-2 my-lg-0"> -->
+        <!-- <button class="btn btn-outline-light my-2 my-sm-0" (click)="_loginService.mostrarModal()">Iniciar Sesion</button> -->
+        <!-- </div> -->
 
-        <div *ngIf="_loginService.logued" class="form-inline mr-3 my-2 my-lg-0">
-            <button class="btn btn-outline-light my-2 my-sm-0" (click)="_loginService.logout()">Cerrar Sesion</button>
+        <div class="form-inline mr-3 my-2 my-lg-0">
+            <button class="btn btn-outline-light my-2 my-sm-0" (click)="_loginService.logout(); route.navigateByUrl('/login')">Cerrar Sesion</button>
         </div>
 
         <div class="form-inline my-2 my-lg-0">
             <button *ngIf="!_cajaService.cajaActual  " class="btn btn-success my-2 my-sm-0" (click)="cierrDeCaja()">Abrir Caja</button>
-            <button *ngIf="_loginService.logued && _cajaService.cajaActual" class="btn btn-danger my-2 my-sm-0" (click)="cierrDeCaja()">Cierre de Caja</button>
+            <button *ngIf=" _cajaService.cajaActual" class="btn btn-danger my-2 my-sm-0" (click)="cierrDeCaja()">Cierre de Caja</button>
         </div>
 
     </div>

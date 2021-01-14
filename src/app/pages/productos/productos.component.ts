@@ -9,6 +9,7 @@ import { CierreCajaService } from './../../services/cierre-caja.service';
 import { FacturaService } from './../../services/factura.service';
 import { ProductoService } from './../../services/producto.service';
 import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-productos',
@@ -52,7 +53,7 @@ export class ProductosComponent implements OnInit {
   onafterprint() {
 
   }
-
+  usuario
   termino = ''
   permitirbuscar = true;
   busquedaDinamica = false;
@@ -72,7 +73,8 @@ export class ProductosComponent implements OnInit {
     private _facturaService: FacturaService,
     public _clienteModalService: ClienteModalService,
     public _imprimirFacturaService: ImprimirFacturaService,
-    public _navBarService: navBarService
+    public _navBarService: navBarService,
+    public _loginService: LoginService
   ) { }
   desde = 0;
   cantidad = 1;
@@ -88,7 +90,7 @@ export class ProductosComponent implements OnInit {
   ngOnInit() {
     this._navBarService.navBgColor = 'bg-primary'
     // this.nameField.nativeElement.focus();
-
+    this.usuario = this._loginService.user;
     ////this.editName()
     this.cargarProductos()
     this._editarProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
@@ -524,7 +526,8 @@ export class ProductosComponent implements OnInit {
         monto: this.total,
         debiendo: this.debiendo,
         cliente: this._clienteModalService.clienteSelected._id,
-        costo: costo
+        costo: costo,
+        usuario: this.usuario._id
       }
     } else {
 
@@ -533,7 +536,8 @@ export class ProductosComponent implements OnInit {
         fecha: date.getTime(),
         monto: this.total,
         debiendo: this.debiendo,
-        costo: costo
+        costo: costo,
+        usuario: this.usuario._id
 
       }
     }

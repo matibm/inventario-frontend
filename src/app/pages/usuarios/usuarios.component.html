@@ -1,0 +1,152 @@
+<div class="row">
+    <div class="col-2">
+        <div class="list-group">
+            <a class="list-group-item list-group-item-action" href="javascript:void" (click)="seccion = 'usuarios'">Administrar Usuarios</a>
+            <a class="list-group-item list-group-item-action" href="javascript:void" (click)="seccion = 'ventas'">Ventas
+                Por usuarios</a>
+        </div>
+    </div>
+    <div *ngIf="seccion == 'usuarios'" class="col">
+        <button type="button" (click)="creandoUsuario = true" class="btn m-2 btn-primary">Crear nuevo Usuario</button>
+        <table *ngIf="!editando && !creandoUsuario" style="width: 800px;" class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombres</th>
+                    <th>usuario</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of usuarios; let i = index;">
+                    <td scope="row">{{i+1}}</td>
+                    <td>{{item.nombre}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.role}}</td>
+                    <td>
+                        <div class="inline-flex">
+                            <button class="m-1 btn btn-outline-danger">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                            <button (click)="editando = true; usuario = item; claseRol(item.role)" class="m-1 btn btn-outline-primary">
+                                <i class="fa fa-pen" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="editando" class="">
+            <div style="width: 500px;" class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Editar Usuario</h4>
+                    <form (ngSubmit)="guardarUsuario()" action="">
+                        <div class="form-group">
+                            <label for="">Nombres</label>
+                            <input type="text" class="form-control" name="name" [(ngModel)]="usuario.nombre" id="" aria-describedby="emailHelpId" placeholder="">
+                            <label for="">Usuario</label>
+                            <input type="text" class="form-control" name="email" [(ngModel)]="usuario.email" id="" aria-describedby="emailHelpId" placeholder="">
+                            <label for="">Contraseña</label>
+                            <input type="password" class="form-control" name="password" id="">
+                            <label for="">Rol de usuario</label>
+                            <div class="inline-flex">
+                                <button type="button" (click)="switchRole(true)" [ngClass]="btnAdmin" class="btn mx-2 ">Arministrador</button>
+                                <button type="button" (click)="switchRole(false)" [ngClass]="btnNormal" class="btn mx-2 ">Normal</button>
+                            </div>
+                        </div>
+                        <div class="float-right inline-flex">
+                            <button type="reset" (click)="editando = false;" class="btn mx-3 btn-danger">cancelar</button>
+                            <button type="submit" class="btn mx-3 btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="creandoUsuario" class="">
+            <div style="width: 500px;" class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Nuevo Usuario</h4>
+                    <form (ngSubmit)="nuevoUsuario(nombre.value, email.value, pass.value)" action="">
+                        <div class="form-group">
+                            <label for="">Nombres</label>
+                            <input type="text" class="form-control" #nombre name="name" id="" aria-describedby="emailHelpId" placeholder="">
+                            <label for="">Usuario</label>
+                            <input type="text" class="form-control" #email name="email" id="" aria-describedby="emailHelpId" placeholder="">
+                            <label for="">Contraseña</label>
+                            <input type="password" class="form-control" #pass name="password" id="">
+                            <label for="">Rol de usuario</label>
+                            <div class="inline-flex">
+                                <button type="button" (click)="switchRole(true)" [ngClass]="btnAdmin" class="btn mx-2 ">Arministrador</button>
+                                <button type="button" (click)="switchRole(false)" [ngClass]="btnNormal" class="btn mx-2 ">Normal</button>
+                            </div>
+                        </div>
+                        <div class="float-right inline-flex">
+                            <button type="reset" (click)="creandoUsuario = false;" class="btn mx-3 btn-danger">cancelar</button>
+                            <button type="submit" class="btn mx-3 btn-success">Crear</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="seccion == 'ventas'" class="col">
+        <div *ngIf="!mostrarVentas" class="">
+            <h4>Seleccione usuario</h4>
+            <ul class="list-group">
+                <li *ngFor="let item of usuarios" (click)="usuario = item; getFacturas(usuario._id); mostrarVentas = true;" class="list-group-item pointer ">{{item.email}}</li>
+            </ul>
+        </div>
+
+        <div class="my-3" *ngIf="mostrarVentas">
+            <div class="inline-flex">
+                <button (click)="mostrarVentas = false" type="button" class="btn mr-2 btn-danger">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                </button>
+                <h4>Usuario Seleccionado: {{usuario.nombre}} - {{usuario.email}}</h4>
+            </div>
+
+            <div class="card-body">
+                <h5>Filtrar por fecha</h5>
+                <div class="row">
+                    <h4>De:</h4>
+                    <input [(ngModel)]="diaDesde" style="width: 3rem;" class="m-1" type="number">
+                    <input [(ngModel)]="mesDesde" style="width: 3rem;" class="m-1" type="number">
+                    <input [(ngModel)]="yearDesde" style="width: 5rem;" class="m-1" type="number">
+                    <h4 class="ml-4">A: </h4>
+                    <input [(ngModel)]="diaHasta" style="width: 3rem;" class="m-1" type="number">
+                    <input [(ngModel)]="mesHasta" style="width: 3rem;" class="m-1" type="number">
+                    <input [(ngModel)]="yearHasta" style="width: 5rem;" class="m-1" type="number">
+                    <button type="button" (click)="filtrar()" class="btn btn-primary">Filtrar</button>
+                </div>
+            </div>
+        </div>
+
+        <table *ngIf="mostrarVentas" style=" max-height: 550px; display: block; overflow: auto;" class="table mt-2 table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th style="width: 50%;">Fecha</th>
+                    <th style="width: 20%;">Hora</th>
+                    <th style="width: 50%;">Monto</th>
+                    <!-- <th style="width: 30px">Descuento</th> -->
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="pointer" (click)="verFacturaModal(item, false, true)" *ngFor="let item of facturas; let i = index;">
+                    <td scope="row">{{i+1}}</td>
+                    <td>{{item.fecha | fecha :'fecha'}}</td>
+                    <td>{{item.fecha | fecha :'hora'}}</td>
+                    <td>{{item.monto | precio}} Gs</td>
+
+                </tr>
+            </tbody>
+        </table>
+        <!-- <button type="button" (click)="sumarMontos(facturas)" class="btn btn-primary">Calcular descuentos</button> -->
+        <h4>Total: {{total | precio}} Gs</h4>
+        <h4>Total Costo: {{totalCosto | precio}} Gs</h4>
+        <h4>Total Comision: {{totalDescuento | precio}} Gs</h4>
+    </div>
+</div>

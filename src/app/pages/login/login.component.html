@@ -1,0 +1,20 @@
+<div class="container">
+    <div style="margin-top: 250px;" class="justify-content-center d-flex">
+        <div class="card">
+            <div class="card-body">
+                <form (ngSubmit)="login(email.value, password.value)">
+                    <div class="form-group">
+                        <label class="lead form-label">Usuario</label>
+                        <input name="email" #email ngModel (ngModelChange)="errorlogin = false;" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label class="lead form-label">Contraseña</label>
+                        <input type="password" name="pass" ngModel (ngModelChange)="errorlogin = false;" #password class="form-control">
+                    </div>
+                    <label *ngIf="errorlogin" class="text-danger" for="text">* error credenciales incorrectas</label>
+                    <button type="submit" id="" class="btn btn-primary btn-lg btn-block ">ingresar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

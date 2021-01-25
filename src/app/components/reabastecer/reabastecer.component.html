@@ -56,7 +56,7 @@
                                                 </td>
                                                 <!-- <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
                                                 <td class=" pt-4 ">{{producto.descuento}}</td> -->
-                                                <td class="  table-item ">{{item.precio | precio}}</td>
+                                                <td class="  table-item ">{{item.precio |currency: '':'':'2.0'}}</td>
                                                 <td class=" table-item "> {{item.stock}}</td>
                                             </tr>
                                         </tbody>
@@ -74,9 +74,9 @@
                                     <br>
                                     <label for="" class="lead">stock: <b>{{producto.stock}}</b></label>
                                     <br>
-                                    <label for="" class="lead">precio: <b>{{producto.precio | precio}} Gs</b></label>
+                                    <label for="" class="lead">precio: <b>{{producto.precio |currency: '':'':'2.0'}} Gs</b></label>
                                     <br>
-                                    <label for="" class="lead">costo: <b>{{producto.precioBruto  | precio}} Gs</b></label>
+                                    <label for="" class="lead">costo: <b>{{producto.precioBruto  |currency: '':'':'2.0'}} Gs</b></label>
                                 </div>
 
                                 <div align="center" class="col">

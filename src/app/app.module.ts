@@ -3,7 +3,7 @@ import { PAGES_ROUTES } from './pages/pages.routes';
 import { LoginComponent } from './pages/login/login.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -38,6 +38,12 @@ import { PrecioPipe } from './pipes/precio.pipe';
 import { EditClientComponent } from './components/edit-client/edit-client.component';
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import { PagesComponent } from './pages/pages.component';
+import localePy from '@angular/common/locales/es-PY';
+import { registerLocaleData } from '@angular/common';
+import { SelectUserComponent } from './components/select-user/select-user.component';
+
+registerLocaleData(localePy, 'es-PY');
+
 
 @NgModule({
   declarations: [
@@ -72,6 +78,7 @@ import { PagesComponent } from './pages/pages.component';
     EditClientComponent,
     UsuariosComponent,
     PagesComponent,
+    SelectUserComponent,
     
   ],
   imports: [
@@ -85,7 +92,7 @@ import { PagesComponent } from './pages/pages.component';
     
   ],
   exports: [ImagenPipe ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'es-PY' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

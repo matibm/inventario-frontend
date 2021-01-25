@@ -26,6 +26,14 @@ export class ClienteService {
       return resp.cliente
     }))
   }
+  getCumpleanero() {
+    let url = URL_SERVICIOS + '/cliente/cumpleanero';
+    return this.http.get(url).toPromise().then((resp: any) => {
+      console.log(resp);
+      
+      return resp
+    })
+  }
 
   crearCliente(cliente) {
 
@@ -46,11 +54,13 @@ export class ClienteService {
     }));
   }
 
-  editarCliente(cliente){
+  editarCliente(cliente) {
     let url = URL_SERVICIOS + '/cliente/' + cliente._id;
 
     return this.http.put(url, cliente).pipe(map((resp: any) => {
       this.noficacion.emit();
+      console.log(resp);
+
       return resp.cliente;
     }));
   }

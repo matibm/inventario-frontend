@@ -93,8 +93,8 @@
                                     </td>
                                     <td style="width: 25%" class=" pt-4 col-md-2 ">{{producto.modelo}}</td>
                                     <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
-                                    <td class=" pt-4 ">{{producto.precio | precio}}</td>
-                                    <td class=" pt-4 ">{{producto.precioBruto | precio }}</td>
+                                    <td class=" pt-4 ">{{producto.precio |currency: '':'':'2.0'}}</td>
+                                    <td class=" pt-4 ">{{producto.precioBruto |currency: '':'':'2.0' }}</td>
                                     <td class=" pt-4 ">{{producto.stock}}</td>
                                     <td class=" pt-4 ">{{producto.stockMinimo}}</td>
                                 </tr>
@@ -106,11 +106,11 @@
                 </div>
                 <div *ngIf="_loginService.logued" class="lead m-3"> <label for="">Total de Stock: <b>{{cantidadProductos  }} </b></label>
                     <br>
-                    <label for="">Total precios por cantidad: <b>{{totalPrecios | precio }} Gs</b></label>
+                    <label for="">Total precios por cantidad: <b>{{totalPrecios |currency: '':'':'2.0' }} Gs</b></label>
                     <br>
-                    <label for="">Total Inversion: <b>{{totalCosto | precio }} Gs</b></label>
+                    <label for="">Total Inversion: <b>{{totalCosto |currency: '':'':'2.0' }} Gs</b></label>
                     <br>
-                    <label for="">Ganancia posible: <b>{{totalPrecios -totalCosto  | precio}} Gs</b></label></div>
+                    <label for="">Ganancia posible: <b>{{totalPrecios -totalCosto  |currency: '':'':'2.0'}} Gs</b></label></div>
 
             </div>
             <div class="select-proveedor flex-row" *ngIf="!productos">

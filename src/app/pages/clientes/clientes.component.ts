@@ -15,7 +15,7 @@ export class ClientesComponent implements OnInit {
   factura
   items
   editCliente = false;
-
+   
   constructor(
     public _clienteService: ClienteService,
     public _facturaService: FacturaService,
@@ -97,6 +97,8 @@ export class ClientesComponent implements OnInit {
 
   pagar() {
     this.factura.debiendo = false;
+    this.factura.fecha = new Date().getTime();
+    
     this._facturaService.putFactura(this.factura).subscribe()
   }
 

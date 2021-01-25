@@ -139,14 +139,14 @@
                     <td scope="row">{{i+1}}</td>
                     <td>{{item.fecha | fecha :'fecha'}}</td>
                     <td>{{item.fecha | fecha :'hora'}}</td>
-                    <td>{{item.monto | precio}} Gs</td>
+                    <td>{{item.monto |currency: '':'':'2.0'}} Gs</td>
 
                 </tr>
             </tbody>
         </table>
         <!-- <button type="button" (click)="sumarMontos(facturas)" class="btn btn-primary">Calcular descuentos</button> -->
-        <h4>Total: {{total | precio}} Gs</h4>
-        <h4>Total Costo: {{totalCosto | precio}} Gs</h4>
-        <h4>Total Comision: {{totalDescuento | precio}} Gs</h4>
+        <h4>Total: {{total |currency: '':'':'2.0'}} Gs</h4>
+        <h4>Total Costo: {{totalCosto |currency: '':'':'2.0'}} Gs</h4>
+        <h4>Total Comision: {{totalDescuento |currency: '':'':'2.0'}} Gs</h4>
     </div>
 </div>

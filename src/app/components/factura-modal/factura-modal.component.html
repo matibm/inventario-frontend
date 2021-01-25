@@ -29,6 +29,7 @@
 
                                                     <th>Precio</th>
 
+                                                    <th>Descuento</th>
                                                     <th>Cantidad</th>
                                                     <th *ngIf="_facturaModalService.mostrarcomision">Comision</th>
 
@@ -42,14 +43,16 @@
                                                     <td class="col-auto justify-content-center  p-auto pt-4 ">
                                                         {{producto.marca}}</td>
                                                     <td class=" pt-4 ">{{producto.modelo}}</td>
-                                                    <td class=" pt-4 ">{{producto.precio | precio }}</td>
+                                                    <td style="color: red" class=" pt-4 " *ngIf="producto.desc">{{producto.precio |currency: '':'':'2.0'}} Gs
+                                                    </td>
+                                                    <td class=" pt-4 " *ngIf="!producto.desc">{{producto.precio |currency: '':'':'2.0'}} Gs
+                                                    </td>
 
-
-                                                    <!-- <td class=" pt-4 ">
+                                                    <td class=" pt-4 ">
                                                         <div style="color: red" *ngIf="producto.desc">
-                                                            {{producto.descuento}}</div>
-                                                        <div *ngIf="!producto.desc">Sin Desc</div>
-                                                    </td> -->
+                                                            si</div>
+                                                        <div *ngIf="!producto.desc">no</div>
+                                                    </td>
 
                                                     <td class=" pt-4 "> {{producto.cantidad}}</td>
                                                     <td style="width:40px" *ngIf="_facturaModalService.mostrarcomision">
@@ -70,7 +73,7 @@
 
                 </div>
                 <div class="ml-3">
-                    <h3>Total: {{_facturaModalService.monto | precio }} Gs</h3>
+                    <h3>Total: {{_facturaModalService.monto |currency: '':'':'2.0'}} Gs</h3>
                 </div>
                 <div *ngIf="_facturaModalService.debiendo" class="ml-3">
                     <h3 style="color: red;">SIN PAGAR</h3>

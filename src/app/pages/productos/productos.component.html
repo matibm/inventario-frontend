@@ -1,222 +1,287 @@
-<div id="main" [ngClass]="_productoService.oculto" class="mainP row">
-    <div class="col-6 productos">
-        <div class="row animated fadeIn">
-            <div class="buscador ml-3 pr-3 col-12">
-                <div class="card">
-                    <div class="card-body mx-auto">
-
-                        <form (ngSubmit)="buscarProductoConEnter(e.value);pruebaSubmit();" class=" row">
-                            <div class="col">
-                                <button type="button" (click)="busquedaDinamica = false" *ngIf="busquedaDinamica" class="btn btn-outline-info">Dinamica</button>
-                                <button type="button" (click)="busquedaDinamica = true" *ngIf="!busquedaDinamica" class="btn btn-outline-secondary">Simple</button>
-                            </div>
-                            <div class="col  ">
-                                <input #e autocomplete="off" (ngModelChange)="onTypeBuscar(e.value)" [ngModel]="inputbuscador" id="inputBuscador" name="inputBuscador" type="text" class="form-control" placeholder="Buscar producto">
-                            </div>
-                            <div class="col  ">
-                                <button type="submit" [disabled]="!permitirbuscar" *ngIf="!busquedaDinamica" class="btn btn-primary">Buscar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class=" mx-auto mt-1 ">
-            <div class="row animated fadeIn">
-                <div class="col-12 ml-3 pr-3 productos">
-                    <div class="card">
-                        <div class="card-body itemsProductos ">
-                            <table class="table tableMatias table-hover">
-                                <thead>
-                                    <tr>
-                                        <th *ngIf="_loginService.isAdmin" style="width: 8%">
-                                            <!-- <i class="fas fa-pen-square    "></i> -->
-                                            <i class="fas fa-pen    "></i>
-                                        </th>
-                                        <th>Marca</th>
-                                        <th style="width: 25%">Tipo</th>
-                                        <!-- <th>Cod</th>
-                                        <th>Descuento</th> -->
-                                        <th style="width: 14%">Precio</th>
-                                        <th style="width: 10%">Stock</th>
-                                        <th style="width: 18%">Cantidad</th>
-                                        <!-- <th style="width: 12%"></th> -->
-                                    </tr>
-                                </thead>
-                                <tbody *ngFor="let producto of productos">
-                                    <tr>
-                                        <!-- <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer"> -->
-                                        <td *ngIf="_loginService.isAdmin" class="table-item">
-                                            <button (click)="_editarProductoModalService.mostarModal(producto)" type="button" class="btn btn-outline-secondary">
-                                                <i class="fas fa-pen    "></i>
-
-                                            </button>
-
-                                        </td>
-                                        <td class="col-auto justify-content-center table-item  p-auto ">
-                                            {{producto.marca}}
-                                        </td>
-                                        <td style="width: 25%" class=" table-item col-md-2 ">{{producto.modelo}}</td>
-                                        <!-- <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
-                                        <td class=" pt-4 ">{{producto.descuento}}</td> -->
-                                        <td class=" table-item ">{{producto.precio | precio}}</td>
-
-                                        <td class=" table-item "> {{producto.stock}}</td>
-                                        <td class=" table-item"> <input type="number" class="form-control     m-1" style="display: inline; width: 50px" (keyup)="null" #cant value="{{cantidad}}">
-                                            <button (click)="selecctionarItem(producto, cant.value, true)" [disabled]="cant.value<1" class="m-1 btn btn-outline-primary">
-                                                <i class="fa fa-share" aria-hidden="true"></i>
-
-                                            </button>
-
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="row m-3 form-group">
-
-                        <button (click)="cambiarDesde(-6)" type="button" class="btn btn-secondary">Anteriores</button>
-                        <button (click)="cambiarDesde(6)" type="button" class="ml-2 btn btn-secondary">Siguientes</button>
-                    </div>
-
-                    <!-- <div class="row m-3 form-group">
-                        <div class="col">
-                            <label class="mr-3" for="text">Pagina</label>
-                            <input style="width: 40px;" type="number" [(ngModel)]="pagina" name="desde" id="">
-                            <button (click)="irA(pagina)" type="button" class="ml-2 btn btn-info">Ir</button>
-
-                        </div>
-                    </div> -->
-                </div>
-
-
-
-            </div>
-        </div>
-
-        <div *ngIf="false" class="row">
-            <div *ngFor='let producto of productos ' class="mx-auto">
-                <div class="col-5 productos ">
-                    <div class="card" style="width: 18rem; margin: 3rem; ">
-                        <img [src]="producto.img | imagen" class="  card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">{{producto.marca}}</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                            <div class="p-3">
-                                <a [routerLink]="['/editor', producto._id]" class="btn btn-primary m-3 ">Editar</a>
-                                <a target="_blank" class=" m-3 btn btn-info">Ver</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="container-fluid">
+    <div *ngIf="mostrarAvisoCumpleno" class="">
+        <div *ngFor="let cliente of cumpleaneros" class="alert mt-3 alert-primary alert-dismissible fade show" role="alert">
+            <button (click)="ocultarAvisoCumple()" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+            </button>
+            <strong>Hoy cumple años {{cliente.nombre}}!</strong> Felicitaciones para el cliente
         </div>
     </div>
-    <div class="col-6 ">
-        <div class="col carrito  ">
+
+    <div *ngIf="mostrarFacturasACobrar" class="">
+        <div *ngFor="let factura of facturasSinCobrar" class="alert mt-3 alert-success alert-dismissible fade show" role="alert">
+            <button (click)="ocultarAvisoCobro()" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                <span class="sr-only">Close</span>
+            </button> Fecha de Cobro <br> Cliente: <strong>{{factura.cliente.nombre}}</strong>
+            <br> monto: <strong>{{factura.monto | currency: '':'':'2.0'}} Gs</strong>
+            <br> Fecha de Emisión: <strong>{{factura.fecha | date}}</strong>
+        </div>
+    </div>
+
+    <div id="main" [ngClass]="_productoService.oculto" class="mainP row">
+        <div class=" col-md-6 col-xs productos">
             <div class="card">
+                <div class="card-body mx-auto">
 
-                <label class=" lead pl-3  mt-1">Carrito</label>
+                    <form (ngSubmit)="buscarProductoConEnter(e.value);pruebaSubmit();" class=" inline-flex">
 
-                <div class="items m-0 p-0 card-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <!-- <th>Imagen</th> -->
-                                <th>Marca</th>
-                                <th>Tipo</th>
-                                <th style="width: 15%">Precio</th>
-                                <th style="width: 15%">cantidad</th>
-                                <th style="width: 10%">quitar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr #t *ngFor="let producto of items ; index as i">
-                                <!-- <td class="w70">
-                                    <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
-                                </td> -->
-
-                                <td class="lead col-auto justify-content-center bold p-auto pt-4 ">
-                                    <b>{{producto.marca}}</b></td>
-                                <td class="lead pt-4 "><b>{{producto.modelo}}</b></td>
-                                <!-- <button align="center" [id]="'desc_'+producto._id" (click)="switchDescuento(true, i )" type="button" class="ml-3 mt-3 btn btn-secondary"> {{producto.descuento}}</button> -->
-                                <!-- <td><button align="center" (click)="switchDescuento(false, i )" [id]="'normal_'+producto._id" type="button" class="  mt-1 btn btn-success">
-                                        {{producto.precio}}</button></td> -->
-                                <td *ngIf="!t.getAttribute('costo')" (click)="t.setAttribute('costo',producto.precio); producto = switchPrecio(producto, producto.precioBruto) " style="width: 15%" class="pt-4 pointer lead"> <b>{{producto.precio | precio}}</b>
-                                </td>
-                                <td *ngIf="t.getAttribute('costo')" (click)="producto = switchPrecio(producto, t.getAttribute('costo')); t.removeAttribute('costo');  " style="width: 15%" class="pt-4 pointer text-danger lead">
-                                    <b>{{producto.precio | precio}}</b></td>
-                                <td style="width: 15%" class="pt-4 lead"><b> {{producto.cantidad}}</b></td>
-                                <td style="width: 15%">
-                                    <i (click)="quitar(producto)" style="color: red;" class="pointer pt-3 fa fa-trash" aria-hidden="true"></i>
-
-                                </td>
-                                <!-- <button (click)="quitar(producto)" class="  mt-3 btn btn-outline-danger">Quitar</button> -->
-                            </tr>
-                        </tbody>
-                    </table>
+                        <button type="button" (click)="busquedaDinamica = false" *ngIf="busquedaDinamica" class="btn mr-1 btn-outline-info">Dinamica</button>
+                        <button type="button" (click)="busquedaDinamica = true" *ngIf="!busquedaDinamica" class="btn mr-1 btn-outline-secondary">Simple</button>
+                        <input #e autocomplete="off" (ngModelChange)="onTypeBuscar(e.value)" [ngModel]="inputbuscador" id="inputBuscador" name="inputBuscador" type="text" class="mr-1 form-control" placeholder="Buscar producto">
+                        <button type="submit" [disabled]="!permitirbuscar" *ngIf="!busquedaDinamica" class="btn btn-primary">Buscar</button>
+                    </form>
                 </div>
-                <div class="bg-dark   text-white fondoMontos montos">
-                    <div class="  row">
-                        <div class="col   pb-4 ">
-                            <form ngNativeValidate id="amyFormEditProduct" class=" formProducto" (ngSubmit)="vender()" class="  cuerpo ">
-
-                                <div class="row">
-                                    <div class="col-6">
-                                        <h6 class="display-4">Total: <br> <b class="">{{total |precio}} Gs</b></h6>
-
-                                        <div class="my-4 row">
-                                            <h3>Ingreso</h3>
-                                            <input name="ing" ngModel class="inputvender border rounded ml-3  " matInput #input [(ngModel)]="ingresoInput" #ingress (keyup)='ingreso(ingress.value)' type="number">
-
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <h3 class="display-4">Vuelto:
-                                            <br>
-                                            <b class="text-danger"> {{vuelto | precio}} Gs</b> </h3>
-
-                                        <div *ngIf="_clienteModalService.clienteSelected" class="scol">
-                                            <p class="lead">Nombre : <a href="#">{{_clienteModalService.clienteSelected.nombre}}</a></p>
-                                            <!-- <h4>RUC : <a href="#">{{_clienteModalService.cliente.ruc}}</a> </h4> -->
-                                            <p class="m-0 lead">C.I : <a href="#">{{_clienteModalService.clienteSelected.ci}}</a> </p>
+            </div>
 
 
-                                        </div>
-                                    </div>
+            <div class=" mx-auto mt-1 ">
+                <div class="row animated fadeIn">
+                    <div class="col-12 ml-3 pr-3 productos">
+                        <div class="card">
+                            <div class="card-body itemsProductos ">
+                                <table class="table tableMatias table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th *ngIf="_loginService.isAdmin" style="width: 8%">
+                                                <!-- <i class="fas fa-pen-square    "></i> -->
+                                                <i class="fas fa-pen    "></i>
+                                            </th>
+                                            <th>Marca</th>
+                                            <th style="width: 25%">Tipo</th>
+                                            <!-- <th>Cod</th>
+                                            <th>Descuento</th> -->
+                                            <th style="width: 14%">Precio</th>
+                                            <th style="width: 10%">Stock</th>
+                                            <th style="width: 18%">Cantidad</th>
+                                            <!-- <th style="width: 12%"></th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngFor="let producto of productos">
+                                        <tr>
+                                            <!-- <img [src]="producto.img | imagen" (click)="_editarProductoModalService.mostarModal(producto)" class="img-50 img-circle pointer"> -->
+                                            <td *ngIf="_loginService.isAdmin" class="table-item">
+                                                <button (click)="_editarProductoModalService.mostarModal(producto)" type="button" class="btn btn-outline-secondary">
+                                                    <i class="fas fa-pen    "></i>
+
+                                                </button>
+
+                                            </td>
+                                            <td class="col-auto justify-content-center table-item  p-auto ">
+                                                {{producto.marca}}
+                                            </td>
+                                            <td style="width: 25%" class=" table-item col-md-2 ">{{producto.modelo}}
+                                            </td>
+                                            <!-- <td style="max-width: 130px;" class=" pt-4 ">{{producto.codigo}}</td>
+                                            <td class=" pt-4 ">{{producto.descuento}}</td> -->
+                                            <td class=" table-item ">{{producto.precio |currency: '':'':'2.0'}}
+                                            </td>
+
+                                            <td class=" table-item "> {{producto.stock}}</td>
+                                            <td class=" table-item"> <input type="number" class="form-control     m-1" style="display: inline; width: 50px" (keyup)="null" #cant value="{{cantidad}}">
+                                                <button (click)="selecctionarItem(producto, cant.value, true)" [disabled]="cant.value<1" class="m-1 btn btn-outline-primary">
+                                                    <i class="fa fa-share" aria-hidden="true"></i>
+
+                                                </button>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row m-3 form-group">
+
+                            <button (click)="cambiarDesde(-6)" type="button" class="btn btn-secondary">Anteriores</button>
+                            <button (click)="cambiarDesde(6)" type="button" class="ml-2 btn btn-secondary">Siguientes</button>
+                        </div>
+
+                        <!-- <div class="row m-3 form-group">
+                            <div class="col">
+                                <label class="mr-3" for="text">Pagina</label>
+                                <input style="width: 40px;" type="number" [(ngModel)]="pagina" name="desde" id="">
+                                <button (click)="irA(pagina)" type="button" class="ml-2 btn btn-info">Ir</button>
+    
+                            </div>
+                        </div> -->
+                    </div>
+
+
+
+                </div>
+            </div>
+
+            <div *ngIf="false" class="row">
+                <div *ngFor='let producto of productos ' class="mx-auto">
+                    <div class="col-5 productos ">
+                        <div class="card" style="width: 18rem; margin: 3rem; ">
+                            <img [src]="producto.img | imagen" class="  card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">{{producto.marca}}</h5>
+                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                                <div class="p-3">
+                                    <a [routerLink]="['/editor', producto._id]" class="btn btn-primary m-3 ">Editar</a>
+                                    <a target="_blank" class=" m-3 btn btn-info">Ver</a>
                                 </div>
-                                <div class="mt-1 row">
-                                    <div class="col"><button [disabled]="vendiendo" type="submit" class="btn btn-lg btn-success">Vender</button></div>
-                                    <div class="col">
-                                        <div class="mt-2 row">
-                                            <button type="button" (click)="onCliente()" class="btn mx-3 btn-outline-light">Cliente</button>
-                                            <div *ngIf="_clienteModalService.clienteSelected">
-                                                <button *ngIf="!debiendo && (_clienteModalService.clienteSelected.nombre || _clienteModalService.clienteSelected.ci)" (click)="debiendo = true" type="button" class="btn btn-success">paga</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md col-xs">
+            <div class="col carrito  ">
+                <div class="card">
 
-                                                <button *ngIf="debiendo  && (_clienteModalService.clienteSelected.nombre || _clienteModalService.clienteSelected.ci)" (click)="debiendo = false" type="button" class="btn btn-danger">debe</button>
+                    <label class=" lead pl-3  mt-1">Carrito</label>
+
+                    <div class="items m-0 p-0 card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <!-- <th>Imagen</th> -->
+                                    <th>Marca</th>
+                                    <th>Tipo</th>
+                                    <th style="width: 15%">Precio</th>
+                                    <th style="width: 15%">cantidad</th>
+                                    <th style="width: 10%">quitar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr #t *ngFor="let producto of items ; index as i">
+                                    <!-- <td class="w70">
+                                        <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
+                                    </td> -->
+
+                                    <td class="lead col-auto justify-content-center bold p-auto pt-4 ">
+                                        <b>{{producto.marca}}</b>
+                                    </td>
+                                    <td class="lead pt-4 "><b>{{producto.modelo}}</b></td>
+                                    <!-- <button align="center" [id]="'desc_'+producto._id" (click)="switchDescuento(true, i )" type="button" class="ml-3 mt-3 btn btn-secondary"> {{producto.descuento}}</button> -->
+                                    <!-- <td><button align="center" (click)="switchDescuento(false, i )" [id]="'normal_'+producto._id" type="button" class="  mt-1 btn btn-success">
+                                            {{producto.precio}}</button></td> -->
+
+
+
+                                    <td *ngIf="!t.getAttribute('costo')" (click)="permitirBuscarConEnter=false;  precioDinamico = producto.precio ; t.setAttribute('costo',producto.precio); t.setAttribute('costo_number',producto.precio);  " style="width: 15%" class="pt-4 pointer lead">
+                                        <b>{{producto.precio | currency: '':'':'2.0'
+                                            }}</b>
+
+
+                                    </td>
+                                    <!-- <td *ngIf="t.getAttribute('costo')" (click)="producto = switchPrecio(producto, t.getAttribute('costo')); t.removeAttribute('costo');  " style="width: 15%" class="pt-4 pointer text-danger lead">
+                                        <b>{{producto.precio |currency:
+                                                    '':'':'2.0'}}</b>
+                                    </td> -->
+                                    <td *ngIf="t.getAttribute('costo')">
+                                        <form action="" (ngSubmit)="producto = switchPrecio(producto, precioDinamico) ;t.removeAttribute('costo'); permitirBuscarConEnter = true;">
+                                            <div class="form-group m-0">
+
+                                                <input type="text" #inp [ngModel]="precioDinamico | currency: '':'':'2.0'" (ngModelChange)="precioDinamico = currencyInputChanged(inp.value); t.setAttribute('costo',precioDinamico)" class="form-control form-control-sm" name="name-{{i}}" id="" aria-describedby="helpId"
+                                                    placeholder="">
+                                                <small><button class="btn btn-sm btn-light" type="submit"
+                                                        href="javascript:null">Aplicar</button></small>
+                                            </div>
+
+                                        </form>
+
+                                    </td>
+
+
+                                    <td style="width: 15%" class="pt-4 lead"><b> {{producto.cantidad}}</b></td>
+                                    <td style="width: 15%">
+                                        <i (click)="quitar(producto)" style="color: red;" class="pointer pt-3 fa fa-trash" aria-hidden="true"></i>
+
+                                    </td>
+                                    <!-- <button (click)="quitar(producto)" class="  mt-3 btn btn-outline-danger">Quitar</button> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="bg-dark   text-white fondoMontos montos">
+                        <div class="  row">
+                            <div class="col   pb-4 ">
+                                <form ngNativeValidate id="amyFormEditProduct" class=" formProducto" (ngSubmit)="vender()" class="  cuerpo ">
+
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h6 class="display-4">Total: <br> <b class="">{{total |currency:
+                                                    '':'':'2.0'}} Gs</b></h6>
+
+                                            <div class="my-4 row">
+                                                <h3>Ingreso</h3>
+                                                <input name="ing" ngModel class="inputvender border rounded ml-3  " matInput #input [(ngModel)]="ingresoInput" #ingress (keyup)='ingreso(ingress.value)' type="number">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <h3 class="display-4">Vuelto:
+                                                <br>
+                                                <b class="text-danger"> {{vuelto |currency:
+                                                    '':'':'2.0'}} Gs</b>
+                                            </h3>
+                                            <p class="m-0 lead">Vendedor: <a>{{vendedorSeleccionado.nombre}}</a> </p>
+
+                                            <div *ngIf="_clienteModalService.clienteSelected" class="scol">
+
+                                                <p class="lead">Cliente :
+                                                    <a>{{_clienteModalService.clienteSelected.nombre}}</a>
+                                                </p>
+                                                <!-- <h4>RUC : <a href="#">{{_clienteModalService.cliente.ruc}}</a> </h4> -->
+
+
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div *ngIf="false" class="scol">
-                            <h3 align="center">Cliente</h3>
-                            <h4>Nombre : <a href="#">{{_clienteModalService.cliente.nombre}}</a></h4>
-                            <!-- <h4>RUC : <a href="#">{{_clienteModalService.cliente.ruc}}</a> </h4> -->
-                            <h4>C.I : <a href="#">{{_clienteModalService.cliente.ci}}</a> </h4>
-                            <div class="mt-4" align="center">
-                                <div class="row">
-                                    <button type="button" (click)="_clienteModalService.oculto = ''" class="btn btn-info">BUSCAR O AGREGAR</button>
-                                </div>
-                                <div class="mt-2 row">
-                                    <button *ngIf="!debiendo && (_clienteModalService.cliente.nombre || _clienteModalService.cliente.ci)" (click)="debiendo = true" type="button" class="btn btn-success">paga</button>
-                                    <button *ngIf="debiendo  && (_clienteModalService.cliente.nombre || _clienteModalService.cliente.ci)" (click)="debiendo = false" type="button" class="btn btn-danger">debe</button>
+                                    <div class="mt-1 row">
+                                        <div class="col"><button [disabled]="vendiendo" type="submit" class="btn btn-lg btn-success">Vender</button></div>
+                                        <div class="col">
+                                            <div class="mt-2 row">
+                                                <button type="button" (click)="onCliente()" class="btn mr-3 btn-outline-light">Cliente</button>
+                                                <button type="button" (click)="showSelectUser = true;" class="btn mr-3 btn-outline-light">Vendedor</button>
+                                                <div *ngIf="_clienteModalService.clienteSelected">
+                                                    <button *ngIf="!debiendo && (_clienteModalService.clienteSelected.nombre || _clienteModalService.clienteSelected.ci)" (click)="debiendo = true" type="button" class="btn btn-success">paga</button>
+
+                                                    <button *ngIf="debiendo  && (_clienteModalService.clienteSelected.nombre || _clienteModalService.clienteSelected.ci)" (click)="debiendo = false" type="button" class="btn btn-danger">debe</button>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="" *ngIf="debiendo  && (_clienteModalService.clienteSelected.nombre || _clienteModalService.clienteSelected.ci)">
+                                                <div class="form-group">
+                                                    <label for="">Fecha de cobro {{dateACobrar | date}}</label>
+                                                    <input type="text" autocomplete="off" [(ngModel)]="stringDateACobrar" (ngModelChange)="calcularFechaCobro()" #fecha class="form-control" name="fecha" id="" aria-describedby="helpId" placeholder="AAAA/MM/DD">
+                                                    <small id="helpId" class="form-text text-muted">colocar fecha a
+                                                        cobrar en el formato indicado</small>
+                                                    <!-- <button type="button" (click)="calcularFechaCobro()" class="btn btn-primary">Establecer Fecha</button> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div *ngIf="false" class="scol">
+                                <h3 align="center">Cliente</h3>
+                                <h4>Nombre : <a href="#">{{_clienteModalService.cliente.nombre}}</a></h4>
+                                <!-- <h4>RUC : <a href="#">{{_clienteModalService.cliente.ruc}}</a> </h4> -->
+                                <h4>C.I : <a href="#">{{_clienteModalService.cliente.ci}}</a> </h4>
+                                <div class="mt-4" align="center">
+                                    <div class="row">
+                                        <button type="button" (click)="_clienteModalService.oculto = ''" class="btn btn-info">BUSCAR O AGREGAR</button>
+                                    </div>
+                                    <div class="mt-2 row">
+                                        <button *ngIf="!debiendo && (_clienteModalService.cliente.nombre || _clienteModalService.cliente.ci)" (click)="debiendo = true" type="button" class="btn btn-success">paga</button>
+
+                                        <button *ngIf="debiendo  && (_clienteModalService.cliente.nombre || _clienteModalService.cliente.ci)" (click)="debiendo = false" type="button" class="btn btn-danger">debe</button>
+
+                                        <div class="" *ngIf="debiendo  ">
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -226,3 +291,5 @@
         </div>
     </div>
 </div>
+<app-select-user *ngIf="showSelectUser" [usuarios]="usuarios" (complete)="prb($event) ;vendedorSeleccionado = $event? $event : vendedorSeleccionado; showSelectUser = false">
+</app-select-user>

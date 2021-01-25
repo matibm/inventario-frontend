@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-4">
+    <div class="col-xs col-md-5">
 
         <div class="col">
             <div class="carsd">
@@ -23,6 +23,7 @@
                     <th>nombre
                     </th>
                     <th>ci</th>
+                    <th>Fecha nac.</th>
                     <th>telefono
                         <hr class="m-0"> direccion
                     </th>
@@ -34,6 +35,7 @@
                 <tr class="list-item list-group-item-action pointer" href="javascript:void" (click)="seleccionarCliente(item)">
                     <td>{{item.nombre}}</td>
                     <td>{{item.ci}}</td>
+                    <td>{{item.fecha_nacimiento| date}}</td>
                     <td>{{item.tel}}
                         <hr class="m-0"> {{item.direccion}}
                     </td>
@@ -47,64 +49,87 @@
             </tbody>
         </table>
     </div>
-    <div class="col-4">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Monto</th>
-                    <th>Pagado</th>
-                    <th style="width: 15%">acciones</th>
-                </tr>
-            </thead>
-            <tbody *ngFor="let item of facturas">
-                <tr class="list-item list-group-item-action pointer" href="javascript:void" (click)="seleccionarFactura(item)">
-                    <td>{{item.fecha | fecha: 'fecha'}} | {{item.fecha | fecha: 'hora'}} </td>
-                    <td>{{item.monto}} Gs</td>
-                    <td *ngIf="!item.debiendo">pagado</td>
-                    <td class="rojo" *ngIf="item.debiendo">sin pagar</td>
-                    <td>
-                        <i (click)="eliminarFactura(item)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="col-4">
-        <table *ngIf="factura" class="table  table-hover">
-            <thead>
-                <tr>
-                    <!-- <th>Imagen</th> -->
-                    <th>Marca</th>
-                    <th>Tipo</th>
+    <div *ngIf="!factura" class="col-xs col-md">
+        <div class="card mt-3">
+            <div style="max-height: 600px; overflow: auto; display: block;" class=" card-body">
+                <h4 *ngIf="cliente" class="card-title">Cliente: {{cliente.nombre}}</h4>
 
-                    <th>Precio</th>
-                    <!-- <th>Descuento</th> -->
-
-                    <th>Cantidad</th>
-                </tr>
-            </thead>
-            <tbody *ngFor="let producto of factura.productos">
-                <tr>
-                    <!-- <td class="w70">
-                        <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
-                    </td> -->
-                    <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}</td>
-                    <td style="width: 25%" class=" pt-4 ">{{producto.modelo}}</td>
-                    <td class=" pt-4 ">{{producto.precio}}</td>
-                    <!-- <td class=" pt-4 ">
-                        <div style="color: red" *ngIf="producto.desc">{{producto.descuento}}</div>
-                        <div *ngIf="!producto.desc">Sin Desc</div>
-                    </td> -->
-
-                    <td class=" pt-4 "> {{producto.cantidad}}</td>
-
-                </tr>
-            </tbody>
-            <div>
-                <button *ngIf="factura.debiendo" (click)="pagar()" type="button" class="btn btn-primary">Pagar</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Cobro</th>
+                            <th>Monto</th>
+                            <th>Pagado</th>
+                            <th style="width: 15%">acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let item of facturas">
+                        <tr class="list-item list-group-item-action pointer" href="javascript:void" (click)="seleccionarFactura(item)">
+                            <td>{{item.fecha | fecha: 'fecha'}} | {{item.fecha | fecha: 'hora'}} </td>
+                            <td *ngIf="item.fechaPago">{{item.fechaPago | date}} </td>
+                            <td *ngIf="!item.fechaPago">Sin fecha </td>
+                            <td>{{item.monto}} Gs</td>
+                            <td *ngIf="!item.debiendo">pagado</td>
+                            <td class="rojo" *ngIf="item.debiendo">sin pagar</td>
+                            <td>
+                                <i (click)="eliminarFactura(item)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </table>
+        </div>
+
+    </div>
+    <div *ngIf="factura" class="col-xs col-md">
+        <div class="card mt-3">
+            <div style="max-height: 600px; overflow: auto; display: block;" class="card-body">
+                <div class="inline-flex">
+                    <button (click)="factura = null;" type="button" class="btn mr-2 btn-danger">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    </button>
+                    <h3>{{factura.fecha | date}} - {{factura.fecha | date:'shortTime'}} </h3>
+                </div>
+
+                <table class="table  table-hover">
+
+                    <thead>
+                        <tr>
+                            <!-- <th>Imagen</th> -->
+                            <th>Marca</th>
+                            <th>Tipo</th>
+
+                            <th>Precio</th>
+                            <!-- <th>Descuento</th> -->
+
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let producto of factura.productos">
+                        <tr>
+                            <!-- <td class="w70">
+                                <img [src]="producto.img | imagen" class="img-50 img-circle pointer">
+                            </td> -->
+                            <td class="col-auto justify-content-center  p-auto pt-4 ">{{producto.marca}}</td>
+                            <td style="width: 25%" class=" pt-4 ">{{producto.modelo}}</td>
+                            <td class=" pt-4 ">{{producto.precio}}</td>
+                            <!-- <td class=" pt-4 ">
+                                <div style="color: red" *ngIf="producto.desc">{{producto.descuento}}</div>
+                                <div *ngIf="!producto.desc">Sin Desc</div>
+                            </td> -->
+
+                            <td class=" pt-4 "> {{producto.cantidad}}</td>
+
+                        </tr>
+                    </tbody>
+                    <div>
+                        <button *ngIf="factura.debiendo" (click)="pagar()" type="button" class="btn btn-primary">Pagar</button>
+                    </div>
+                </table>
+            </div>
+        </div>
+
     </div>
 </div>
 

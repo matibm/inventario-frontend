@@ -1,3 +1,5 @@
+import { ClienteService } from './../../services/cliente.service';
+import { UsuarioService } from './../../services/usuario.service';
 import { navBarService } from './../../services/navbar.service';
 import { ImprimirFacturaService } from 'src/app/components/imprimir-factura/imprimir-factura.service';
 import { ClienteModalService } from './../../components/cliente-modal/cliente-modal.service';
@@ -26,9 +28,10 @@ export class ProductosComponent implements OnInit {
 
   }
 
+  permitirBuscarConEnter = true;
   @HostListener('document:keypress', ['$event'])
   teclaEvento(event: KeyboardEvent) {
-    if (event.key == 'Enter' && event.shiftKey == false) {
+    if (this.permitirBuscarConEnter && event.key == 'Enter' && event.shiftKey == false) {
       this.buscarProductoConEnter(this.termino)
 
       this.termino = ''
@@ -53,6 +56,13 @@ export class ProductosComponent implements OnInit {
   onafterprint() {
 
   }
+  permitirmodificarprecio
+  mostrarAvisoCumpleno = true;
+  usuarios
+  showSelectUser = false;
+  vendedorSeleccionado 
+  dateACobrar = new Date();
+  stringDateACobrar = ''
   usuario
   termino = ''
   permitirbuscar = true;
@@ -74,8 +84,11 @@ export class ProductosComponent implements OnInit {
     public _clienteModalService: ClienteModalService,
     public _imprimirFacturaService: ImprimirFacturaService,
     public _navBarService: navBarService,
-    public _loginService: LoginService
+    public _loginService: LoginService,
+    public _clienteService: ClienteService,
+    public _usuarioService: UsuarioService
   ) { }
+  nav
   desde = 0;
   cantidad = 1;
   //cantidad
@@ -87,25 +100,72 @@ export class ProductosComponent implements OnInit {
   inversion
   ingresoInput
   vendiendo = true;
-  ngOnInit() {
+  cumpleaneros
+  facturasSinCobrar
+  mostrarFacturasACobrar = false;
+  prb(event){
+    console.log(event);
+    
+  }
+  ocultarAvisoCumple(){
+    let today = new Date()
+    localStorage.setItem('birthday', `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`);
+    this.mostrarAvisoCumpleno = false;
+  }
+  ocultarAvisoCobro(){
+    let today = new Date()
+    localStorage.setItem('fechaCobro', `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`);
+    this.mostrarFacturasACobrar = false;
+  }
+  async ngOnInit() {  
     this._navBarService.navBgColor = 'bg-primary'
     // this.nameField.nativeElement.focus();
     this.usuario = this._loginService.user;
     ////this.editName()
+    this.vendedorSeleccionado = this._loginService.user
+    console.log(this.vendedorSeleccionado);
+    
     this.cargarProductos()
     this._editarProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._crearProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._productoService.notificacion.subscribe(resp => {
-      // this.items = new Array
-      // this.factura = null
-      // this.ingresoInput = null
-      // this.total = 0
-      // this.vuelto = 0
-      // this.decremento = new Array
+     
       this.cargarProductos();
 
     })
 
+    this.usuarios = await this._usuarioService.getUsers();
+    let respcumple = await this._clienteService.getCumpleanero() 
+    
+    let ls = localStorage.getItem('birthday')
+     
+    if (ls) {
+      let dateLS = new Date(ls)
+      if (dateLS.getDate() == new Date().getDate() && dateLS.getMonth() == new Date().getMonth()) {
+        this.mostrarAvisoCumpleno = false;
+      }  else{
+        this.mostrarAvisoCumpleno = respcumple.haycumple
+      }
+    }
+    let lsCobro = localStorage.getItem('fechaCobro')
+     
+    if (lsCobro) {
+      let dateLS = new Date(ls)
+      if (dateLS.getDate() == new Date().getDate() && dateLS.getMonth() == new Date().getMonth()) {
+        this.mostrarFacturasACobrar = false;
+      }  else{        
+        this.facturasSinCobrar =  await this._facturaService.getFacturasParaCobro()
+        this.mostrarFacturasACobrar = this.facturasSinCobrar.length > 0 ? true : false
+      }
+    } else{
+      this.facturasSinCobrar =  await this._facturaService.getFacturasParaCobro()
+        this.mostrarFacturasACobrar = this.facturasSinCobrar.length > 0 ? true : false
+    }
+   
+    // console.log();
+    
+
+    this.cumpleaneros = respcumple.clientes
   }
 
   quitar(producto) {
@@ -516,18 +576,18 @@ export class ProductosComponent implements OnInit {
 
     this.vendiendo = true;
     let costo = this.getMontoDeCosto(this.items);
-    // if (!this._cierreCajaModalService.cerrado) {
-    let date = new Date()
-     
+     let date = new Date()
+
     if (this._clienteModalService.clienteSelected) {
       this.factura = {
         productos: this.items,
         fecha: date.getTime(),
+        fechaPago: this.dateACobrar.getTime(),
         monto: this.total,
         debiendo: this.debiendo,
         cliente: this._clienteModalService.clienteSelected._id,
         costo: costo,
-        usuario: this.usuario._id
+        usuario: this.vendedorSeleccionado._id
       }
     } else {
 
@@ -535,20 +595,16 @@ export class ProductosComponent implements OnInit {
         productos: this.items,
         fecha: date.getTime(),
         monto: this.total,
+        fechaPago: this.dateACobrar.getTime(),
         debiendo: this.debiendo,
         costo: costo,
-        usuario: this.usuario._id
+        usuario: this.vendedorSeleccionado._id
 
       }
     }
-
-
-
+ 
     await this._facturaService.setFactura(this.factura)
-
-
-    // this.nameField.nativeElement.focus();
-    //this.editName()
+ 
     this.decremento = new Array();
     for (let i = 0; i < this.factura.productos.length; i++) {
       const producto = this.factura.productos[i];
@@ -566,42 +622,7 @@ export class ProductosComponent implements OnInit {
     this.total = 0
     this.vuelto = 0
     this.decremento = new Array
-    // if (this._clienteModalService.imprimir) {
-    //   this._productoService.oculto = 'oculto';
-    //   this._imprimirFacturaService.mostrarFactura(this._clienteModalService.cliente, this.factura)
-    //   setTimeout(() => {
-    //     window.print()
-    //   }, 500); 
-    // }
-
-
-
-    // let cierrecaja
-
-    // let id = localStorage.getItem('idCaja')
-    // if (id) {
-    //   this._cierreCajaService.getCierreCaja(id).subscribe((resp: any) => {
-
-    //     cierrecaja = resp.cierreCaja
-    //     cierrecaja.montoCierre += this.total
-    //     cierrecaja.facturas.push(this.factura)
-    //     // this._cierreCajaService.putCierreCaja(cierrecaja).subscribe()
-
-    //   })
-    // }
-    // }
-
-    // else {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     title: 'No se pudo vender, abre la caja primero',
-    //     showConfirmButton: true
-    //   });
-
-    // }
-    // this.vendiendo = false;
-
-    //this.editName();
+     
   }
 
   switchDescuento(descuento, index) {
@@ -649,19 +670,67 @@ export class ProductosComponent implements OnInit {
     }
     //this.editName();
   }
-  @HostListener('document:keyup', ['$event'])
-  onKeyUp(event) {
-    let tecla = event.keyCode;
-    if (tecla == 39) {
-      this.cambiarDesde(6)
-    }
-    if (tecla == 37) {
-      this.cambiarDesde(-6)
-    }
-  }
+  // @HostListener('document:keyup', ['$event'])
+  // onKeyUp(event) {
+  //   let tecla = event.keyCode;
+  //   if (tecla == 39) {
+  //     this.cambiarDesde(6)
+  //   }
+  //   if (tecla == 37) {
+  //     this.cambiarDesde(-6)
+  //   }
+  // }
   switchPrecio(item, cantidad) {
-    item.precio = parseFloat(cantidad)
-    this.sumarTotal()
-    return item
+    if (item.precio <= cantidad) {      
+      return item;
+    } else {
+
+      item.precio = parseFloat(cantidad)
+      item.descuento = parseFloat(cantidad)
+      item.desc = true
+      this.sumarTotal()
+      return item
+    }
+
+
   }
+
+  calcularFechaCobro() {
+    console.log(this.stringDateACobrar);
+
+    let d = new Date(this.stringDateACobrar);
+    d.setUTCHours(5)
+    console.log(d);
+
+    if (Object.prototype.toString.call(d) === "[object Date]") {
+      // it is a date
+      if (isNaN(d.getTime())) {  // d.valueOf() could also work
+        // date is not valid
+      } else {
+        // date is valid
+        this.dateACobrar = d
+      }
+    } else {
+      // not a date
+    }
+  }
+  precioDinamico = 0
+  modificadorDePrecio() {
+
+  }
+
+  currencyInputChanged(value) {
+    var num = value.replace(/[$.]/g, "");
+    return Number(num);
+  }
+
+  comprobarDescuento(producto, monto) {
+    if (producto.precio <= monto) {
+      // pro
+      return false;
+    } else {
+      return true;
+    }
+  }
+
 }

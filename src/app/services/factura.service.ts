@@ -31,6 +31,14 @@ export class FacturaService {
       return resp.facturas
     })
   }
+  getFacturasParaCobro() {
+    let url = URL_SERVICIOS + '/factura/fecha_cobro';
+    return this.http.get(url).toPromise().then((resp: any) => {
+      console.log(resp.facturas);
+
+      return resp.facturas
+    })
+  }
   getProductosMasVendidos(desde, hasta) {
     let url = URL_SERVICIOS + '/factura/masvendidos';
     return this.http.get(url);
@@ -48,55 +56,54 @@ export class FacturaService {
     let original = factura;
     let url = URL_SERVICIOS + '/factura';
     await this.http.post(url, original).toPromise().then((resp: any) => {
-      console.log(resp);
-
-      resp.factura
+       
+     return resp.factura
 
     })
-    for (let i = 0; i < factura.productos.length; i++) {
-      const prod = factura.productos[i];
-      let size = prod.marca.length;
-      console.log(size);
-      let tam = 26 - size;
-      if (size < 26) {
-        for (let j = 0; j < tam; j++) {
-          prod.marca += ' '
-        }
-      }
+    // for (let i = 0; i < factura.productos.length; i++) {
+    //   const prod = factura.productos[i];
+    //   let size = prod.marca.length;
+    //   console.log(size);
+    //   let tam = 26 - size;
+    //   if (size < 26) {
+    //     for (let j = 0; j < tam; j++) {
+    //       prod.marca += ' '
+    //     }
+    //   }
 
-      let value = prod.precio;
-      if (!value) {
-        return 0
-      }
-      let texto = value.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
-      if (value % 1 == 0) {
-        texto = texto.slice(0, texto.length - 2)
-      }
-      prod.precio = texto;
+    //   let value = prod.precio;
+    //   if (!value) {
+    //     return 0
+    //   }
+    //   let texto = value.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+    //   if (value % 1 == 0) {
+    //     texto = texto.slice(0, texto.length - 2)
+    //   }
+    //   prod.precio = texto;
 
-    }
+    // }
 
-    let value = factura.monto;
-    if (!value) {
-      return 0
-    }
-    let texto = value.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
-    if (value % 1 == 0) {
-      texto = texto.slice(0, texto.length - 2)
-    }
-    factura.monto = texto;
+    // let value = factura.monto;
+    // if (!value) {
+    //   return 0
+    // }
+    // let texto = value.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+    // if (value % 1 == 0) {
+    //   texto = texto.slice(0, texto.length - 2)
+    // }
+    // factura.monto = texto;
 
-    let infoFactura = {
-      tienda: '               MISTICA CELL',
-      fecha: fechaCompleta,
-      monto: factura.monto,
-      costo: factura.costo,
-      productos: factura.productos,
-      debiendo: factura.debiendo,
+    // let infoFactura = {
+    //   tienda: '               MISTICA CELL',
+    //   fecha: fechaCompleta,
+    //   monto: factura.monto,
+    //   costo: factura.costo,
+    //   productos: factura.productos,
+    //   debiendo: factura.debiendo,
 
-      // printerName: 'Microsoft Print to PDF'
-      printerName: 'EPSON TM-U220 Receipt'
-    }
+    //   // printerName: 'Microsoft Print to PDF'
+    //   printerName: 'EPSON TM-U220 Receipt'
+    // }
 
     // let url2 = 'http://localhost:8080';
     // this.http.post(url2, infoFactura).toPromise().then((resp: any) => {

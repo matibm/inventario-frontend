@@ -73,15 +73,26 @@ export class CajaModalComponent implements OnInit {
     console.log(ingresos);
     
     this.caja = this._cajaService.cajaActual
-    this.caja.montoVentas = this.getMontoPorArreglo(facturas);
+    // this.caja.facturas = facturas
+    let facturaFiltrada = []
+    if (facturas.length) {
+        for (let i = 0; i < facturas.length; i++) {
+            const element = facturas[i];            
+            if (element.debiendo == false) {
+                facturaFiltrada.push(element)
+            }
+        }    
+    }
+    this.caja.facturas = facturaFiltrada;
+
+    this.caja.montoVentas = this.getMontoPorArreglo(facturaFiltrada);
     this.caja.montoEgresos = this.getMontoPorArreglo(egresos);
     this.caja.montoIngresos = this.getMontoPorArreglo(ingresos);
-    this.caja.facturas = facturas
     this.caja.ingresos = ingresos
     this.caja.egresos = egresos
     this.caja.cerrado = true
     this.caja.fechaCierre = dateActual;
-    this.caja.costoVentas = this.getCostoFactura(facturas);
+    this.caja.costoVentas = this.getCostoFactura(facturaFiltrada);
     this.caja.comisionIngresos = this.getComisionIngresos(ingresos);
     await this._cajaService.putCierreCaja(this.caja)
     this._cajaService.cajaActual = null;

@@ -306,7 +306,7 @@
                                 <td class=" pt-4 ">{{recarga.nfactura}} Gs </td>
                                 <td class=" pt-4 "> {{recarga.fecha | fecha :'fecha'}}</td>
                                 <td class=" pt-4 "> {{recarga.fecha | fecha :'hora'}}</td>
-                                <td class=" pt-4 "> {{recarga.monto | precio }} gs</td>
+                                <td class=" pt-4 "> {{recarga.monto |currency: '':'':'2.0' }} gs</td>
                             </tr>
                         </tbody>
                     </table>
@@ -335,9 +335,9 @@
                         <tbody class=" pointer" *ngFor="let item of itemProveedores">
                             <tr>
                                 <td class=" pt-4 ">{{item.nombre}} </td>
-                                <td class=" pt-4 ">{{item.stock | precio}}</td>
-                                <td class=" pt-4 "> {{item.ganancia | precio}}</td>
-                                <td class=" pt-4 "> {{item.total | precio}}</td>
+                                <td class=" pt-4 ">{{item.stock |currency: '':'':'2.0'}}</td>
+                                <td class=" pt-4 "> {{item.ganancia |currency: '':'':'2.0'}}</td>
+                                <td class=" pt-4 "> {{item.total |currency: '':'':'2.0'}}</td>
                                 <td class=" pt-4 "> {{item.percent}} %</td>
                             </tr>
                         </tbody>

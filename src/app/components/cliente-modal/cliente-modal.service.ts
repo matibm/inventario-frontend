@@ -57,6 +57,33 @@ export class ClienteModalService {
     })
   }
 
+  
+  stringDate
+  date:Date
+  validarFecha() {
+ 
+    let d = new Date(this.stringDate);
+    d.setUTCHours(5)
+    console.log(d);
+
+    if (Object.prototype.toString.call(d) === "[object Date]") {
+      // it is a date
+      if (isNaN(d.getTime())) {  // d.valueOf() could also work
+        // date is not valid
+      this.date = null
+
+      } else {
+        // date is valid
+        this.date = d
+      }
+    } else {
+      // not a date
+      this.date = null
+
+    }
+  }
+
+
   seleccionarCliente(cliente) {
     console.log(cliente);
     this.clienteSelected = cliente;
@@ -68,7 +95,8 @@ export class ClienteModalService {
       nombre: this.cliente.nombre,
       ci: this.cliente.ci,
       tel: this.cliente.tel,
-      direccion: this.cliente.direccion
+      direccion: this.cliente.direccion,
+      fecha_nacimiento: this.date.getTime()
       // ruc: this.cliente.ruc
     }
     this._clienteService.crearCliente(cliente).subscribe((cliente: any) => {

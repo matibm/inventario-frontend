@@ -30,6 +30,12 @@
                             <label for="">Direccion</label>
                             <input ngModel type="text" [(ngModel)]="cliente.direccion" name="modelo" #direccion class="form-control" aria-describedby="helpId" placeholder="Direccion del cliente">
                         </div>
+                        <div class="form-group">
+                            <label for="">Fecha de Nacimiento</label>
+
+                            <input ngModel type="text" [(ngModel)]="stringDate" (ngModelChange)="validarFecha()" name="modelo" #direccion class="form-control" aria-describedby="helpId" placeholder="Fecha de nacimiento">
+                            <small>Fecha: {{date | date}}</small>
+                        </div>
 
                         <div class="modal-footer">
                             <button type="button" (click)="oncomplete.emit()" class="btn btn-secondary">Cancelar</button>

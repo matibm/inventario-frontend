@@ -77,6 +77,12 @@
                             <label for="">Direccion</label>
                             <input ngModel type="text" [(ngModel)]="_clienteModalService.cliente.direccion" name="modelo" #direccion class="form-control" aria-describedby="helpId" placeholder="Direccion del cliente">
                         </div>
+                        <div class="form-group">
+                            <label for="">Fecha de Nacimiento</label>
+
+                            <input ngModel type="text" [(ngModel)]="_clienteModalService.stringDate" (ngModelChange)="_clienteModalService.validarFecha()" name="modelo" #direccion class="form-control" aria-describedby="helpId" placeholder="Fecha de nacimiento">
+                            <small>Fecha: {{_clienteModalService.date | date}}</small>
+                        </div>
 
                         <div class="modal-footer">
                             <button type="button" (click)="_clienteModalService.ocultarModal()" class="btn btn-secondary">Cancelar</button>

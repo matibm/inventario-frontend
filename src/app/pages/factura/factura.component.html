@@ -49,7 +49,7 @@
                                 <tbody class=" pointer" *ngFor="let factura of facturas">
                                     <tr (click)="verFacturaModal(factura)">
 
-                                        <td class=" pt-4 ">{{factura.monto |precio }} Gs </td>
+                                        <td class=" pt-4 ">{{factura.monto |currency: '':'':'2.0' }} Gs </td>
                                         <td class=" pt-4 ">{{factura.fecha | fecha: 'fecha'}}</td>
                                         <td class=" pt-4 "> {{factura.fecha | fecha :'hora'}}</td>
                                     </tr>
@@ -60,18 +60,18 @@
                     </div>
                     <div *ngIf="false" class="mt-1 d-flesx">
                         <label class="ml-4" for="text"><b>Ventas:</b> {{totalF}} Gs </label>
-                        <label class="ml-4" for="text"><b>Precio Costo:</b> {{totalBrutoF |precio}} Gs</label>
+                        <label class="ml-4" for="text"><b>Precio Costo:</b> {{totalBrutoF |currency: '':'':'2.0'}} Gs</label>
                         <label class="ml-4" for="text"><b>Ganancia posible</b> {{[posibleGanancias]}} Gs</label>
 
                         <label class="ml-4" for="text"><b>Productos: </b> {{cantidadF}} unidades</label>
                         <br>
                         <label class="ml-4" for="text"><b>Egresos:</b> {{totalEgreso}} Gs </label>
                         <br>
-                        <label class="ml-4" for="text"><b>Monto fijo:</b> {{_cierreDeCajaModal.montoFijo |precio}} Gs
+                        <label class="ml-4" for="text"><b>Monto fijo:</b> {{_cierreDeCajaModal.montoFijo |currency: '':'':'2.0'}} Gs
                         </label>
                         <hr>
 
-                        <label class="ml-4" for="text"><b>Suma Total:</b> {{totalIngresoMenosEgreso |precio}} Gs
+                        <label class="ml-4" for="text"><b>Suma Total:</b> {{totalIngresoMenosEgreso |currency: '':'':'2.0'}} Gs
                         </label>
 
 

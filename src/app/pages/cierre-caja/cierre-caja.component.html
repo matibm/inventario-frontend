@@ -66,8 +66,8 @@
                                 </thead>
                                 <tbody class="pointer" *ngFor="let factura of facturas">
                                     <tr (click)="verFacturaModal(factura)">
-                                        <td class=" pt-4 ">{{factura.monto | precio}} Gs </td>
-                                        <td class=" pt-4 ">{{factura.costo | precio}} Gs </td>
+                                        <td class=" pt-4 ">{{factura.monto |currency: '':'':'2.0'}} Gs </td>
+                                        <td class=" pt-4 ">{{factura.costo |currency: '':'':'2.0'}} Gs </td>
                                         <td class=" pt-4 ">{{factura.fecha | fecha: 'fecha'}}</td>
                                         <td class=" pt-4 "> {{factura.fecha | fecha :'hora'}}</td>
                                         <!-- <td>
@@ -146,26 +146,26 @@
         </div>
         <div class="m-4 row">
             <div class="col">
-                <label for="">Monto Fijo: <b>{{montoFijo | precio }} Gs</b></label>
+                <label for="">Monto Fijo: <b>{{montoFijo |currency: '':'':'2.0' }} Gs</b></label>
 
                 <br>
-                <label for="">Monto en Egresos: <b class="text-danger">{{montoEgresos | precio }} Gs</b></label>
+                <label for="">Monto en Egresos: <b class="text-danger">{{montoEgresos |currency: '':'':'2.0' }} Gs</b></label>
                 <br>
-                <label for="">Monto en Ingresos: <b>{{montoIngresos | precio }} Gs</b> </label>
+                <label for="">Monto en Ingresos: <b>{{montoIngresos |currency: '':'':'2.0' }} Gs</b> </label>
                 <br>
-                <label for="">Monto en Ventas: <b>{{montoVentas | precio}} Gs</b> </label>
+                <label for="">Monto en Ventas: <b>{{montoVentas |currency: '':'':'2.0'}} Gs</b> </label>
 
                 <hr>
 
-                <p class="display-4">Total: <b>{{(montoFijo + montoIngresos+ montoVentas) -montoEgresos | precio }} Gs</b></p>
+                <p class="display-4">Total: <b>{{(montoFijo + montoIngresos+ montoVentas) -montoEgresos |currency: '':'':'2.0' }} Gs</b></p>
             </div>
             <div class="col">
                 <p class="lead">Ganancia posible</p>
-                <label for="">Comisión por Ingresos: <b>{{comision | precio }} Gs</b> </label>
+                <label for="">Comisión por Ingresos: <b>{{comision |currency: '':'':'2.0' }} Gs</b> </label>
                 <br>
-                <label for="">Ganancias por Ventas: <b>{{montoVentas - costo | precio}} Gs</b> </label>
+                <label for="">Ganancias por Ventas: <b>{{montoVentas - costo |currency: '':'':'2.0'}} Gs</b> </label>
                 <hr>
-                <p class="display-4">Total: <b>{{(montoVentas - costo) + comision  | precio}} Gs</b></p>
+                <p class="display-4">Total: <b>{{(montoVentas - costo) + comision  |currency: '':'':'2.0'}} Gs</b></p>
             </div>
 
         </div>

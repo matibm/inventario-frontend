@@ -42,7 +42,10 @@ export class CierreCajaService {
       return resp.cierreCaja
     })
   }
-
+  getCierreCajasFiltrado(desde, hasta) {
+    let url = URL_SERVICIOS + '/cierrecaja/filtrar/' + desde + '?hasta=' + hasta;
+    return this.http.get(url);
+  }
   getCierreCaja(id) {
     let url = URL_SERVICIOS + '/cierrecaja/' + id
     return this.http.get(url);

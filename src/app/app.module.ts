@@ -42,6 +42,7 @@ import localePy from '@angular/common/locales/es-PY';
 import { registerLocaleData } from '@angular/common';
 import { SelectUserComponent } from './components/select-user/select-user.component';
 
+import {NgxPaginationModule} from 'ngx-pagination';
 registerLocaleData(localePy, 'es-PY');
 
 
@@ -88,6 +89,7 @@ registerLocaleData(localePy, 'es-PY');
      FormsModule,
     NgxPrintModule,
     AppRoutingModule,
+    NgxPaginationModule,
     PAGES_ROUTES
     
   ],

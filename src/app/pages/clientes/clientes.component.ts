@@ -2,6 +2,7 @@ import { navBarService } from './../../services/navbar.service';
 import { FacturaService } from './../../services/factura.service';
 import { ClienteService } from './../../services/cliente.service';
 import { Component, OnInit } from '@angular/core';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-clientes',
@@ -15,7 +16,8 @@ export class ClientesComponent implements OnInit {
   factura
   items
   editCliente = false;
-   
+  count = 12
+  page = 1
   constructor(
     public _clienteService: ClienteService,
     public _facturaService: FacturaService,
@@ -33,9 +35,9 @@ export class ClientesComponent implements OnInit {
 
   ngOnInit() {
     this._navBarService.navBgColor = 'bg-danger'
-    this.getClientes();
+    this.getClientes(this.page);
     this._clienteService.noficacion.subscribe(() => {
-      this.getClientes();
+      this.getClientes(this.page);
       this.facturas = null;
       this.factura = null;
       this.items = null;
@@ -52,12 +54,12 @@ export class ClientesComponent implements OnInit {
     })
   }
 
-  getClientes() {
-    this._clienteService.getClientes().subscribe((resp: any) => {
+  getClientes(page) {
+     
+    this._clienteService.getClientes(page).subscribe((resp: any) => {
       console.log(resp);
-      
+      this.count = resp.count
       this.clientes = resp.clientes;
-
     })
   }
 
@@ -83,7 +85,7 @@ export class ClientesComponent implements OnInit {
 
       })
     } else {
-      this.getClientes()
+      this.getClientes(this.page)
     }
 
   }
@@ -100,8 +102,12 @@ export class ClientesComponent implements OnInit {
   pagar() {
     this.factura.debiendo = false;
     this.factura.fecha = new Date().getTime();
-    
+
     this._facturaService.putFactura(this.factura).subscribe()
+  }
+
+  pageChanged(event) {
+    this.getClientes(event)
   }
 
 }

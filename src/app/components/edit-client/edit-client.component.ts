@@ -20,7 +20,8 @@ export class EditClientComponent implements OnInit {
   @Output() oncomplete = new EventEmitter
   @Input() clienteToEdit
   guardar(){
-    this.cliente.fecha_nacimiento = this.date.getTime()
+    // this.cliente.fecha_nacimiento = this.date.getTime()
+    this.date? this.cliente.fecha_nacimiento = this.date.getTime() : ''
     this._clienteService.editarCliente(this.cliente).subscribe(()=>{
       this.oncomplete.emit()
     })
@@ -29,7 +30,7 @@ export class EditClientComponent implements OnInit {
 
   
   stringDate
-  date:Date
+  date:Date 
   validarFecha() {
  
     let d = new Date(this.stringDate);

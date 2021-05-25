@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { URL_SERVICIOS } from './../config/global';
 import { Injectable, EventEmitter } from '@angular/core';
 import { map } from 'rxjs/operators';
-
+ 
 @Injectable({
   providedIn: 'root'
 })
@@ -10,8 +10,14 @@ export class ClienteService {
   public noficacion = new EventEmitter<any>();
   constructor(private http: HttpClient
   ) { }
-  getClientes() {
-    let url = URL_SERVICIOS + '/cliente/';
+  getClientes(page?) {
+    console.log("page de page", page);
+    
+    let p = page || 1
+    console.log("page", p);
+
+    let url = URL_SERVICIOS + '/cliente';
+    url += `?page=${p}`
     return this.http.get(url);
   }
   buscarClientes(termino: string) {

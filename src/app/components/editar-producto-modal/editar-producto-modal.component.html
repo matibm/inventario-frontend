@@ -98,6 +98,26 @@
                                 </form>
 
                             </div>
+
+
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>sucursal</th>
+                                        <th>stock</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="table" *ngFor="let item of _editarProductoModalService.stocks">
+                                    <tr (click)="null" class="list-item list-group-item-action pointer" href="javascript:void">
+                                        <td>{{item.sucursal.nombre}}</td>
+                                        <td>
+                                            <input name="sucursal-{{item.sucursal.nombre}}" [(ngModel)]="item.cantidad" type="number">
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
                             <div class="form-group">
                                 <label for="">Comentario</label>
                                 <input ngModel type="text" [(ngModel)]="_editarProductoModalService.comentario" name="comentario" #precioBruto class="form-control" aria-describedby="helpId" placeholder="Comentario opcional para esta modificacion del producto">

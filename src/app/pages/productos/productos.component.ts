@@ -22,6 +22,19 @@ import { LoginService } from 'src/app/services/login.service';
 
 
 export class ProductosComponent implements OnInit {
+  constructor(public _productoService: ProductoService,
+    public _editarProductoModalService: EditarProductoModalService,
+    private _cierreCajaService: CierreCajaService,
+    private _cierreCajaModalService: CajaModalService,
+    public _crearProductoModalService: CrearProductoModalService,
+    private _facturaService: FacturaService,
+    public _clienteModalService: ClienteModalService,
+    public _imprimirFacturaService: ImprimirFacturaService,
+    public _navBarService: navBarService,
+    public _loginService: LoginService,
+    public _clienteService: ClienteService,
+    public _usuarioService: UsuarioService
+  ) { }
   @ViewChild("input", { static: true }) nameField: ElementRef;
   editName(): void {
     // this.nameField.nativeElement.focus();
@@ -29,8 +42,7 @@ export class ProductosComponent implements OnInit {
   }
 
   permitirBuscarConEnter = true;
-  @HostListener('document:keypress', ['$event'])
-  teclaEvento(event: KeyboardEvent) {
+  @HostListener('document:keypress', ['$event']) teclaEvento(event: KeyboardEvent) {
     if (this.permitirBuscarConEnter && event.key == 'Enter' && event.shiftKey == false) {
       this.buscarProductoConEnter(this.termino)
 
@@ -75,19 +87,7 @@ export class ProductosComponent implements OnInit {
   diableVender = false
   decremento: any[] = new Array
   items: any[] = new Array
-  constructor(public _productoService: ProductoService,
-    public _editarProductoModalService: EditarProductoModalService,
-    private _cierreCajaService: CierreCajaService,
-    private _cierreCajaModalService: CajaModalService,
-    public _crearProductoModalService: CrearProductoModalService,
-    private _facturaService: FacturaService,
-    public _clienteModalService: ClienteModalService,
-    public _imprimirFacturaService: ImprimirFacturaService,
-    public _navBarService: navBarService,
-    public _loginService: LoginService,
-    public _clienteService: ClienteService,
-    public _usuarioService: UsuarioService
-  ) { }
+  
   nav
   desde = 0;
   cantidad = 1;
@@ -103,28 +103,10 @@ export class ProductosComponent implements OnInit {
   cumpleaneros
   facturasSinCobrar
   mostrarFacturasACobrar = false;
-  prb(event){
-    console.log(event);
-    
-  }
-  ocultarAvisoCumple(){
-    let today = new Date()
-    localStorage.setItem('birthday', `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`);
-    this.mostrarAvisoCumpleno = false;
-  }
-  ocultarAvisoCobro(){
-    let today = new Date()
-    localStorage.setItem('fechaCobro', `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`);
-    this.mostrarFacturasACobrar = false;
-  }
   async ngOnInit() {  
     this._navBarService.navBgColor = 'bg-primary'
-    // this.nameField.nativeElement.focus();
-    this.usuario = this._loginService.user;
-    ////this.editName()
-    this.vendedorSeleccionado = this._loginService.user
-    console.log(this.vendedorSeleccionado);
-    
+     this.usuario = this._loginService.user;
+     this.vendedorSeleccionado = this._loginService.user    
     this.cargarProductos()
     this._editarProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._crearProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
@@ -167,6 +149,23 @@ export class ProductosComponent implements OnInit {
 
     this.cumpleaneros = respcumple.clientes
   }
+
+
+  prb(event){
+    console.log(event);
+    
+  }
+  ocultarAvisoCumple(){
+    let today = new Date()
+    localStorage.setItem('birthday', `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`);
+    this.mostrarAvisoCumpleno = false;
+  }
+  ocultarAvisoCobro(){
+    let today = new Date()
+    localStorage.setItem('fechaCobro', `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`);
+    this.mostrarFacturasACobrar = false;
+  }
+  
 
   quitar(producto) {
     for (let index = 0; index < this.items.length; index++) {
@@ -223,17 +222,15 @@ export class ProductosComponent implements OnInit {
     this.cambiarDesde(0)
   }
   cargarProductos() {
-    //  this.cargando = true;
-    this._productoService.getProductos(this.desde).subscribe((resp: any) => {
-      //// // console.log(resp);
-      //this.editName();
+     this._productoService.getProductos(this.desde).subscribe((resp: any) => {
+ 
       this.inversion = 0;
       this.productos = resp.productos.reverse();
       for (let index = 0; index < this.productos.length; index++) {
         const producto = this.productos[index];
         this.inversion += producto.precioBruto;
       }
-      //  this.cargando = false;
+     
     })
   }
 

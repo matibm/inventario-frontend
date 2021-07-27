@@ -36,6 +36,13 @@ export class ProductoService {
     let url = URL_SERVICIOS + '/producto?desde=' + desde;
     return this.http.get(url);
   }
+  getStocks(id) {
+     
+    let url = URL_SERVICIOS + '/producto/get_stock?id=' + id;
+    return this.http.get(url).toPromise().then((data: any) => {
+      return data.stocks
+    });
+  }
 
   getProductosPromise() {
     let url = URL_SERVICIOS + '/producto/all'
@@ -151,8 +158,8 @@ export class ProductoService {
     return this.http.get(url).toPromise();
   }
 
-  saveMultiple(list){
-    let url = URL_SERVICIOS + '/producto/multiple'  ;
+  saveMultiple(list) {
+    let url = URL_SERVICIOS + '/producto/multiple';
     return this.http.put(url, list).toPromise();
   }
 

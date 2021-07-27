@@ -3,6 +3,7 @@ import { ProductoService } from './../../services/producto.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import Swal from 'sweetalert2';
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import { SucursalService } from 'src/app/services/sucursal.service';
 
 
 @Injectable({
@@ -13,7 +14,7 @@ export class CrearProductoModalService {
   nombreImagen
   imagenSubir: File;
   imagenTemp: string | ArrayBuffer;
-  brutoIsPercent 
+  brutoIsPercent
   descuentoIsPercent
   precioBrutoPorcentaje = 0;
   descuentoPorcentaje = 0;
@@ -21,92 +22,94 @@ export class CrearProductoModalService {
   precio
   marca = ''
   modelo
-  codigo 
+  codigo
   cantidad
   precioBruto
   descuento
   stockMinimo = 0
   proveedores
+  sucursales
   proveedorFijado
-
+  stocks = []
   public notificacion = new EventEmitter<any>();
 
   oculto = 'oculto'
   constructor(
     private _subirArchivoService: SubirArchivoService,
-    private _productoService: ProductoService
-  ) { 
-    
+    private _productoService: ProductoService,
+    public _sucursalService: SucursalService
+  ) {
+    this.getSles()
     this.proveedorFijado = JSON.parse(localStorage.getItem('proveedorFijado'))
     if (this.proveedorFijado) {
-        this.proveedor = this.proveedorFijado
+      this.proveedor = this.proveedorFijado
     }
     if (localStorage.getItem('brutoIsPercent')) {
       if (localStorage.getItem('brutoIsPercent') == 'true') {
-        this.brutoIsPercent = true;    
+        this.brutoIsPercent = true;
       }
-    }else{
+    } else {
       this.brutoIsPercent = false;
     }
     if (localStorage.getItem('descuentoIsPercent')) {
       if (localStorage.getItem('descuentoIsPercent') == 'true') {
-        this.descuentoIsPercent = true;    
+        this.descuentoIsPercent = true;
       }
-    }else{
+    } else {
       this.descuentoIsPercent = false;
     }
   }
 
-  ocultarModal(){
+  ocultarModal() {
     this.oculto = 'oculto'
   }
-  mostrarModal(){
+  mostrarModal() {
     this.oculto = ''
   }
-  changePrecioNormal(value){
+  changePrecioNormal(value) {
     // console.log(value);
-    
+
     this.precioNormal = value;
   }
-  brutoSwitch(){
+  brutoSwitch() {
     if (this.brutoIsPercent == false) {
       this.brutoIsPercent = true;
       localStorage.setItem('brutoIsPercent', 'true');
-    } else{
+    } else {
       this.brutoIsPercent = false
       localStorage.setItem('brutoIsPercent', 'false');
     }
   }
-  descuentoSwitch(){
+  descuentoSwitch() {
     if (this.descuentoIsPercent == false) {
       this.descuentoIsPercent = true;
       localStorage.setItem('descuentoIsPercent', 'true');
-    } else{
+    } else {
       this.descuentoIsPercent = false;
       localStorage.setItem('descuentoIsPercent', 'false');
 
     }
   }
-  changeBrutoPercent(value){
-    if (value >=0 && value <=100) {
+  changeBrutoPercent(value) {
+    if (value >= 0 && value <= 100) {
       let aux = 100 - value;
-      aux = aux/100;
+      aux = aux / 100;
       this.precioBrutoPorcentaje = this.precioNormal * aux;
 
     }
-    
-    
+
+
   }
-  changeDescuentoPercent(value){
-    if (value >=0 && value <=100) {
+  changeDescuentoPercent(value) {
+    if (value >= 0 && value <= 100) {
       let aux = 100 - value;
-      aux = aux/100;
+      aux = aux / 100;
       this.descuentoPorcentaje = this.precioNormal * aux;
     }
-    
-    
+
+
   }
-  clearInputs(){
+  clearInputs() {
     this.precio = null;
     this.marca = null;
     this.codigo = null;
@@ -115,13 +118,13 @@ export class CrearProductoModalService {
     this.descuento = null;
     this.cantidad = null;
     this.stockMinimo = 0;
- 
+
   }
 
   registrar(f) {
     // let precioBrutoAux
     // let descuentoAux
-    
+
     // precioBrutoAux = ;
     if (this.brutoIsPercent) {
       f.value.precioBruto = this.precioBrutoPorcentaje;
@@ -143,7 +146,7 @@ export class CrearProductoModalService {
           var form = document.getElementById("myFormNewProduct");
           function handleForm(event) { event.preventDefault(); }
           form.addEventListener('submit', handleForm);
-          
+
           let producto = {
             marca: f.value.marca,
             modelo: f.value.modelo,
@@ -153,16 +156,16 @@ export class CrearProductoModalService {
             descuento: f.value.descuento,
             stock: f.value.cantidad,
             img: this.nombreImagen,
-            proveedor : '',
-            stockMinimo: f.value.stockMinimo
-
+            proveedor: '',
+            stockMinimo: f.value.stockMinimo,
+            stocks: this.stocks
 
           }
           if (this.proveedor) {
             producto.proveedor = this.proveedor._id
-    
+
           }
-          
+
 
           this._productoService.crearProducto(producto).subscribe(resp => {
             this.notificacion.emit(resp)
@@ -180,11 +183,11 @@ export class CrearProductoModalService {
       //function handleForm(event) { event.preventDefault(); }
       form.addEventListener('submit', this.handleForm);
       console.log(this.proveedor);
-      if(this.proveedor){
-        
+      if (this.proveedor) {
+
       }
       console.log(this.stockMinimo);
-      
+
       let producto = {
         marca: f.value.marca,
         modelo: f.value.modelo,
@@ -193,8 +196,9 @@ export class CrearProductoModalService {
         precioBruto: f.value.precioBruto,
         descuento: f.value.descuento,
         stock: f.value.cantidad,
-        proveedor : '',
-        stockMinimo: f.value.stockMinimo
+        proveedor: '',
+        stockMinimo: f.value.stockMinimo,
+        stocks: this.stocks
       }
 
 
@@ -203,7 +207,7 @@ export class CrearProductoModalService {
 
       }
       console.log(producto);
-      
+
       this._productoService.crearProducto(producto).subscribe(resp => {
         this.notificacion.emit(resp)
         this.ocultarModal()
@@ -249,18 +253,24 @@ export class CrearProductoModalService {
   }
 
 
-  fijar(proveedor){
+  fijar(proveedor) {
     this.proveedorFijado = proveedor
     proveedor = JSON.stringify(proveedor)
     localStorage.setItem('proveedorFijado', proveedor)
   }
 
-  desfijar(){
+  desfijar() {
     localStorage.removeItem('proveedorFijado')
-    this.proveedor = null;     
+    this.proveedor = null;
     this.proveedores = null;
     this.proveedorFijado = null;
   }
+  async getSles() {
+    this.sucursales = await this._sucursalService.getSucursales()
+    for (let i = 0; i < this.sucursales.length; i++) {
+      const sucursal = this.sucursales[i];
+      this.stocks.push({ _id: sucursal._id,  sucursal: sucursal.nombre, stock: 0})
+    }
+  }
 
-  
 }

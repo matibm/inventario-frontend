@@ -28,6 +28,7 @@ export class EditarProductoModalService {
   agregarCantidad = 0
   stock_antes_de_modificar
   comentario = ''
+  stocks
   public notificacion = new EventEmitter<any>();
 
   oculto = 'oculto'
@@ -201,7 +202,9 @@ export class EditarProductoModalService {
 
   async mostarModal(producto) {
     console.log("mostrando");
-
+    console.log(producto);
+    
+    this.stocks = await this._productoService.getStocks(producto._id)
     this.id = producto._id
     this.marca = producto.marca
     this.modelo = producto.modelo

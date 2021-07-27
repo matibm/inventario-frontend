@@ -2,6 +2,7 @@ import { FacturaModalService } from './../../components/factura-modal/factura-mo
 import { FacturaService } from './../../services/factura.service';
 import { UsuarioService } from './../../services/usuario.service';
 import { Component, OnInit } from '@angular/core';
+import { SucursalService } from 'src/app/services/sucursal.service';
 
 @Component({
   selector: 'app-usuarios',
@@ -10,8 +11,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UsuariosComponent implements OnInit {
   editando = false;
+  editandoSucursal = false;
   usuarios
+  sucursales
+  sucursal
   creandoUsuario = false;
+  creandoSucursal = false;
   mostrarVentas = false;
   usuario = {
     role: '',
@@ -59,12 +64,14 @@ export class UsuariosComponent implements OnInit {
 
   constructor(
     public _usuarioService: UsuarioService,
+    public _sucursalService: SucursalService,
     public _facturaService: FacturaService,
     public _facturaModalService: FacturaModalService
   ) { }
 
   async ngOnInit() {
     this.setFechas()
+    this.sucursales = await this._sucursalService.getSucursales()
     this.usuarios = await this._usuarioService.getUsers()
     this._facturaModalService.guardado.subscribe(() => {
       this.sumarMontos(this.facturas)
@@ -106,12 +113,27 @@ export class UsuariosComponent implements OnInit {
 
     this.creandoUsuario = false;
   }
+  async nuevaSucursal(nombre) {
+    let sucursal = {
+      nombre: nombre,
+    }
+    await this._sucursalService.newSucursal(sucursal);
+    // this.usuarios = await this._usuarioService.getUsers()
+    this.sucursales = await this._sucursalService.getSucursales()
+
+    this.creandoSucursal = false;
+  }
 
   async guardarUsuario() {
     await this._usuarioService.updateUser(this.usuario);
     this.usuarios = await this._usuarioService.getUsers()
 
     this.editando =false;
+    
+
+  }
+  async guardarsucursal() {
+  alert('aun no se desarrollo esta parte')
     
 
   }

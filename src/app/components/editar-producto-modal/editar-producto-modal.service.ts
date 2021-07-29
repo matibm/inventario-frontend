@@ -1,10 +1,11 @@
 import { RecargaService } from './../../services/recarga.service';
-import { LoginService } from './../login/login.service';
+// import { LoginService } from './../login/login.service';
 import Swal from 'sweetalert2';
 import { SubirArchivoService } from './../../services/subir-archivo.service';
 import { ProductoService } from './../../services/producto.service';
 import { Injectable, EventEmitter } from '@angular/core';
 import { ProveedorService } from 'src/app/services/proveedor.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,8 @@ export class EditarProductoModalService {
   constructor(
     private _subirArchivoService: SubirArchivoService,
     private _productoService: ProductoService,
-    public _loginService: LoginService,
+    // public _loginService: LoginService,
+    public loginService:LoginService,
     public _recargaService: RecargaService,
     public _proveedorService: ProveedorService
   ) { }
@@ -53,7 +55,7 @@ export class EditarProductoModalService {
   guardar() {
     console.log(this.proveedor);
 
-    if (!this._loginService.logued) {
+    if (!this.loginService.isAdmin) {
       this.cantidad += this.agregarCantidad;
     }
     var form = document.getElementById("amyFormEditProduct");

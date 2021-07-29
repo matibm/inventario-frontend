@@ -11,6 +11,10 @@ export class ProveedorModalService {
   nombre
   telefono
   comentario
+  ruc
+  persona_contacto
+  direccion
+  email
   public notificacion = new EventEmitter<any>();
 
   constructor(
@@ -22,6 +26,10 @@ export class ProveedorModalService {
     let proveedor = {
       nombre: this.nombre,
       telefono: this.telefono,
+      ruc: this.ruc,
+      persona_contacto: this.persona_contacto,
+      direccion: this.direccion,
+      email: this.email,
       comentario: this.comentario
     }
 
@@ -29,7 +37,7 @@ export class ProveedorModalService {
     this.oculto = 'oculto'
     this.notificacion.emit()
     Swal.fire({
-       icon: 'success',
+      icon: 'success',
       title: 'proveedor modificado',
       showConfirmButton: false,
       timer: 1500
@@ -42,6 +50,10 @@ export class ProveedorModalService {
     this.proveedor = proveedor
     this.nombre = proveedor.nombre
     this.telefono = proveedor.telefono
+    this.ruc = proveedor.ruc
+    this.persona_contacto = proveedor.persona_contacto
+    this.direccion = proveedor.direccion
+    this.email = proveedor.email
     this.comentario = proveedor.comentario
     this.oculto = ''
   }

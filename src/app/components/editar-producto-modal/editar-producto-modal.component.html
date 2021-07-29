@@ -46,12 +46,12 @@
 
                         </div>
                         <div class="col">
-                            <div *ngIf="_editarProductoModalService._loginService.logued" class="form-group">
+                            <div *ngIf="_editarProductoModalService.loginService.isAdmin" class="form-group">
                                 <label for="">Cantidad</label>
                                 <input ngModel type="number" [(ngModel)]="_editarProductoModalService.cantidad" name="maererrca" #cantidad class="form-control" aria-describedby="helpId" placeholder="">
                             </div>
 
-                            <div *ngIf="!_editarProductoModalService._loginService.logued" class=" form-group">
+                            <div *ngIf="!_editarProductoModalService.loginService.isAdmin" class=" form-group">
                                 <label class=" form-group" for="">En stock : {{_editarProductoModalService.cantidad}}</label>
                                 <br>
                                 <!-- <label class="form-control" required aria-describedby="helpId" placeholder=""></label> -->
@@ -59,7 +59,7 @@
                                 <input ngModel type="number" [(ngModel)]="_editarProductoModalService.agregarCantidad" name="maesrerrca" #canwtidad class="form-control" aria-describedby="helpId" placeholder="">
                             </div>
 
-                            <div *ngIf="_editarProductoModalService._loginService.logued" class="form-group">
+                            <div *ngIf="_editarProductoModalService.loginService.isAdmin" class="form-group">
                                 <label for="">Stock Minimo</label>
                                 <input ngModel type="number" [(ngModel)]="_editarProductoModalService.stockMinimo" name="maereerrca" #cantsidad class="form-control" aria-describedby="helpId" placeholder="">
                             </div>

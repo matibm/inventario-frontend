@@ -10,12 +10,23 @@
         </div>
 
         <div class="card-body">
-            <form (ngSubmit)='crearProveedor(nombre.value, tel.value, comentario.value)' action="">
+            <form (ngSubmit)='crearProveedor(nombre.value, tel.value, comentario.value, ruc.value
+            ,persona_contacto.value
+            ,direccion.value
+            ,email.value)' action="">
                 <div class="form-group">
                     <label for="">nombre</label>
                     <input #nombre type="text" class="mb-3 form-control" name="" id="" aria-describedby="helpId" placeholder="nombre">
                     <label for="">telefono</label>
                     <input #tel type="text" class="mb-3 form-control" name="" id="" aria-describedby="helpId" placeholder="telefono">
+                    <label for="">ruc</label>
+                    <input #ruc type="text" class="mb-3 form-control" name="" id="" aria-describedby="helpId" placeholder="ruc">
+                    <label for="">persona de contacto</label>
+                    <input #persona_contacto type="text" class="mb-3 form-control" name="" id="" aria-describedby="helpId" placeholder="persona de contacto">
+                    <label for="">direccion</label>
+                    <input #direccion type="text" class="mb-3 form-control" name="" id="" aria-describedby="helpId" placeholder="direccion">
+                    <label for="">email</label>
+                    <input #email type="text" class="mb-3 form-control" name="" id="" aria-describedby="helpId" placeholder="email">
                     <label for="">comentario</label>
                     <input #comentario type="text" class="mb-3 form-control" name="" id="" aria-describedby="helpId" placeholder="comentario o descripcion sobre proveedor">
                     <div class="d-flex flex-row-reverse">

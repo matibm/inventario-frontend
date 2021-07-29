@@ -75,10 +75,17 @@ export class ProveedoresComponent implements OnInit {
 
   }
 
-  async crearProveedor(nombre, tel, comentario) {
+  async crearProveedor(nombre, tel, comentario, ruc
+    , persona_contacto
+    , direccion
+    , email) {
     let proveedor = {
       nombre: nombre,
       telefono: tel,
+      ruc,
+      persona_contacto,
+      direccion,
+      email,
       comentario: comentario
     }
     let r = await this._proveedorService.createProveedor(proveedor);

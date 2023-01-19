@@ -56,11 +56,12 @@ export class ProductosComponent implements OnInit {
   onafterprint() {
 
   }
+  ingresoStyle: any = {}
   permitirmodificarprecio
   mostrarAvisoCumpleno = true;
   usuarios
   showSelectUser = false;
-  vendedorSeleccionado 
+  vendedorSeleccionado
   dateACobrar = new Date();
   stringDateACobrar = ''
   usuario
@@ -87,8 +88,14 @@ export class ProductosComponent implements OnInit {
     public _loginService: LoginService,
     public _clienteService: ClienteService,
     public _usuarioService: UsuarioService
-  ) { }
+  ) {
+
+    console.log();
+    this.ingresoStyle.top = window.innerHeight - 407 + 'px'
+    this.carritoStyle.height = window.innerHeight - 450 + 'px'
+  }
   nav
+  carritoStyle: any = {}
   desde = 0;
   cantidad = 1;
   //cantidad
@@ -103,67 +110,67 @@ export class ProductosComponent implements OnInit {
   cumpleaneros
   facturasSinCobrar
   mostrarFacturasACobrar = false;
-  prb(event){
+  prb(event) {
     console.log(event);
-    
+
   }
-  ocultarAvisoCumple(){
+  ocultarAvisoCumple() {
     let today = new Date()
-    localStorage.setItem('birthday', `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`);
+    localStorage.setItem('birthday', `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`);
     this.mostrarAvisoCumpleno = false;
   }
-  ocultarAvisoCobro(){
+  ocultarAvisoCobro() {
     let today = new Date()
-    localStorage.setItem('fechaCobro', `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`);
+    localStorage.setItem('fechaCobro', `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`);
     this.mostrarFacturasACobrar = false;
   }
-  async ngOnInit() {  
+  async ngOnInit() {
     this._navBarService.navBgColor = 'bg-primary'
     // this.nameField.nativeElement.focus();
     this.usuario = this._loginService.user;
     ////this.editName()
     this.vendedorSeleccionado = this._loginService.user
     console.log(this.vendedorSeleccionado);
-    
+
     this.cargarProductos()
     this._editarProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._crearProductoModalService.notificacion.subscribe(resp => this.cargarProductos())
     this._productoService.notificacion.subscribe(resp => {
-     
+
       this.cargarProductos();
 
     })
 
     this.usuarios = await this._usuarioService.getUsers();
-    let respcumple = await this._clienteService.getCumpleanero() 
-    
+    let respcumple = await this._clienteService.getCumpleanero()
+
     let ls = localStorage.getItem('birthday')
-     
+
     if (ls) {
       let dateLS = new Date(ls)
       if (dateLS.getDate() == new Date().getDate() && dateLS.getMonth() == new Date().getMonth()) {
         this.mostrarAvisoCumpleno = false;
-      }  else{
+      } else {
         this.mostrarAvisoCumpleno = respcumple.haycumple
       }
     }
     let lsCobro = localStorage.getItem('fechaCobro')
-     
+
     if (lsCobro) {
       let dateLS = new Date(ls)
       if (dateLS.getDate() == new Date().getDate() && dateLS.getMonth() == new Date().getMonth()) {
         this.mostrarFacturasACobrar = false;
-      }  else{        
-        this.facturasSinCobrar =  await this._facturaService.getFacturasParaCobro()
+      } else {
+        this.facturasSinCobrar = await this._facturaService.getFacturasParaCobro()
         this.mostrarFacturasACobrar = this.facturasSinCobrar.length > 0 ? true : false
       }
-    } else{
-      this.facturasSinCobrar =  await this._facturaService.getFacturasParaCobro()
-        this.mostrarFacturasACobrar = this.facturasSinCobrar.length > 0 ? true : false
+    } else {
+      this.facturasSinCobrar = await this._facturaService.getFacturasParaCobro()
+      this.mostrarFacturasACobrar = this.facturasSinCobrar.length > 0 ? true : false
     }
-   
+
     // console.log();
-    
+
 
     this.cumpleaneros = respcumple.clientes
   }
@@ -228,7 +235,17 @@ export class ProductosComponent implements OnInit {
       //// // console.log(resp);
       //this.editName();
       this.inversion = 0;
+
+
+
       this.productos = resp.productos.reverse();
+      console.log(this.productos);
+      this.productos = this.productos.map(item => {
+        return {
+          ...item,
+          originalStock: item.stock
+        }
+      })
       for (let index = 0; index < this.productos.length; index++) {
         const producto = this.productos[index];
         this.inversion += producto.precioBruto;
@@ -262,13 +279,19 @@ export class ProductosComponent implements OnInit {
     let productos = await this._productoService.buscarProductos(termino)
     this.permitirbuscar = true;
     this.productos = productos
+    this.productos = this.productos.map(item => {
+      return {
+        ...item,
+        originalStock: item.stock
+      }
+    })
     if (productos.length == 1) {
       let producto = productos[0]
       if (termino === producto.codigo) {
 
         let productoCarrito = this.getProductoOfCarrito(producto._id)
         if (productoCarrito) {
-          if (productoCarrito.cantidad >= producto.stock) {
+          if (productoCarrito.cantidad >= producto.originalStock) {
             Swal.fire({
               icon: 'error',
               title: 'Cantidad seleccionada supera el stock',
@@ -296,7 +319,7 @@ export class ProductosComponent implements OnInit {
       if (producto) {
         let productoCarrito = this.getProductoOfCarrito(producto._id)
         if (productoCarrito) {
-          if (productoCarrito.cantidad >= producto.stock) {
+          if (productoCarrito.cantidad >= producto.originalStock) {
             Swal.fire({
               icon: 'error',
               title: 'Cantidad seleccionada supera el stock',
@@ -350,8 +373,15 @@ export class ProductosComponent implements OnInit {
       return;
     }
     let productos = await this._productoService.buscarProductos(termino)
+    console.log(productos);
 
     this.productos = productos
+    this.productos = this.productos.map(item => {
+      return {
+        ...item,
+        originalStock: item.stock
+      }
+    })
     if (productos.length == 1) {
       let producto = productos[0]
       //   if (termino === producto.codigo) {
@@ -428,8 +458,36 @@ export class ProductosComponent implements OnInit {
 
     }
 
-    producto.cantidad = parseInt(cant) // con este codigo aca funciona como tiene que ser
-    if (producto.stock < cant) {
+    // ya existe en el carrito? 
+    let itemCantidad = 0
+    for (let i = 0; i < this.items.length; i++) {
+      const itemCarrito = this.items[i];
+      console.log(itemCarrito);
+
+      if (itemCarrito._id == producto._id) {
+        itemCantidad = itemCarrito.cantidad
+      }
+
+    }
+
+    console.log(itemCantidad);
+    console.log(producto);
+
+    if (itemCantidad >= producto.originalStock) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Cantidad seleccionada supera el stock',
+        showConfirmButton: true
+      });
+
+      return
+    }
+
+    producto.cantidad = parseInt(cant)
+    console.log(producto);
+    console.log(cant);
+
+    if (producto.originalStock < cant) {
       Swal.fire({
         icon: 'error',
         title: 'Cantidad seleccionada supera el stock',
@@ -461,6 +519,7 @@ export class ProductosComponent implements OnInit {
         numeroC += numeroB;
 
         this.items[i].cantidad = numeroC;
+        this.items[i].total = this.items[i].cantidad * this.items[i].precio;
 
         noagregarmas = true;
       }
@@ -576,7 +635,7 @@ export class ProductosComponent implements OnInit {
 
     this.vendiendo = true;
     let costo = this.getMontoDeCosto(this.items);
-     let date = new Date()
+    let date = new Date()
 
     if (this._clienteModalService.clienteSelected) {
       this.factura = {
@@ -602,9 +661,22 @@ export class ProductosComponent implements OnInit {
 
       }
     }
- 
-    await this._facturaService.setFactura(this.factura)
- 
+    this.factura.productos.forEach(producto => {
+      console.log(producto);
+
+    });
+
+    if (this._clienteModalService.seCreaCuotas) {
+      this.factura.es_cuota = true
+    }
+
+    let respFactura: any = await this._facturaService.setFactura(this.factura)
+    console.log(respFactura);
+   
+    if (this._clienteModalService.seCreaCuotas) {
+      this.crearCuotas(respFactura._id, respFactura.cliente)
+    }
+
     this.decremento = new Array();
     for (let i = 0; i < this.factura.productos.length; i++) {
       const producto = this.factura.productos[i];
@@ -622,9 +694,22 @@ export class ProductosComponent implements OnInit {
     this.total = 0
     this.vuelto = 0
     this.decremento = new Array
-     
+
   }
 
+  crearCuotas(factura, cliente) {
+    let body = {
+      factura,
+      cliente,
+      monto_total: this._clienteModalService.totalMonto,
+      monto_cuota: this._clienteModalService.totalMonto / this._clienteModalService.cantCuotas,
+      cant_cuotas: this._clienteModalService.cantCuotas,
+      dia_vencimiento: this._clienteModalService.diaVencimiento
+    }
+
+    console.log(body);
+    this._facturaService.crearCuotas(body)
+  }
   switchDescuento(descuento, index) {
     let item = this.items[index]
     let resto = item.precio - item.descuento
@@ -681,7 +766,7 @@ export class ProductosComponent implements OnInit {
   //   }
   // }
   switchPrecio(item, cantidad) {
-    if (item.precio <= cantidad) {      
+    if (item.precio <= cantidad) {
       return item;
     } else {
 
@@ -731,6 +816,13 @@ export class ProductosComponent implements OnInit {
     } else {
       return true;
     }
+  }
+
+  aplicarDescuento(producto, index) {
+    console.log(producto);
+    this.items[index].precio = producto.total / producto.cantidad
+    this.items[index].desc = true
+    this.sumarTotal()
   }
 
 }

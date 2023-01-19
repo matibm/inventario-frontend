@@ -18,6 +18,7 @@ export class ClientesComponent implements OnInit {
   editCliente = false;
   count = 12
   page = 1
+  verCuotas = false
   constructor(
     public _clienteService: ClienteService,
     public _facturaService: FacturaService,
@@ -55,7 +56,7 @@ export class ClientesComponent implements OnInit {
   }
 
   getClientes(page) {
-     
+
     this._clienteService.getClientes(page).subscribe((resp: any) => {
       console.log(resp);
       this.count = resp.count
@@ -67,6 +68,8 @@ export class ClientesComponent implements OnInit {
     this.factura = null;
     this.facturas = null;
     this.cliente = cliente;
+    console.log(cliente);
+
     this._facturaService.getFacturasPorCliente(cliente._id).subscribe((resp: any) => {
       this.facturas = resp.facturas
       this.getItems(this.facturas)
@@ -109,5 +112,30 @@ export class ClientesComponent implements OnInit {
   pageChanged(event) {
     this.getClientes(event)
   }
+  cuotas = []
+  async getCuotas() {
+    let resp: any = await this._facturaService.getCuotas(this.cliente._id)
+    this.cuotas = resp.cuotas
+    console.log(this.cuotas);
 
+  }
+
+  async cobrar(cuota: any) {
+    var result = confirm("Confirmar cobro? " + cuota.monto_cuota,);
+    if (result == true) {
+      await this._facturaService.pagarCuota(cuota)
+      await this.getCuotas()
+    } else {
+
+    }
+  }
+  async cancelarCobro(cuota) { 
+    var result = confirm("Confirmar cancelar cobro? " + cuota.monto_cuota,);
+    if (result == true) {
+      await this._facturaService.cancelarCobro(cuota)
+      await this.getCuotas()
+    } else {
+
+    }
+  }
 }

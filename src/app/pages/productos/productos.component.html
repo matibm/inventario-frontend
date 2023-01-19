@@ -139,7 +139,7 @@
 
                     <label class=" lead pl-3  mt-1">Carrito</label>
 
-                    <div class="items m-0 p-0 card-body">
+                    <div [ngStyle]="carritoStyle" class="items m-0 p-0 card-body">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
@@ -178,11 +178,13 @@
                                                     '':'':'2.0'}}</b>
                                     </td> -->
                                     <td *ngIf="t.getAttribute('costo')">
-                                        <form action="" (ngSubmit)="producto = switchPrecio(producto, precioDinamico) ;t.removeAttribute('costo'); permitirBuscarConEnter = true;">
+                                        <!-- <form action="" (ngSubmit)="producto = switchPrecio(producto, precioDinamico) ;t.removeAttribute('costo'); permitirBuscarConEnter = true;"> -->
+                                        <form action="" (ngSubmit)=" aplicarDescuento(producto, i) ;permitirBuscarConEnter = true;">
                                             <div class="form-group m-0">
 
-                                                <input type="text" #inp [ngModel]="precioDinamico | currency: '':'':'2.0'" (ngModelChange)="precioDinamico = currencyInputChanged(inp.value); t.setAttribute('costo',precioDinamico)" class="form-control form-control-sm" name="name-{{i}}" id="" aria-describedby="helpId"
-                                                    placeholder="">
+                                                <!-- <input type="text" #inp [ngModel]="precioDinamico | currency: '':'':'2.0'" (ngModelChange)="precioDinamico = currencyInputChanged(inp.value); t.setAttribute('costo',precioDinamico)" class="form-control form-control-sm" name="name-{{i}}" id="" aria-describedby="helpId"
+                                                    placeholder=""> -->
+                                                <input type="number" class="form-control form-control-sm" name="{{i}}" [(ngModel)]="producto.total" >
                                                 <small><button class="btn btn-sm btn-light" type="submit"
                                                         href="javascript:null">Aplicar</button></small>
                                             </div>
@@ -202,7 +204,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="bg-dark   text-white fondoMontos montos">
+                    <div style="height:350px ; width: -webkit-fill-available; position: absolute;" [ngStyle]="ingresoStyle" class="bg-dark   text-white fondoMontos montos">
                         <div class="  row">
                             <div class="col   pb-4 ">
                                 <form ngNativeValidate id="amyFormEditProduct" class=" formProducto" (ngSubmit)="vender()" class="  cuerpo ">
@@ -235,6 +237,13 @@
 
 
                                             </div>
+                                            <small *ngIf="_clienteModalService.cantCuotas> 0
+                                                && _clienteModalService.diaVencimiento
+                                  
+                                                "
+                                                >{{_clienteModalService.getExplainCoutas(_clienteModalService.cantCuotas,
+                                                _clienteModalService.totalMonto,
+                                                _clienteModalService.diaVencimiento)}}</small>
                                         </div>
                                     </div>
                                     <div class="mt-1 row">
@@ -242,6 +251,7 @@
                                         <div class="col">
                                             <div class="mt-2 row">
                                                 <button type="button" (click)="onCliente()" class="btn mr-3 btn-outline-light">Cliente</button>
+                                                <button type="button" [disabled]="!_clienteModalService.clienteSelected" (click)="this._clienteModalService.totalMonto = total; _clienteModalService.originalTotal = total; this._clienteModalService.ocultocuotas = ''" class="btn mr-3 btn-outline-light">Cuota</button>
                                                 <button type="button" (click)="showSelectUser = true;" class="btn mr-3 btn-outline-light">Vendedor</button>
                                                 <div *ngIf="_clienteModalService.clienteSelected">
                                                     <button *ngIf="!debiendo && (_clienteModalService.clienteSelected.nombre || _clienteModalService.clienteSelected.ci)" (click)="debiendo = true" type="button" class="btn btn-success">paga</button>

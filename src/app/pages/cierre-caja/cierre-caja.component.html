@@ -60,14 +60,14 @@
 
                         </div>
                     </div>
-                    <h1>Suma total</h1>
+                    <!-- <h1>Suma total</h1>
                     <h5>Ingresos p/ventas: {{cajaIngreso | currency: '':'':'2.0'}}</h5>
                     <h5>Costo: {{cajaCosto | currency: '':'':'2.0'}}</h5>
                     <h5>Ingresos p/servicios: {{cajaServicios | currency: '':'':'2.0'}}</h5>
                     <h5>Egresos: {{cajaEgreso | currency: '':'':'2.0'}}</h5>
                     <h5>Ingreso - Costo: {{cajaIngreso - cajaCosto | currency: '':'':'2.0'}}</h5>
                     <h5>Ingreso + I. Servicios - Costo - Egreso: {{cajaIngreso + cajaServicios- cajaCosto - cajaEgreso | currency: '':'':'2.0'}}
-                    </h5>
+                    </h5> -->
                 </div>
             </div>
         </div>
@@ -81,10 +81,13 @@
                             <a (click)="switchTab('facturas')" id="facturas_tab" href="javascript:undefined" class="nav-link active">Facturas</a>
                         </li>
                         <li style="cursor: pointer;" (click)="switchTab('egresos')" class="nav-item">
-                            <a id="egresos_tab" href="javascript:undefined" class="nav-link">Egresos</a>
+                            <a id="egresos_tab" href="javascript:undefined" class="nav-link">Ventas</a>
                         </li>
                         <li style="cursor: pointer;" (click)="switchTab('ingresos')" class="nav-item">
                             <a id="ingresos_tab" href="javascript:undefined" class="nav-link">Ingresos</a>
+                        </li>
+                        <li style="cursor: pointer;" (click)="switchTab('cobros')" class="nav-item">
+                            <a id="cobros_tab" href="javascript:undefined" class="nav-link">Cobros</a>
                         </li>
                     </ul>
 
@@ -175,6 +178,38 @@
                         <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
                         </div>
                     </div>
+                    <div *ngIf="tab == 'cobro'" class="carrito card">
+                        <div class="itemsArqueo">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Cuota Nro</th>
+                                        <th>Cliente</th>
+                                        <th>Monto</th>                                        
+                                        <th>vencimiento</th> 
+                                        <th  >pagado</th> 
+                                        <!-- <th style="width: 15%"></th> -->
+
+                                    </tr>
+                                </thead>
+                                <tbody class="pointer" *ngFor="let cobro of cobros">
+                                    <tr>
+                                        <td class=" pt-4 ">{{cobro.nro_cuota}}</td>
+                                        <td class=" pt-4 ">{{cobro.cliente.nombre}}</td>
+                                        <td class=" pt-4 ">{{cobro.monto_cuota | currency: '':'':'2.0'}} Gs </td>
+                                         <td class=" pt-4 ">{{cobro.fecha_vencimiento | date}}</td>
+                                         <td class=" pt-4 ">{{cobro.fecha_pagado | date: ' d, MMM y - h:mm a'}}</td>
+                                       
+                                        <!-- <td>
+                                            <i (click)="eliminarEgreso(egreso)" style="color: red;" class="fa fa-trash" aria-hidden="true"></i>
+                                        </td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- <button (click)="cambiarDesde(-5)" type="button" class="btn btn-secondary">Anteriores</button>
+                        <button (click)="cambiarDesde(5)" type="button" class="btn btn-secondary">Siguientes</button> -->
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -189,10 +224,12 @@
                 <label for="">Monto en Ingresos: <b>{{montoIngresos | currency: '':'':'2.0' }} Gs</b> </label>
                 <br>
                 <label for="">Monto en Ventas: <b>{{montoVentas | currency: '':'':'2.0'}} Gs</b> </label>
+                <br>
+                <label for="">Monto en Cobros: <b>{{montoCobros | currency: '':'':'2.0'}} Gs</b> </label>
 
                 <hr>
 
-                <p class="display-4">Total: <b>{{(montoFijo + montoIngresos+ montoVentas) -montoEgresos | currency: '':'':'2.0' }}
+                <p class="h1">Total: <b>{{(montoFijo + montoIngresos+ montoVentas +montoCobros) -montoEgresos | currency: '':'':'2.0' }}
                         Gs</b></p>
             </div>
             <div class="col">
@@ -201,7 +238,7 @@
                 <br>
                 <label for="">Ganancias por Ventas: <b>{{montoVentas - costo | currency: '':'':'2.0'}} Gs</b> </label>
                 <hr>
-                <p class="display-4">Total: <b>{{(montoVentas - costo) + comision | currency: '':'':'2.0'}} Gs</b></p>
+                <p class="h1">Total: <b>{{(montoVentas - costo) + comision | currency: '':'':'2.0'}} Gs</b></p>
             </div>
 
         </div>

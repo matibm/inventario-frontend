@@ -9,9 +9,6 @@ input::-webkit-inner-spin-button {
 
 /* Firefox */
 
-input[type=number] {
-    -moz-appearance: textfield;
-}
 
 .buscador {
     width: max-content;
@@ -51,7 +48,7 @@ hr {
 
 .items {
     overflow: auto;
-    height: 440px;
+     
 }
 
 .fondoMontos {

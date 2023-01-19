@@ -1,0 +1,76 @@
+<div class="fondo-negro fadeIn" [ngClass]='_clienteModalService.ocultocuotas'>
+  <div class="modal" style="display: block;" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Clientes </h5>
+          <button type="button" (click)="_clienteModalService.ocultocuotas=
+            'oculto'"
+            class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="form-group p-3">
+          <h6>Total sin aumento: {{_clienteModalService.originalTotal}}</h6>
+          <div class="row">
+            <div class="col">
+              <label for="">Precio final total</label>
+              <input ngModel type="number" name="nombre" #modelo
+                class="form-control"
+                aria-describedby="helpId"
+                [(ngModel)]="_clienteModalService.totalMonto" placeholder="total
+                final">
+            </div>
+            <div class="col">
+              <label for="">aumento porcentual</label>
+              <input ngModel type="number" name="nombre" #modelo
+                class="form-control"
+                aria-describedby="helpId"
+                [(ngModel)]="_clienteModalService.aumentoPorcentaje"
+                placeholder="aumento en porcentaje">
+              <button class="btn btn-success"
+                (click)="_clienteModalService.totalMonto=
+                _clienteModalService.aumentoPorcentaje *
+                _clienteModalService.originalTotal / 100 +
+                _clienteModalService.originalTotal ">Aplicar</button>
+            </div>
+          </div>
+          <label for="">Cantidad</label>
+          <input ngModel type="number" name="nombre" #modelo
+            class="form-control"
+            aria-describedby="helpId"
+            [(ngModel)]="_clienteModalService.cantCuotas" placeholder="Cantidad
+            de cuotas">
+
+          <label for="">Dia vencimiento de cada mes</label>
+          <input ngModel type="number" #modelo class="form-control"
+            aria-describedby="helpId"
+            [(ngModel)]="_clienteModalService.diaVencimiento"
+            placeholder="ingrese entre 1 y 28">
+          <div class="mt-1">
+
+            <small *ngIf="_clienteModalService.cantCuotas> 0
+              && _clienteModalService.diaVencimiento
+
+              "
+              >{{_clienteModalService.getExplainCoutas(_clienteModalService.cantCuotas,
+              _clienteModalService.totalMonto,
+              _clienteModalService.diaVencimiento)}}</small>
+          </div>
+          <div style="display: flex;">
+            <div class="ml-auto">
+
+              <button class="btn btn-success "
+                [disabled]="_clienteModalService.cantCuotas <1
+                || !_clienteModalService.diaVencimiento"
+                (click)="_clienteModalService.seCreaCuotas= true;
+                _clienteModalService.ocultocuotas= 'oculto'">Confirmar</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

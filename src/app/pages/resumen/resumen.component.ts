@@ -47,7 +47,20 @@ export class ResumenComponent implements OnInit {
   ocultar = false;
   recargas
   itemProveedores = []
-
+  datePickerCuotas = {
+    start: new Date(new Date().getTime() - 2592000000),
+    startNumber: {
+      dia: new Date(new Date().getTime() - 2592000000).getDate(),
+      mes: new Date(new Date().getTime() - 2592000000).getMonth() + 1,
+      year: new Date(new Date().getTime() - 2592000000).getFullYear(),
+    },
+    endNumber: {
+      dia: new Date(new Date().getTime() + 2592000000).getDate(),
+      mes: new Date(new Date().getTime() + 2592000000).getMonth() + 1,
+      year: new Date(new Date().getTime() + 2592000000).getFullYear(),
+    },
+    end: new Date(new Date().getTime() + 2592000000)
+  }
   constructor(
 
     public _editarProductoModalService: EditarProductoModalService,
@@ -65,6 +78,8 @@ export class ResumenComponent implements OnInit {
   ngOnInit() {
     this._navBarService.navBgColor = 'bg-secondary'
     this.setFechas()
+    this.getAllCuotas()
+    this.getAllVentas()
     // this.cargarFaltantes()
     // this.cargarMasVendidos()
     // this.cargarFacturasSinPagar();
@@ -105,34 +120,34 @@ export class ResumenComponent implements OnInit {
     }, 900);
   }
 
-    setFechas() {
-      this.dateDesde = new Date()
-      this.hoy = new Date()
+  setFechas() {
+    this.dateDesde = new Date()
+    this.hoy = new Date()
 
-      this.semanaDesde = new Date(this.dateDesde.setFullYear(this.dateDesde.getFullYear(), this.dateDesde.getMonth(), this.dateDesde.getDate().valueOf() - 7))
-      this.dateDesde = this.semanaDesde;
+    this.semanaDesde = new Date(this.dateDesde.setFullYear(this.dateDesde.getFullYear(), this.dateDesde.getMonth(), this.dateDesde.getDate().valueOf() - 7))
+    this.dateDesde = this.semanaDesde;
 
-      this.dateDesde.setUTCHours(0, 0, 0);
-      this.dateHasta.setUTCHours(23, 59, 0);
+    this.dateDesde.setUTCHours(0, 0, 0);
+    this.dateHasta.setUTCHours(23, 59, 0);
 
-      this.diaDesde = this.dateDesde.getDate();
-      this.mesDesde = this.dateDesde.getMonth() + 1;
-      this.yearDesde = this.dateDesde.getFullYear();
+    this.diaDesde = this.dateDesde.getDate();
+    this.mesDesde = this.dateDesde.getMonth() + 1;
+    this.yearDesde = this.dateDesde.getFullYear();
 
-      this.diaHasta = this.hoy.getUTCDate();
-      this.mesHasta = this.hoy.getUTCMonth() + 1;
-      this.yearHasta = this.hoy.getUTCFullYear();
+    this.diaHasta = this.hoy.getUTCDate();
+    this.mesHasta = this.hoy.getUTCMonth() + 1;
+    this.yearHasta = this.hoy.getUTCFullYear();
 
-      this.diaVentaSemanal = this.diaHasta;
-      this.mesVentaSemanal = this.mesHasta;
-      this.yearVentaSemanal = this.yearHasta;
+    this.diaVentaSemanal = this.diaHasta;
+    this.mesVentaSemanal = this.mesHasta;
+    this.yearVentaSemanal = this.yearHasta;
 
-      this.diaVentaDiaria = this.diaHasta;
-      this.mesVentaDiaria = this.mesHasta;
-      this.yearVentaDiaria = this.yearHasta;
+    this.diaVentaDiaria = this.diaHasta;
+    this.mesVentaDiaria = this.mesHasta;
+    this.yearVentaDiaria = this.yearHasta;
 
 
-    }
+  }
 
   cargarFacturasSinPagar() {
     this._facturaService.getFacturasSinPagar().subscribe((resp: any) => {
@@ -407,5 +422,19 @@ export class ResumenComponent implements OnInit {
       this.itemProveedores.push(itemP)
     }
   }
-
+  cuotas = []
+  ventas = []
+  tipoCuotas = 'todos'
+  async getAllCuotas() {
+    let start = new Date(`${this.datePickerCuotas.startNumber.year}-${this.datePickerCuotas.startNumber.mes}-${this.datePickerCuotas.startNumber.dia} 00:00:00`).getTime()
+    let end = new Date(`${this.datePickerCuotas.endNumber.year}-${this.datePickerCuotas.endNumber.mes}-${this.datePickerCuotas.endNumber.dia} 23:59:59`).getTime()
+    let resp: any = await this._facturaService.getAllCuotas({ start, end, tipo: this.tipoCuotas })
+    this.cuotas = resp.cuotas
+  }
+  async getAllVentas() {
+    let start = new Date(`${this.datePickerCuotas.startNumber.year}-${this.datePickerCuotas.startNumber.mes}-${this.datePickerCuotas.startNumber.dia} 00:00:00`).getTime()
+    let end = new Date(`${this.datePickerCuotas.endNumber.year}-${this.datePickerCuotas.endNumber.mes}-${this.datePickerCuotas.endNumber.dia} 23:59:59`).getTime()
+    let resp: any = await this._facturaService.getVentas({ start, end, tipo: this.tipoCuotas })
+    this.ventas = resp.facturas
+  }
 }

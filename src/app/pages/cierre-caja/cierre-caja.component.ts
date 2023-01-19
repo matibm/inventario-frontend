@@ -45,12 +45,13 @@ export class CierreCajaComponent implements OnInit {
   tab = 'factura'
 
   montoVentas = 0;
+  montoCobros = 0;
   montoIngresos = 0;
   montoEgresos = 0;
   comision = 0;
   costo = 0;
   montoFijo = 0;
-   
+  cobros = []
   cajaIngreso
   cajaEgreso
   cajaCosto
@@ -83,8 +84,10 @@ export class CierreCajaComponent implements OnInit {
       this.facturas = this.cierreCajas[0].facturas
       this.egresos = this.cierreCajas[0].egresos
       this.ingresos = this.cierreCajas[0].ingresos
+      this.cobros = this.cierreCajas[0].cobros
       this.montoEgresos = caja.montoEgresos
       this.montoVentas = caja.montoVentas
+      this.montoCobros = caja.montoCobros
       this.montoIngresos = caja.montoIngresos
       this.comision = caja.comisionIngresos
       this.costo = caja.costoVentas
@@ -104,6 +107,7 @@ export class CierreCajaComponent implements OnInit {
     this.egresos = cierreCaja.egresos
     this.montoEgresos = cierreCaja.montoEgresos
     this.montoVentas = cierreCaja.montoVentas
+    this.montoCobros = cierreCaja.montoCobros
     this.montoIngresos = cierreCaja.montoIngresos
     this.comision = cierreCaja.comisionIngresos
     this.costo = cierreCaja.costoVentas
@@ -119,6 +123,7 @@ export class CierreCajaComponent implements OnInit {
         document.getElementById('facturas_tab').className = ' nav-link active'
         document.getElementById('egresos_tab').className = 'nav-link'
         document.getElementById('ingresos_tab').className = ' nav-link '
+        document.getElementById('cobros_tab').className = ' nav-link '
 
         this.facturaTab = true
         this.tab = 'factura'
@@ -127,16 +132,26 @@ export class CierreCajaComponent implements OnInit {
         document.getElementById('egresos_tab').className = ' nav-link active'
         document.getElementById('facturas_tab').className = 'nav-link';
         document.getElementById('ingresos_tab').className = ' nav-link '
+        document.getElementById('cobros_tab').className = ' nav-link '
 
         this.facturaTab = false;
         this.tab = 'egreso';
         break;
       case 'ingresos':
         document.getElementById('ingresos_tab').className = ' nav-link active'
+        document.getElementById('cobros_tab').className = ' nav-link '
         document.getElementById('facturas_tab').className = 'nav-link';
         document.getElementById('egresos_tab').className = 'nav-link';
         this.facturaTab = false;
         this.tab = 'ingreso';
+        break;
+      case 'cobros':
+        document.getElementById('ingresos_tab').className = ' nav-link '
+        document.getElementById('cobros_tab').className = ' nav-link active'
+        document.getElementById('facturas_tab').className = 'nav-link';
+        document.getElementById('egresos_tab').className = 'nav-link';
+        this.facturaTab = false;
+        this.tab = 'cobro';
         break;
       default:
         break;

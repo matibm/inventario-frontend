@@ -43,6 +43,7 @@ import { registerLocaleData } from '@angular/common';
 import { SelectUserComponent } from './components/select-user/select-user.component';
 
 import {NgxPaginationModule} from 'ngx-pagination';
+import { CuotasComponent } from './components/cuotas/cuotas.component';
 registerLocaleData(localePy, 'es-PY');
 
 
@@ -80,6 +81,7 @@ registerLocaleData(localePy, 'es-PY');
     UsuariosComponent,
     PagesComponent,
     SelectUserComponent,
+    CuotasComponent,
     
   ],
   imports: [

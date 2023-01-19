@@ -49,15 +49,52 @@ export class FacturaService {
 
     return this.http.get(url).toPromise();
   }
+  crearCuotas(body) {
+    let url = URL_SERVICIOS + '/factura/crear_cuotas';
+
+    return this.http.post(url, body).toPromise();
+  }
+  getCuotas(userId) {
+    let url = URL_SERVICIOS + '/factura/get_cuotas/'+userId;
+
+    return this.http.get(url).toPromise();
+  }
+  getCobros(filtro) {
+    let url = URL_SERVICIOS + '/factura/get_cobros';
+
+    return this.http.post(url, filtro).toPromise();
+  }
+  pagarCuota(body) {
+    let url = URL_SERVICIOS + '/factura/cobrar_cuota';
+
+    return this.http.post(url, body).toPromise();
+  }
+  cancelarCobro(body) {
+    let url = URL_SERVICIOS + '/factura/cancelar_cobro';
+
+    return this.http.post(url, body).toPromise();
+  }
+  getAllCuotas(body) {
+    let url = URL_SERVICIOS + '/factura/get_all_cuotas';
+
+    return this.http.post(url, body).toPromise();
+  }
+  getVentas(body) {
+    let url = URL_SERVICIOS + '/factura/get_ventas_total';
+
+    return this.http.post(url, body).toPromise();
+  }
 
   async setFactura(factura) {
+    console.log(factura);
+
     let date = new Date(factura.fecha);
     let fechaCompleta = date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ' - ' + date.getHours() + ':' + date.getMinutes();
     let original = factura;
     let url = URL_SERVICIOS + '/factura';
-    await this.http.post(url, original).toPromise().then((resp: any) => {
-       
-     return resp.factura
+    return await this.http.post(url, original).toPromise().then((resp: any) => {
+
+      return resp.factura
 
     })
     // for (let i = 0; i < factura.productos.length; i++) {

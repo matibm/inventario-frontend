@@ -19,7 +19,7 @@ export class CajaModalComponent implements OnInit {
   cajaCerrada = true;
   constructor(
     public _cajaModalService: CajaModalService,
-    public _cajaService : CierreCajaService,
+    public _cajaService: CierreCajaService,
     private _facturaService: FacturaService,
     private _egresoService: EgresoService,
     private _ingresoService: IngresoService
@@ -27,39 +27,41 @@ export class CajaModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
+
   }
 
-  async crearCaja( ) {
+  async crearCaja() {
 
     this._cajaModalService.montoFijo = this.montoT
     localStorage.setItem('montofijo', this.montoT);
     localStorage.setItem('montofijocerrado', '1');
     this._cajaModalService.montoFijoCerrado = '1'
     this._cajaModalService.ocultarModal()
-    
+
     // let date = new Date()
     let date = new Date();
     let desde = new Date(date.setUTCFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
     // let date = new Date(new Date().setUTCDate(new Date().valueOf()))
     console.log(desde);
-    
-    
+
+
     let caja = {
       facturas: [],
       egresos: [],
       montoFijo: this.montoFijo,
       montoVentas: 0,
       montoEgresos: 0,
+      montoCobros: 0,
+      costoVentas: 0,
       montoIngresos: 0,
       fechaInicio: desde.valueOf(),
       fechaCierre: 0,
       cerrado: false
     }
- 
+
 
     this._cajaService.cajaActual = await this._cajaService.setCierreCaja(caja)
-    
+
   }
 
 
@@ -70,20 +72,31 @@ export class CajaModalComponent implements OnInit {
     let facturas = await this._facturaService.getFacturas(dateDesde, dateActual);
     let egresos = await this._egresoService.getEgresos(dateDesde, dateActual);
     let ingresos = await this._ingresoService.getIngresos(dateDesde, dateActual)
-    console.log(ingresos);
-    
+    let cobros: any = await this._facturaService.getCobros({ desde: dateDesde, hasta: dateActual })
+    console.log(cobros);
     this.caja = this._cajaService.cajaActual
+    for (let i = 0; i < cobros.cuotas.length; i++) {
+      const cobro = cobros.cuotas[i];
+      console.log(cobro);
+      
+      this.caja.costoVentas += cobro.factura.costo
+      this.caja.montoCobros += cobro.monto_cuota
+    }
+    console.log(ingresos);
+
+    
     // this.caja.facturas = facturas
     let facturaFiltrada = []
     if (facturas.length) {
-        for (let i = 0; i < facturas.length; i++) {
-            const element = facturas[i];            
-            if (element.debiendo == false) {
-                facturaFiltrada.push(element)
-            }
-        }    
+      for (let i = 0; i < facturas.length; i++) {
+        const element = facturas[i];
+        if (element.debiendo == false && element.es_cuota != true) {
+          facturaFiltrada.push(element)
+        }
+      }
     }
     this.caja.facturas = facturaFiltrada;
+    this.caja.cobros = cobros.cuotas;
 
     this.caja.montoVentas = this.getMontoPorArreglo(facturaFiltrada);
     this.caja.montoEgresos = this.getMontoPorArreglo(egresos);
@@ -106,9 +119,9 @@ export class CajaModalComponent implements OnInit {
       for (let index = 0; index < ingresos.length; index++) {
         const ingreso = ingresos[index];
         monto += ingreso.comision;
-      }  
+      }
     }
-    
+
     return monto
   }
 
@@ -117,11 +130,14 @@ export class CajaModalComponent implements OnInit {
     if (movimientos) {
       for (let index = 0; index < movimientos.length; index++) {
         const factura = movimientos[index];
-        monto += factura.monto;
-      }  
+        if (factura.es_cuota != true) {
+          monto += factura.monto;
+
+        }
+      }
     }
-    
-    return monto  
+
+    return monto
   }
 
   getCostoFactura(facturas) {
@@ -129,10 +145,13 @@ export class CajaModalComponent implements OnInit {
     if (facturas) {
       for (let index = 0; index < facturas.length; index++) {
         const factura = facturas[index];
-        costo += factura.costo
-      }  
+        if (factura.es_cuota != true) {
+          costo += factura.costo;
+        }
+
+      }
     }
-    
+
     return costo
   }
 

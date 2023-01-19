@@ -82,7 +82,13 @@
         <div *ngIf="!factura" style="width: 100%;">
             <div class="card mx-2">
                 <div class=" card-body">
-                    <h4 *ngIf="cliente" class="card-title">Cliente: {{cliente.nombre}}</h4>
+                    <div *ngIf="cliente" style="display: flex; width: 100%;">
+                        <h4 *ngIf="cliente" class="card-title">Cliente: {{cliente.nombre}}</h4>
+
+                        <div class="ml-auto">
+                            <button class="btn btn-info" (click)="getCuotas(); verCuotas = true">Ver cuotas</button>
+                        </div>
+                    </div>
 
                     <table class="table table-sm tablse-responsive ">
                         <thead>
@@ -171,3 +177,48 @@
 
 
 </div>
+
+
+<div class="fondo-negro fadeIn" *ngIf="verCuotas" > 
+    <div class="modal" style="display: block;" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Cuotas </h5>
+            <button (click)="verCuotas = false" type="button"  
+              class="close" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="p-3" style="max-height: 600px; overflow: auto;">
+            <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Creacion</th>
+                    <th scope="col">Vencimiento</th>
+                    <th scope="col">Monto</th>
+                    <th scope="col">Pagado</th>
+                    <th scope="col">Accion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let cuota of cuotas">
+                    <th scope="row">{{cuota.nro_cuota}}</th>
+                    <td>{{cuota.fecha_creacion | date}}</td>
+                    <td>{{cuota.fecha_vencimiento | date}}</td>
+                    <td>{{cuota.monto_cuota }}</td>
+                    <td *ngIf="cuota.pagado">{{cuota.fecha_pagado | date}}</td>
+                    <td *ngIf="!cuota.pagado">NO</td>
+                    <td >
+                        <button *ngIf="cuota.pagado" (click)="cancelarCobro(cuota)" class="btn btn-sm btn-danger"> CANCELAR COBRO</button>
+                        <button *ngIf="!cuota.pagado" (click)="cobrar(cuota)" class="btn btn-sm btn-info"> COBRAR</button>
+                    </td> 
+                  </tr> 
+                </tbody>
+              </table>
+          </div>
+          
+      </div>
+    </div>
+  </div>

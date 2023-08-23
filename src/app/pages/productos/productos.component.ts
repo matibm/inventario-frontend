@@ -10,7 +10,7 @@ import { EditarProductoModalService } from './../../components/editar-producto-m
 import { CierreCajaService } from './../../services/cierre-caja.service';
 import { FacturaService } from './../../services/factura.service';
 import { ProductoService } from './../../services/producto.service';
-import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit } from '@angular/core';
 import { LoginService } from 'src/app/services/login.service';
 
 @Component({
@@ -21,7 +21,9 @@ import { LoginService } from 'src/app/services/login.service';
 
 
 
-export class ProductosComponent implements OnInit {
+export class ProductosComponent implements OnInit, AfterViewInit{
+
+  
   @ViewChild("input", { static: true }) nameField: ElementRef;
   editName(): void {
     // this.nameField.nativeElement.focus();
@@ -124,6 +126,18 @@ export class ProductosComponent implements OnInit {
     localStorage.setItem('fechaCobro', `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`);
     this.mostrarFacturasACobrar = false;
   }
+
+  ngAfterViewInit(){
+    document.getElementById('input-ingreso').addEventListener('focusin', (event)=>{
+      console.log("ta focusado");
+      this.permitirBuscarConEnter = false
+    })
+    document.getElementById('input-ingreso').addEventListener('focusout', (event)=>{
+      console.log("ta desfocusado");
+      this.permitirBuscarConEnter = true
+    })
+  }
+
   async ngOnInit() {
     this._navBarService.navBgColor = 'bg-primary'
     // this.nameField.nativeElement.focus();
@@ -263,7 +277,7 @@ export class ProductosComponent implements OnInit {
     this.inputbuscador = ''
     let inputb: any = document.getElementById('inputBuscador');
     inputb.value = ''
-    this.nameField.nativeElement.value = null;
+    // this.nameField.nativeElement.value = null;
 
     if (termino.length <= 0) {
 
